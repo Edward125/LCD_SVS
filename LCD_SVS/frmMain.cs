@@ -1204,7 +1204,30 @@ namespace LCD_SVS
         {
 
             string sizemode = comboSizeMode.SelectedItem.ToString();
-            picCapturePicture.SizeMode = (PictureBoxSizeMode)Enum.ToObject(typeof(PictureBoxSizeMode), sizemode);
+
+            switch (comboSizeMode.SelectedIndex)
+            {
+                case 0:
+                    picCapturePicture.SizeMode = PictureBoxSizeMode.Normal;
+                    break;
+                case 1:
+                    picCapturePicture.SizeMode = PictureBoxSizeMode.StretchImage;
+                    break;
+                case 2:
+                    picCapturePicture.SizeMode = PictureBoxSizeMode.AutoSize;
+                    break;
+                case 3:
+                    picCapturePicture.SizeMode = PictureBoxSizeMode.CenterImage;
+                    break;
+                case 4:
+                    picCapturePicture.SizeMode = PictureBoxSizeMode.Zoom;
+                    break;
+                default:
+                    break;
+            }
+
+
+            //picCapturePicture.SizeMode = (PictureBoxSizeMode)Enum.ToObject(typeof(PictureBoxSizeMode), sizemode);
 
 
         }

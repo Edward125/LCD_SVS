@@ -43,15 +43,15 @@
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabCamera = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lstCapMsg = new System.Windows.Forms.ListBox();
             this.btnCapture = new System.Windows.Forms.Button();
             this.tabCapturePicture = new System.Windows.Forms.TabPage();
-            this.lstCapMsg = new System.Windows.Forms.ListBox();
             this.panelCapture = new System.Windows.Forms.Panel();
-            this.picCapturePicture = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtImgFile = new System.Windows.Forms.TextBox();
-            this.comboSizeMode = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.comboSizeMode = new System.Windows.Forms.ComboBox();
+            this.txtImgFile = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.picCapturePicture = new System.Windows.Forms.PictureBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -248,6 +248,20 @@
             this.splitContainer1.SplitterDistance = 657;
             this.splitContainer1.TabIndex = 0;
             // 
+            // lstCapMsg
+            // 
+            this.lstCapMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstCapMsg.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstCapMsg.FormattingEnabled = true;
+            this.lstCapMsg.HorizontalScrollbar = true;
+            this.lstCapMsg.ItemHeight = 14;
+            this.lstCapMsg.Location = new System.Drawing.Point(3, 161);
+            this.lstCapMsg.Name = "lstCapMsg";
+            this.lstCapMsg.Size = new System.Drawing.Size(293, 452);
+            this.lstCapMsg.TabIndex = 23;
+            // 
             // btnCapture
             // 
             this.btnCapture.BackColor = System.Drawing.Color.LightGray;
@@ -272,67 +286,32 @@
             this.tabCapturePicture.Text = "Capture";
             this.tabCapturePicture.UseVisualStyleBackColor = true;
             // 
-            // lstCapMsg
-            // 
-            this.lstCapMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstCapMsg.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstCapMsg.FormattingEnabled = true;
-            this.lstCapMsg.HorizontalScrollbar = true;
-            this.lstCapMsg.ItemHeight = 14;
-            this.lstCapMsg.Location = new System.Drawing.Point(3, 161);
-            this.lstCapMsg.Name = "lstCapMsg";
-            this.lstCapMsg.Size = new System.Drawing.Size(293, 452);
-            this.lstCapMsg.TabIndex = 23;
-            // 
             // panelCapture
             // 
+            this.panelCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelCapture.AutoScroll = true;
             this.panelCapture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.panelCapture.Controls.Add(this.label3);
             this.panelCapture.Controls.Add(this.comboSizeMode);
             this.panelCapture.Controls.Add(this.txtImgFile);
             this.panelCapture.Controls.Add(this.label2);
             this.panelCapture.Controls.Add(this.picCapturePicture);
-            this.panelCapture.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelCapture.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelCapture.Location = new System.Drawing.Point(3, 3);
             this.panelCapture.Name = "panelCapture";
             this.panelCapture.Size = new System.Drawing.Size(960, 619);
             this.panelCapture.TabIndex = 0;
             // 
-            // picCapturePicture
+            // label3
             // 
-            this.picCapturePicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.picCapturePicture.BackColor = System.Drawing.Color.Black;
-            this.picCapturePicture.Location = new System.Drawing.Point(3, 38);
-            this.picCapturePicture.Name = "picCapturePicture";
-            this.picCapturePicture.Size = new System.Drawing.Size(954, 578);
-            this.picCapturePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.picCapturePicture.TabIndex = 0;
-            this.picCapturePicture.TabStop = false;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(287, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 14);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Image File:";
-            // 
-            // txtImgFile
-            // 
-            this.txtImgFile.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtImgFile.Location = new System.Drawing.Point(359, 10);
-            this.txtImgFile.Name = "txtImgFile";
-            this.txtImgFile.Size = new System.Drawing.Size(596, 22);
-            this.txtImgFile.TabIndex = 2;
-            this.txtImgFile.DoubleClick += new System.EventHandler(this.txtImgFile_DoubleClick);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(122, 14);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Image Display Mode:";
             // 
             // comboSizeMode
             // 
@@ -351,14 +330,38 @@
             this.comboSizeMode.TabIndex = 3;
             this.comboSizeMode.SelectedIndexChanged += new System.EventHandler(this.comboSizeMode_SelectedIndexChanged);
             // 
-            // label3
+            // txtImgFile
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 14);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(122, 14);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Image Display Mode:";
+            this.txtImgFile.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtImgFile.Location = new System.Drawing.Point(359, 10);
+            this.txtImgFile.Name = "txtImgFile";
+            this.txtImgFile.Size = new System.Drawing.Size(596, 22);
+            this.txtImgFile.TabIndex = 2;
+            this.txtImgFile.DoubleClick += new System.EventHandler(this.txtImgFile_DoubleClick);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(287, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 14);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Image File:";
+            // 
+            // picCapturePicture
+            // 
+            this.picCapturePicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.picCapturePicture.BackColor = System.Drawing.Color.Black;
+            this.picCapturePicture.Location = new System.Drawing.Point(3, 38);
+            this.picCapturePicture.Name = "picCapturePicture";
+            this.picCapturePicture.Size = new System.Drawing.Size(954, 578);
+            this.picCapturePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.picCapturePicture.TabIndex = 0;
+            this.picCapturePicture.TabStop = false;
             // 
             // frmMain
             // 
