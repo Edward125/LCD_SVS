@@ -45,6 +45,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.btnCapture = new System.Windows.Forms.Button();
             this.tabDebug = new System.Windows.Forms.TabPage();
+            this.lstCapMsg = new System.Windows.Forms.ListBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -226,6 +227,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.lstCapMsg);
             this.splitContainer1.Panel2.Controls.Add(this.btnCapture);
             this.splitContainer1.Panel2.Controls.Add(this.buttonDiscover);
             this.splitContainer1.Panel2.Controls.Add(this.buttonQuit);
@@ -259,6 +261,20 @@
             this.tabDebug.TabIndex = 1;
             this.tabDebug.Text = "tabPage2";
             this.tabDebug.UseVisualStyleBackColor = true;
+            // 
+            // lstCapMsg
+            // 
+            this.lstCapMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstCapMsg.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstCapMsg.FormattingEnabled = true;
+            this.lstCapMsg.HorizontalScrollbar = true;
+            this.lstCapMsg.ItemHeight = 14;
+            this.lstCapMsg.Location = new System.Drawing.Point(3, 161);
+            this.lstCapMsg.Name = "lstCapMsg";
+            this.lstCapMsg.Size = new System.Drawing.Size(293, 452);
+            this.lstCapMsg.TabIndex = 23;
             // 
             // frmMain
             // 
@@ -299,6 +315,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabPage tabDebug;
         private System.Windows.Forms.Button btnCapture;
+        private System.Windows.Forms.ListBox lstCapMsg;
     }
 }
 

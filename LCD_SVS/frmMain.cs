@@ -535,16 +535,27 @@ namespace LCD_SVS
                 if (bufferInfoDest.pImagePtr == IntPtr.Zero)
                     bufferInfoDest.pImagePtr = Marshal.AllocHGlobal(bufferInfosrc.iImageSize);
 
-                NativeMethods.CopyMemory(bufferInfoDest.pImagePtr, bufferInfosrc.pImagePtr, (uint)bufferInfosrc.iImageSize);
+                try
+                {
+                    NativeMethods.CopyMemory(bufferInfoDest.pImagePtr, bufferInfosrc.pImagePtr, (uint)bufferInfosrc.iImageSize); //SDK may be some error
 
-                bufferInfoDest.iImageSize = bufferInfosrc.iImageSize;
-                bufferInfoDest.iSizeX = bufferInfosrc.iSizeX;
-                bufferInfoDest.iSizeY = bufferInfosrc.iSizeY;
-                bufferInfoDest.iPixelType = bufferInfosrc.iPixelType;
-                bufferInfoDest.iImageId = bufferInfosrc.iImageId;
-                bufferInfoDest.iTimeStamp = bufferInfosrc.iTimeStamp;
-                //Queues a particular buffer for acquisition.
-                myApi.SVS_StreamQueueBuffer(hStream, hBuffer);
+                    bufferInfoDest.iImageSize = bufferInfosrc.iImageSize;
+                    bufferInfoDest.iSizeX = bufferInfosrc.iSizeX;
+                    bufferInfoDest.iSizeY = bufferInfosrc.iSizeY;
+                    bufferInfoDest.iPixelType = bufferInfosrc.iPixelType;
+                    bufferInfoDest.iImageId = bufferInfosrc.iImageId;
+                    bufferInfoDest.iTimeStamp = bufferInfosrc.iTimeStamp;
+                    //Queues a particular buffer for acquisition.
+                    myApi.SVS_StreamQueueBuffer(hStream, hBuffer);
+                }
+                catch (Exception)
+                {
+                    
+                    
+                }
+
+
+
                 return true;
             }
 
@@ -745,9 +756,8 @@ namespace LCD_SVS
             {
                 //  buttonDiscover.Enabled = false;
                 StringBuilder text = new StringBuilder();
+                SetListText("Find " + number + " camera(s),select camera.");
                 text.AppendFormat(" Select camera!");
-
-
                 this.textBox_Result.Text = text.ToString();
                 this.textBox_Result.ForeColor = Color.Green;
 
@@ -755,6 +765,7 @@ namespace LCD_SVS
             else
             {
                 this.textBox_Result.Text = "No cameras found!";
+                SetListText("No cameras found!");
                 this.textBox_Result.ForeColor = Color.Red;
 
             }
@@ -765,7 +776,6 @@ namespace LCD_SVS
         {
             if (CamSelectComboBox.SelectedIndex < 0)
                 return;
-
             Camera cam = null;
 
             // check if a new camera is selecetd
@@ -787,7 +797,7 @@ namespace LCD_SVS
             if (cam.is_opened)
                 return;
             sv_cam = cam;
-
+            SetListText("Select camera:" + cam.devInfo.displayName + ",SN:" + cam.devInfo.serialNumber + ".");
 
             cam.openConnection();
            //SVCamControl camcontrol = new SVCamControl(cam);
@@ -801,7 +811,10 @@ namespace LCD_SVS
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (sv_cam == null)
+            {
+                SetListText("Select Camera first please.");
                 return;
+            }
             buttonStart.Cursor = Cursors.WaitCursor;
 
             sv_cam.openConnection();
@@ -998,6 +1011,7 @@ namespace LCD_SVS
                         if (acqIsCapturePicture)
                         {
                             display_img_rgb[currentIndex].Save(DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                            SetListText("Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
                             acqIsCapturePicture = false;
                             if (btnCapture.InvokeRequired)
                             {
@@ -1049,6 +1063,7 @@ namespace LCD_SVS
                         if (acqIsCapturePicture)
                         {
                             display_img_rgb[currentIndex].Save(DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                            SetListText("Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
                             acqIsCapturePicture = false;
 
                             if (btnCapture.InvokeRequired)
@@ -1123,12 +1138,47 @@ namespace LCD_SVS
 
         private void btnCapture_Click(object sender, EventArgs e)
         {
+            if (!acqThreadIsRuning)
+                return;
             acqIsCapturePicture = true;
             btnCapture.Enabled = false;
 
            
         }
-        
+
+        // 对 Windows 窗体控件进行线程安全调用
+        private void SetListText(String text)
+        {
+            if (this.lstCapMsg .InvokeRequired)
+            {
+                this.lstCapMsg.BeginInvoke(new Action<String>((msg) =>
+                {
+                    this.lstCapMsg.Items.Add( DateTime.Now.ToString ("HH:mm:ss") +"->" + msg);
+                    if (lstCapMsg.Items.Count > 0)
+                        lstCapMsg.SelectedIndex = lstCapMsg.Items.Count - 1;
+                    if (lstCapMsg.Items.Count > 600)
+                        lstCapMsg.Items.RemoveAt(0);
+                    lstCapMsg.HorizontalScrollbar = true;
+                    Graphics g = lstCapMsg.CreateGraphics();
+                    int hzSize = (int)g.MeasureString(lstCapMsg.Items[lstCapMsg.Items.Count - 1].ToString(), lstCapMsg.Font).Width;
+                    lstCapMsg.HorizontalExtent = hzSize;
+
+
+                }), text);
+            }
+            else
+            {
+                this.lstCapMsg.Items.Add(DateTime.Now.ToString("HH:mm:ss") + "->" + text);
+                if (lstCapMsg.Items.Count > 0)
+                    lstCapMsg.SelectedIndex = lstCapMsg.Items.Count - 1;
+                if (lstCapMsg.Items.Count > 600)
+                    lstCapMsg.Items.RemoveAt(0);
+                Graphics g = lstCapMsg.CreateGraphics();
+                int hzSize = (int)g.MeasureString(lstCapMsg.Items[lstCapMsg.Items.Count - 1].ToString(), lstCapMsg.Font).Width;
+                lstCapMsg.HorizontalExtent = hzSize;
+            }
+        }
+
 
 
 
