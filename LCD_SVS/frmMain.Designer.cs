@@ -44,8 +44,14 @@
             this.tabCamera = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.btnCapture = new System.Windows.Forms.Button();
-            this.tabDebug = new System.Windows.Forms.TabPage();
+            this.tabCapturePicture = new System.Windows.Forms.TabPage();
             this.lstCapMsg = new System.Windows.Forms.ListBox();
+            this.panelCapture = new System.Windows.Forms.Panel();
+            this.picCapturePicture = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtImgFile = new System.Windows.Forms.TextBox();
+            this.comboSizeMode = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -53,6 +59,9 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabCapturePicture.SuspendLayout();
+            this.panelCapture.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picCapturePicture)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonDiscover
@@ -197,7 +206,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabMain.Controls.Add(this.tabCamera);
-            this.tabMain.Controls.Add(this.tabDebug);
+            this.tabMain.Controls.Add(this.tabCapturePicture);
             this.tabMain.Location = new System.Drawing.Point(12, 12);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
@@ -252,15 +261,16 @@
             this.btnCapture.Visible = false;
             this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
             // 
-            // tabDebug
+            // tabCapturePicture
             // 
-            this.tabDebug.Location = new System.Drawing.Point(4, 22);
-            this.tabDebug.Name = "tabDebug";
-            this.tabDebug.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDebug.Size = new System.Drawing.Size(966, 625);
-            this.tabDebug.TabIndex = 1;
-            this.tabDebug.Text = "tabPage2";
-            this.tabDebug.UseVisualStyleBackColor = true;
+            this.tabCapturePicture.Controls.Add(this.panelCapture);
+            this.tabCapturePicture.Location = new System.Drawing.Point(4, 22);
+            this.tabCapturePicture.Name = "tabCapturePicture";
+            this.tabCapturePicture.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCapturePicture.Size = new System.Drawing.Size(966, 625);
+            this.tabCapturePicture.TabIndex = 1;
+            this.tabCapturePicture.Text = "Capture";
+            this.tabCapturePicture.UseVisualStyleBackColor = true;
             // 
             // lstCapMsg
             // 
@@ -275,6 +285,80 @@
             this.lstCapMsg.Name = "lstCapMsg";
             this.lstCapMsg.Size = new System.Drawing.Size(293, 452);
             this.lstCapMsg.TabIndex = 23;
+            // 
+            // panelCapture
+            // 
+            this.panelCapture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panelCapture.Controls.Add(this.label3);
+            this.panelCapture.Controls.Add(this.comboSizeMode);
+            this.panelCapture.Controls.Add(this.txtImgFile);
+            this.panelCapture.Controls.Add(this.label2);
+            this.panelCapture.Controls.Add(this.picCapturePicture);
+            this.panelCapture.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCapture.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panelCapture.Location = new System.Drawing.Point(3, 3);
+            this.panelCapture.Name = "panelCapture";
+            this.panelCapture.Size = new System.Drawing.Size(960, 619);
+            this.panelCapture.TabIndex = 0;
+            // 
+            // picCapturePicture
+            // 
+            this.picCapturePicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.picCapturePicture.BackColor = System.Drawing.Color.Black;
+            this.picCapturePicture.Location = new System.Drawing.Point(3, 38);
+            this.picCapturePicture.Name = "picCapturePicture";
+            this.picCapturePicture.Size = new System.Drawing.Size(954, 578);
+            this.picCapturePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.picCapturePicture.TabIndex = 0;
+            this.picCapturePicture.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(287, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 14);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Image File:";
+            // 
+            // txtImgFile
+            // 
+            this.txtImgFile.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtImgFile.Location = new System.Drawing.Point(359, 10);
+            this.txtImgFile.Name = "txtImgFile";
+            this.txtImgFile.Size = new System.Drawing.Size(596, 22);
+            this.txtImgFile.TabIndex = 2;
+            this.txtImgFile.DoubleClick += new System.EventHandler(this.txtImgFile_DoubleClick);
+            // 
+            // comboSizeMode
+            // 
+            this.comboSizeMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboSizeMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboSizeMode.FormattingEnabled = true;
+            this.comboSizeMode.Items.AddRange(new object[] {
+            "Normal",
+            "StretchImage",
+            "AutoSize",
+            "CenterImage",
+            "Zoom"});
+            this.comboSizeMode.Location = new System.Drawing.Point(131, 10);
+            this.comboSizeMode.Name = "comboSizeMode";
+            this.comboSizeMode.Size = new System.Drawing.Size(144, 22);
+            this.comboSizeMode.TabIndex = 3;
+            this.comboSizeMode.SelectedIndexChanged += new System.EventHandler(this.comboSizeMode_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(122, 14);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Image Display Mode:";
             // 
             // frmMain
             // 
@@ -293,6 +377,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabCapturePicture.ResumeLayout(false);
+            this.panelCapture.ResumeLayout(false);
+            this.panelCapture.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picCapturePicture)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -313,9 +401,15 @@
         private System.Windows.Forms.TabControl tabMain;
         private System.Windows.Forms.TabPage tabCamera;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TabPage tabDebug;
+        private System.Windows.Forms.TabPage tabCapturePicture;
         private System.Windows.Forms.Button btnCapture;
         private System.Windows.Forms.ListBox lstCapMsg;
+        private System.Windows.Forms.Panel panelCapture;
+        private System.Windows.Forms.PictureBox picCapturePicture;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboSizeMode;
+        private System.Windows.Forms.TextBox txtImgFile;
     }
 }
 

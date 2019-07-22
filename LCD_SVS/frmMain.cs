@@ -1020,6 +1020,11 @@ namespace LCD_SVS
                                     btnCapture.Enabled = true;
                                 });
                             }
+                            this.Invoke((EventHandler)delegate
+                            {
+                                picCapturePicture.ImageLocation = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
+                                txtImgFile.Text = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
+                            });
                         }
                     }
                 }
@@ -1073,6 +1078,12 @@ namespace LCD_SVS
                                     btnCapture.Enabled = true;
                                 });
                             }
+
+                            this.Invoke((EventHandler)delegate
+                            {
+                                picCapturePicture.ImageLocation = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
+                                txtImgFile.Text = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
+                            });
 
 
                            
@@ -1177,6 +1188,25 @@ namespace LCD_SVS
                 int hzSize = (int)g.MeasureString(lstCapMsg.Items[lstCapMsg.Items.Count - 1].ToString(), lstCapMsg.Font).Width;
                 lstCapMsg.HorizontalExtent = hzSize;
             }
+        }
+
+        private void txtImgFile_DoubleClick(object sender, EventArgs e)
+        {
+            OpenFileDialog openfile = new OpenFileDialog();
+            if (openfile.ShowDialog() == DialogResult.OK)
+            {
+                txtImgFile.Text = openfile.FileName;
+                picCapturePicture.ImageLocation = txtImgFile.Text.Trim();
+            }
+        }
+
+        private void comboSizeMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            string sizemode = comboSizeMode.SelectedItem.ToString();
+            picCapturePicture.SizeMode = (PictureBoxSizeMode)Enum.ToObject(typeof(PictureBoxSizeMode), sizemode);
+
+
         }
 
 
