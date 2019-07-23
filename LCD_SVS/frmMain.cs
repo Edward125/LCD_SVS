@@ -23,6 +23,7 @@ namespace LCD_SVS
             InitializeComponent();
             gpanel = display.CreateGraphics();
             hwindow = hSmartWindowControl1.HalconWindow;
+            this.MouseWheel += new MouseEventHandler(this.my_MouseWheel);
 
         }
 
@@ -1394,6 +1395,21 @@ namespace LCD_SVS
         {
            // DisplayHalconImage(txtVisionImgFile.Text.Trim());
         }
+
+        private void my_MouseWheel(object sendor, MouseEventArgs e)
+        {
+            System.Drawing.Point pt = this.Location;
+            int leftBorder = hSmartWindowControl1.Location.X;
+            int rightBorder = hSmartWindowControl1.Location.X + hSmartWindowControl1.Size.Width;
+            int topBorder = hSmartWindowControl1.Location.Y;
+            int bottomBorder = hSmartWindowControl1.Location.Y + hSmartWindowControl1.Size.Height;
+            if (e.X > leftBorder && e.X < rightBorder && e.Y > topBorder && e.Y < bottomBorder)
+            {
+                MouseEventArgs newe = new MouseEventArgs(e.Button, e.Clicks, e.X - pt.X, e.Y - pt.Y, e.Delta);
+                hSmartWindowControl1.HSmartWindowControl_MouseWheel(sendor, newe);
+            }
+        }
+
 
     }
 }
