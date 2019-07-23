@@ -52,6 +52,14 @@
             this.txtImgFile = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.picCapturePicture = new System.Windows.Forms.PictureBox();
+            this.tabSetting = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtNGImgFolder = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtOKImgFolder = new System.Windows.Forms.TextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkTestOKSavePicture = new System.Windows.Forms.CheckBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -62,6 +70,8 @@
             this.tabCapturePicture.SuspendLayout();
             this.panelCapture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCapturePicture)).BeginInit();
+            this.tabSetting.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonDiscover
@@ -160,7 +170,7 @@
             this.panelAcquisition.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelAcquisition.Location = new System.Drawing.Point(3, 6);
             this.panelAcquisition.Name = "panelAcquisition";
-            this.panelAcquisition.Size = new System.Drawing.Size(651, 613);
+            this.panelAcquisition.Size = new System.Drawing.Size(651, 612);
             this.panelAcquisition.TabIndex = 23;
             // 
             // display
@@ -175,7 +185,7 @@
             this.display.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.display.Location = new System.Drawing.Point(8, 34);
             this.display.Name = "display";
-            this.display.Size = new System.Drawing.Size(640, 576);
+            this.display.Size = new System.Drawing.Size(640, 575);
             this.display.TabIndex = 23;
             this.display.Resize += new System.EventHandler(this.display_Resize);
             // 
@@ -207,6 +217,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabMain.Controls.Add(this.tabCamera);
             this.tabMain.Controls.Add(this.tabCapturePicture);
+            this.tabMain.Controls.Add(this.tabSetting);
+            this.tabMain.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabMain.Location = new System.Drawing.Point(12, 12);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
@@ -216,10 +228,10 @@
             // tabCamera
             // 
             this.tabCamera.Controls.Add(this.splitContainer1);
-            this.tabCamera.Location = new System.Drawing.Point(4, 22);
+            this.tabCamera.Location = new System.Drawing.Point(4, 23);
             this.tabCamera.Name = "tabCamera";
             this.tabCamera.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCamera.Size = new System.Drawing.Size(966, 625);
+            this.tabCamera.Size = new System.Drawing.Size(966, 624);
             this.tabCamera.TabIndex = 0;
             this.tabCamera.Text = "Camera";
             this.tabCamera.UseVisualStyleBackColor = true;
@@ -244,7 +256,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.textBox_Result);
             this.splitContainer1.Panel2.Controls.Add(this.CamSelectComboBox);
             this.splitContainer1.Panel2.Controls.Add(this.buttonStart);
-            this.splitContainer1.Size = new System.Drawing.Size(960, 619);
+            this.splitContainer1.Size = new System.Drawing.Size(960, 618);
             this.splitContainer1.SplitterDistance = 657;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -259,7 +271,7 @@
             this.lstCapMsg.ItemHeight = 14;
             this.lstCapMsg.Location = new System.Drawing.Point(3, 161);
             this.lstCapMsg.Name = "lstCapMsg";
-            this.lstCapMsg.Size = new System.Drawing.Size(293, 452);
+            this.lstCapMsg.Size = new System.Drawing.Size(293, 438);
             this.lstCapMsg.TabIndex = 23;
             // 
             // btnCapture
@@ -278,10 +290,10 @@
             // tabCapturePicture
             // 
             this.tabCapturePicture.Controls.Add(this.panelCapture);
-            this.tabCapturePicture.Location = new System.Drawing.Point(4, 22);
+            this.tabCapturePicture.Location = new System.Drawing.Point(4, 23);
             this.tabCapturePicture.Name = "tabCapturePicture";
             this.tabCapturePicture.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCapturePicture.Size = new System.Drawing.Size(966, 625);
+            this.tabCapturePicture.Size = new System.Drawing.Size(966, 624);
             this.tabCapturePicture.TabIndex = 1;
             this.tabCapturePicture.Text = "Capture";
             this.tabCapturePicture.UseVisualStyleBackColor = true;
@@ -292,7 +304,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCapture.AutoScroll = true;
-            this.panelCapture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panelCapture.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.panelCapture.Controls.Add(this.label3);
             this.panelCapture.Controls.Add(this.comboSizeMode);
             this.panelCapture.Controls.Add(this.txtImgFile);
@@ -301,7 +313,7 @@
             this.panelCapture.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelCapture.Location = new System.Drawing.Point(3, 3);
             this.panelCapture.Name = "panelCapture";
-            this.panelCapture.Size = new System.Drawing.Size(960, 619);
+            this.panelCapture.Size = new System.Drawing.Size(960, 618);
             this.panelCapture.TabIndex = 0;
             // 
             // label3
@@ -363,6 +375,85 @@
             this.picCapturePicture.TabIndex = 0;
             this.picCapturePicture.TabStop = false;
             // 
+            // tabSetting
+            // 
+            this.tabSetting.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.tabSetting.Controls.Add(this.groupBox1);
+            this.tabSetting.Location = new System.Drawing.Point(4, 23);
+            this.tabSetting.Name = "tabSetting";
+            this.tabSetting.Size = new System.Drawing.Size(966, 624);
+            this.tabSetting.TabIndex = 2;
+            this.tabSetting.Text = "Setting";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.txtNGImgFolder);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.txtOKImgFolder);
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.chkTestOKSavePicture);
+            this.groupBox1.Location = new System.Drawing.Point(3, 14);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(383, 607);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Capture Setting";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 99);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(87, 14);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "NG Img Folder:";
+            // 
+            // txtNGImgFolder
+            // 
+            this.txtNGImgFolder.Location = new System.Drawing.Point(99, 95);
+            this.txtNGImgFolder.Name = "txtNGImgFolder";
+            this.txtNGImgFolder.Size = new System.Drawing.Size(278, 22);
+            this.txtNGImgFolder.TabIndex = 4;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 49);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(85, 14);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "OK Img Folder:";
+            // 
+            // txtOKImgFolder
+            // 
+            this.txtOKImgFolder.Location = new System.Drawing.Point(99, 45);
+            this.txtOKImgFolder.Name = "txtOKImgFolder";
+            this.txtOKImgFolder.Size = new System.Drawing.Size(278, 22);
+            this.txtOKImgFolder.TabIndex = 2;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(11, 74);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(141, 18);
+            this.checkBox1.TabIndex = 1;
+            this.checkBox1.Text = "Test NG Save Pictures";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // chkTestOKSavePicture
+            // 
+            this.chkTestOKSavePicture.AutoSize = true;
+            this.chkTestOKSavePicture.Location = new System.Drawing.Point(11, 21);
+            this.chkTestOKSavePicture.Name = "chkTestOKSavePicture";
+            this.chkTestOKSavePicture.Size = new System.Drawing.Size(139, 18);
+            this.chkTestOKSavePicture.TabIndex = 0;
+            this.chkTestOKSavePicture.Text = "Test OK Save Pictures";
+            this.chkTestOKSavePicture.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -384,6 +475,9 @@
             this.panelCapture.ResumeLayout(false);
             this.panelCapture.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCapturePicture)).EndInit();
+            this.tabSetting.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -413,6 +507,14 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboSizeMode;
         private System.Windows.Forms.TextBox txtImgFile;
+        private System.Windows.Forms.TabPage tabSetting;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox chkTestOKSavePicture;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtOKImgFolder;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtNGImgFolder;
     }
 }
 

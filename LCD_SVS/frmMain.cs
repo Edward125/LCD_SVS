@@ -1225,12 +1225,12 @@ namespace LCD_SVS
                 default:
                     break;
             }
-
-
             //picCapturePicture.SizeMode = (PictureBoxSizeMode)Enum.ToObject(typeof(PictureBoxSizeMode), sizemode);
 
 
         }
+
+
 
 
 
