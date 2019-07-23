@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Edward;
+using System.IO;
 
 namespace LCD_SVS
 {
@@ -29,8 +30,20 @@ namespace LCD_SVS
             Capture
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static  void CheckFolder()
+        {
 
+            if (!Directory.Exists(AppFolder))
+                Directory.CreateDirectory(AppFolder);
+            if (!Directory.Exists(OKImgFolder))
+                Directory.CreateDirectory(OKImgFolder);
+            if (!Directory.Exists(NGImgFolder))
+                Directory.CreateDirectory(NGImgFolder);
 
+        }
 
 
         /// <summary>

@@ -52,14 +52,18 @@
             this.txtImgFile = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.picCapturePicture = new System.Windows.Forms.PictureBox();
+            this.tabVision = new System.Windows.Forms.TabPage();
+            this.hSmartWindowControl1 = new HalconDotNet.HSmartWindowControl();
             this.tabSetting = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtNGImgFolder = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.chkTestOKSavePicture = new System.Windows.Forms.CheckBox();
+            this.chkTestNGSavePictures = new System.Windows.Forms.CheckBox();
+            this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
+            this.txtVisionImgFile = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -70,6 +74,7 @@
             this.tabCapturePicture.SuspendLayout();
             this.panelCapture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCapturePicture)).BeginInit();
+            this.tabVision.SuspendLayout();
             this.tabSetting.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -217,6 +222,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabMain.Controls.Add(this.tabCamera);
             this.tabMain.Controls.Add(this.tabCapturePicture);
+            this.tabMain.Controls.Add(this.tabVision);
             this.tabMain.Controls.Add(this.tabSetting);
             this.tabMain.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabMain.Location = new System.Drawing.Point(12, 12);
@@ -375,6 +381,38 @@
             this.picCapturePicture.TabIndex = 0;
             this.picCapturePicture.TabStop = false;
             // 
+            // tabVision
+            // 
+            this.tabVision.Controls.Add(this.label7);
+            this.tabVision.Controls.Add(this.txtVisionImgFile);
+            this.tabVision.Controls.Add(this.hSmartWindowControl1);
+            this.tabVision.Location = new System.Drawing.Point(4, 23);
+            this.tabVision.Name = "tabVision";
+            this.tabVision.Size = new System.Drawing.Size(966, 624);
+            this.tabVision.TabIndex = 3;
+            this.tabVision.Text = "Vision";
+            this.tabVision.UseVisualStyleBackColor = true;
+            // 
+            // hSmartWindowControl1
+            // 
+            this.hSmartWindowControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.hSmartWindowControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.hSmartWindowControl1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.hSmartWindowControl1.HDoubleClickToFitContent = true;
+            this.hSmartWindowControl1.HDrawingObjectsModifier = HalconDotNet.HSmartWindowControl.DrawingObjectsModifier.None;
+            this.hSmartWindowControl1.HImagePart = new System.Drawing.Rectangle(0, 0, 640, 480);
+            this.hSmartWindowControl1.HKeepAspectRatio = true;
+            this.hSmartWindowControl1.HMoveContent = true;
+            this.hSmartWindowControl1.HZoomContent = HalconDotNet.HSmartWindowControl.ZoomContent.WheelForwardZoomsIn;
+            this.hSmartWindowControl1.Location = new System.Drawing.Point(0, 28);
+            this.hSmartWindowControl1.Margin = new System.Windows.Forms.Padding(0);
+            this.hSmartWindowControl1.Name = "hSmartWindowControl1";
+            this.hSmartWindowControl1.Size = new System.Drawing.Size(717, 596);
+            this.hSmartWindowControl1.TabIndex = 0;
+            this.hSmartWindowControl1.WindowSize = new System.Drawing.Size(717, 596);
+            // 
             // tabSetting
             // 
             this.tabSetting.BackColor = System.Drawing.SystemColors.InactiveCaption;
@@ -387,17 +425,15 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.txtNGImgFolder);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txtOKImgFolder);
-            this.groupBox1.Controls.Add(this.checkBox1);
-            this.groupBox1.Controls.Add(this.chkTestOKSavePicture);
+            this.groupBox1.Controls.Add(this.chkTestNGSavePictures);
+            this.groupBox1.Controls.Add(this.chkTestOKSavePictures);
             this.groupBox1.Location = new System.Drawing.Point(3, 14);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(383, 607);
+            this.groupBox1.Size = new System.Drawing.Size(469, 111);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Capture Setting";
@@ -405,7 +441,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 99);
+            this.label5.Location = new System.Drawing.Point(8, 77);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 14);
             this.label5.TabIndex = 5;
@@ -413,10 +449,11 @@
             // 
             // txtNGImgFolder
             // 
-            this.txtNGImgFolder.Location = new System.Drawing.Point(99, 95);
+            this.txtNGImgFolder.Location = new System.Drawing.Point(99, 73);
             this.txtNGImgFolder.Name = "txtNGImgFolder";
-            this.txtNGImgFolder.Size = new System.Drawing.Size(278, 22);
+            this.txtNGImgFolder.Size = new System.Drawing.Size(352, 22);
             this.txtNGImgFolder.TabIndex = 4;
+            this.txtNGImgFolder.TextChanged += new System.EventHandler(this.txtNGImgFolder_TextChanged);
             // 
             // label4
             // 
@@ -431,28 +468,51 @@
             // 
             this.txtOKImgFolder.Location = new System.Drawing.Point(99, 45);
             this.txtOKImgFolder.Name = "txtOKImgFolder";
-            this.txtOKImgFolder.Size = new System.Drawing.Size(278, 22);
+            this.txtOKImgFolder.Size = new System.Drawing.Size(352, 22);
             this.txtOKImgFolder.TabIndex = 2;
+            this.txtOKImgFolder.TextChanged += new System.EventHandler(this.txtOKImgFolder_TextChanged);
             // 
-            // checkBox1
+            // chkTestNGSavePictures
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(11, 74);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(141, 18);
-            this.checkBox1.TabIndex = 1;
-            this.checkBox1.Text = "Test NG Save Pictures";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkTestNGSavePictures.AutoSize = true;
+            this.chkTestNGSavePictures.Location = new System.Drawing.Point(172, 21);
+            this.chkTestNGSavePictures.Name = "chkTestNGSavePictures";
+            this.chkTestNGSavePictures.Size = new System.Drawing.Size(141, 18);
+            this.chkTestNGSavePictures.TabIndex = 1;
+            this.chkTestNGSavePictures.Text = "Test NG Save Pictures";
+            this.chkTestNGSavePictures.UseVisualStyleBackColor = true;
+            this.chkTestNGSavePictures.CheckedChanged += new System.EventHandler(this.chkTestNGSavePictures_CheckedChanged);
             // 
-            // chkTestOKSavePicture
+            // chkTestOKSavePictures
             // 
-            this.chkTestOKSavePicture.AutoSize = true;
-            this.chkTestOKSavePicture.Location = new System.Drawing.Point(11, 21);
-            this.chkTestOKSavePicture.Name = "chkTestOKSavePicture";
-            this.chkTestOKSavePicture.Size = new System.Drawing.Size(139, 18);
-            this.chkTestOKSavePicture.TabIndex = 0;
-            this.chkTestOKSavePicture.Text = "Test OK Save Pictures";
-            this.chkTestOKSavePicture.UseVisualStyleBackColor = true;
+            this.chkTestOKSavePictures.AutoSize = true;
+            this.chkTestOKSavePictures.Location = new System.Drawing.Point(11, 21);
+            this.chkTestOKSavePictures.Name = "chkTestOKSavePictures";
+            this.chkTestOKSavePictures.Size = new System.Drawing.Size(139, 18);
+            this.chkTestOKSavePictures.TabIndex = 0;
+            this.chkTestOKSavePictures.Text = "Test OK Save Pictures";
+            this.chkTestOKSavePictures.UseVisualStyleBackColor = true;
+            this.chkTestOKSavePictures.CheckedChanged += new System.EventHandler(this.chkTestOKSavePictures_CheckedChanged);
+            // 
+            // txtVisionImgFile
+            // 
+            this.txtVisionImgFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtVisionImgFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.txtVisionImgFile.Location = new System.Drawing.Point(60, 3);
+            this.txtVisionImgFile.Name = "txtVisionImgFile";
+            this.txtVisionImgFile.Size = new System.Drawing.Size(657, 22);
+            this.txtVisionImgFile.TabIndex = 1;
+            this.txtVisionImgFile.DoubleClick += new System.EventHandler(this.txtVisionImgFile_DoubleClick);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 6);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(54, 14);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "Img File:";
             // 
             // frmMain
             // 
@@ -462,6 +522,7 @@
             this.Controls.Add(this.tabMain);
             this.Name = "frmMain";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.panelAcquisition.ResumeLayout(false);
             this.panelAcquisition.PerformLayout();
             this.tabMain.ResumeLayout(false);
@@ -475,6 +536,8 @@
             this.panelCapture.ResumeLayout(false);
             this.panelCapture.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCapturePicture)).EndInit();
+            this.tabVision.ResumeLayout(false);
+            this.tabVision.PerformLayout();
             this.tabSetting.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -509,12 +572,16 @@
         private System.Windows.Forms.TextBox txtImgFile;
         private System.Windows.Forms.TabPage tabSetting;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox chkTestOKSavePicture;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkTestOKSavePictures;
+        private System.Windows.Forms.CheckBox chkTestNGSavePictures;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtOKImgFolder;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtNGImgFolder;
+        private System.Windows.Forms.TabPage tabVision;
+        private HalconDotNet.HSmartWindowControl hSmartWindowControl1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtVisionImgFile;
     }
 }
 

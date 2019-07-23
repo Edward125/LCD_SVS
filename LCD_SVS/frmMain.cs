@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using SVCamApi;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.IO;
+using Edward;
 
 
 namespace LCD_SVS
@@ -31,8 +33,8 @@ namespace LCD_SVS
         delegate void SetStatusCallBack();
         delegate void SetdisplayCallBack();
         delegate void treeUpdateCallBack();
-        treeUpdateCallBack treeUpdate = null;
-        string feature_info = null;
+        //treeUpdateCallBack treeUpdate = null;
+        //string feature_info = null;
         private Rectangle outRectangle;
         Camera sv_cam = null;
         public Bitmap[] display_img_rgb = new Bitmap[4];
@@ -1230,14 +1232,93 @@ namespace LCD_SVS
 
         }
 
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+            if (!File.Exists(p.IniFilePath))
+                p.createIniFile(p.IniFilePath);
+            p.readIniValue(p.IniFilePath); //
+            p.CheckFolder();
+            UpdateIniValueUI();
+        }
 
 
 
 
+        /// <summary>
+        /// 讀取配置當中的參數值，更新界面
+        /// </summary>
+        private void UpdateIniValueUI()
+        {
+            //
+            txtNGImgFolder.SetWatermark("Db-Click here to select folder.");
+            txtOKImgFolder.SetWatermark ("Db-Click here to select folder.");
+            
+
+            //
+            this.Text = p.SystemName;
+            if (p.OKSaveImg == "1")
+                chkTestOKSavePictures.Checked = true;
+            else
+                chkTestOKSavePictures.Checked = false;
+            txtOKImgFolder.Text = p.OKImgFolder;
+            if (p.NGSaveImg == "1")
+                chkTestNGSavePictures.Checked = true;
+            else
+                chkTestNGSavePictures.Checked = false;
+            txtNGImgFolder.Text = p.NGImgFolder;
+                
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="checkbox"></param>
+        /// <param name="Param"></param>
+        private void GetChkboxValue(CheckBox checkbox, string Param)
+        {
+            if (checkbox.Checked)
+                Param = "1";
+            else
+                Param = "0";
+
+        }
 
 
 
+        private void chkTestOKSavePictures_CheckedChanged(object sender, EventArgs e)
+        {
+            GetChkboxValue(chkTestOKSavePictures, p.OKSaveImg);
+            IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "OKSaveImg", p.OKSaveImg, p.IniFilePath);
+        }
 
+        private void chkTestNGSavePictures_CheckedChanged(object sender, EventArgs e)
+        {
+            GetChkboxValue(chkTestNGSavePictures, p.NGSaveImg);
+            IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "NGSaveImg", p.NGSaveImg, p.IniFilePath);
+        }
+
+        private void txtOKImgFolder_TextChanged(object sender, EventArgs e)
+        {
+            p.OKImgFolder = txtOKImgFolder.Text.Trim();
+            IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "OKImgFolder", p.OKImgFolder, p.IniFilePath);
+        }
+
+        private void txtNGImgFolder_TextChanged(object sender, EventArgs e)
+        {
+            p.NGImgFolder = txtNGImgFolder.Text.Trim();
+            IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "NGImgFolder", p.NGImgFolder, p.IniFilePath);
+        }
+
+        private void txtVisionImgFile_DoubleClick(object sender, EventArgs e)
+        {
+            OpenFileDialog openfile = new OpenFileDialog();
+            if (openfile.ShowDialog() == DialogResult.OK)
+            {
+                txtImgFile.Text = openfile.FileName;
+               // picCapturePicture.ImageLocation = txtImgFile.Text.Trim();
+            }
+        }
 
 
     }
