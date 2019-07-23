@@ -64,6 +64,10 @@
             this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
             this.txtVisionImgFile = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.btn2Gray = new System.Windows.Forms.Button();
+            this.btnMeanThreshold = new System.Windows.Forms.Button();
+            this.btnStartDebug = new System.Windows.Forms.Button();
+            this.btnReadImage = new System.Windows.Forms.Button();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -383,6 +387,10 @@
             // 
             // tabVision
             // 
+            this.tabVision.Controls.Add(this.btnReadImage);
+            this.tabVision.Controls.Add(this.btnStartDebug);
+            this.tabVision.Controls.Add(this.btnMeanThreshold);
+            this.tabVision.Controls.Add(this.btn2Gray);
             this.tabVision.Controls.Add(this.label7);
             this.tabVision.Controls.Add(this.txtVisionImgFile);
             this.tabVision.Controls.Add(this.hSmartWindowControl1);
@@ -409,9 +417,9 @@
             this.hSmartWindowControl1.Location = new System.Drawing.Point(0, 28);
             this.hSmartWindowControl1.Margin = new System.Windows.Forms.Padding(0);
             this.hSmartWindowControl1.Name = "hSmartWindowControl1";
-            this.hSmartWindowControl1.Size = new System.Drawing.Size(717, 596);
+            this.hSmartWindowControl1.Size = new System.Drawing.Size(798, 596);
             this.hSmartWindowControl1.TabIndex = 0;
-            this.hSmartWindowControl1.WindowSize = new System.Drawing.Size(717, 596);
+            this.hSmartWindowControl1.WindowSize = new System.Drawing.Size(798, 596);
             this.hSmartWindowControl1.Resize += new System.EventHandler(this.hSmartWindowControl1_Resize);
             // 
             // tabSetting
@@ -502,7 +510,7 @@
             this.txtVisionImgFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.txtVisionImgFile.Location = new System.Drawing.Point(60, 3);
             this.txtVisionImgFile.Name = "txtVisionImgFile";
-            this.txtVisionImgFile.Size = new System.Drawing.Size(657, 22);
+            this.txtVisionImgFile.Size = new System.Drawing.Size(738, 22);
             this.txtVisionImgFile.TabIndex = 1;
             this.txtVisionImgFile.DoubleClick += new System.EventHandler(this.txtVisionImgFile_DoubleClick);
             // 
@@ -514,6 +522,56 @@
             this.label7.Size = new System.Drawing.Size(54, 14);
             this.label7.TabIndex = 2;
             this.label7.Text = "Img File:";
+            // 
+            // btn2Gray
+            // 
+            this.btn2Gray.BackColor = System.Drawing.Color.LightGray;
+            this.btn2Gray.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn2Gray.Location = new System.Drawing.Point(816, 104);
+            this.btn2Gray.Name = "btn2Gray";
+            this.btn2Gray.Size = new System.Drawing.Size(125, 32);
+            this.btn2Gray.TabIndex = 12;
+            this.btn2Gray.Text = "RGB To Gray";
+            this.btn2Gray.UseVisualStyleBackColor = false;
+            this.btn2Gray.Visible = false;
+            this.btn2Gray.Click += new System.EventHandler(this.btn2Gray_Click);
+            // 
+            // btnMeanThreshold
+            // 
+            this.btnMeanThreshold.BackColor = System.Drawing.Color.LightGray;
+            this.btnMeanThreshold.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMeanThreshold.Location = new System.Drawing.Point(816, 142);
+            this.btnMeanThreshold.Name = "btnMeanThreshold";
+            this.btnMeanThreshold.Size = new System.Drawing.Size(125, 32);
+            this.btnMeanThreshold.TabIndex = 13;
+            this.btnMeanThreshold.Text = "MeanThreshold";
+            this.btnMeanThreshold.UseVisualStyleBackColor = false;
+            this.btnMeanThreshold.Visible = false;
+            // 
+            // btnStartDebug
+            // 
+            this.btnStartDebug.BackColor = System.Drawing.Color.LightGray;
+            this.btnStartDebug.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStartDebug.Location = new System.Drawing.Point(816, 28);
+            this.btnStartDebug.Name = "btnStartDebug";
+            this.btnStartDebug.Size = new System.Drawing.Size(125, 32);
+            this.btnStartDebug.TabIndex = 14;
+            this.btnStartDebug.Text = "Start Debug";
+            this.btnStartDebug.UseVisualStyleBackColor = false;
+            this.btnStartDebug.Click += new System.EventHandler(this.btnStartDebug_Click);
+            // 
+            // btnReadImage
+            // 
+            this.btnReadImage.BackColor = System.Drawing.Color.LightGray;
+            this.btnReadImage.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReadImage.Location = new System.Drawing.Point(816, 66);
+            this.btnReadImage.Name = "btnReadImage";
+            this.btnReadImage.Size = new System.Drawing.Size(125, 32);
+            this.btnReadImage.TabIndex = 15;
+            this.btnReadImage.Text = "Read Image";
+            this.btnReadImage.UseVisualStyleBackColor = false;
+            this.btnReadImage.Visible = false;
+            this.btnReadImage.Click += new System.EventHandler(this.btnReadImage_Click);
             // 
             // frmMain
             // 
@@ -583,6 +641,10 @@
         private HalconDotNet.HSmartWindowControl hSmartWindowControl1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtVisionImgFile;
+        private System.Windows.Forms.Button btnMeanThreshold;
+        private System.Windows.Forms.Button btn2Gray;
+        private System.Windows.Forms.Button btnStartDebug;
+        private System.Windows.Forms.Button btnReadImage;
     }
 }
 

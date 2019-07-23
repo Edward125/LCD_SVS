@@ -48,7 +48,10 @@ namespace LCD_SVS
         //
         private static HWindow hwindow; //
         public HTuple hv_ExpDefaultHwinHandle;
-
+        HObject ho_Image, ho_ImageGray, ho_ImageMean;
+        HObject ho_Region, ho_ImageRotate1, ho_Rectangle, ho_ImageReduced;
+        HObject ho_ImagePart;
+        Boolean IsVisionDebug = false;
 
 
         class Cameracontainer
@@ -1262,6 +1265,8 @@ namespace LCD_SVS
             //
             txtNGImgFolder.SetWatermark("Db-Click here to select folder.");
             txtOKImgFolder.SetWatermark ("Db-Click here to select folder.");
+            txtVisionImgFile.SetWatermark("Double Click here to select image file.");
+            txtImgFile.SetWatermark("Double Click here to select image file.");
             
 
             //
@@ -1331,9 +1336,9 @@ namespace LCD_SVS
             }
         }
 
-        private void DisplayHalconImage( HTuple  imagefile)
+        private void DisplayHalconImage(HTuple imagefile)
         {
-            HObject ho_Image;
+            //HObject ho_Image;
             HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
             HOperatorSet.GenEmptyObj(out ho_Image);
             ho_Image.Dispose();
@@ -1410,6 +1415,150 @@ namespace LCD_SVS
             }
         }
 
+        private void btn2Gray_Click(object sender, EventArgs e)
+        {
+            HOperatorSet.SetDraw(hwindow , "margin");
+            HOperatorSet.SetColor(hwindow , "blue");
+            HOperatorSet.SetLineWidth(hwindow ,3);
+            //
+            HOperatorSet.GenEmptyObj(out ho_ImageGray);
+            ho_ImageGray.Dispose();
+            HOperatorSet.Rgb3ToGray(ho_Image, ho_Image, ho_Image, out ho_ImageGray);
+            hwindow.DispObj(ho_ImageGray);
+
+        }
+
+        private void btnStartDebug_Click(object sender, EventArgs e)
+        {
+            IsVisionDebug = !IsVisionDebug;
+
+            if (IsVisionDebug)
+                btnStartDebug.Text = "Stop Debug";
+            else
+                btnStartDebug.Text = "Start Debug";
+            VisionUpdateButton(IsVisionDebug);
+
+
+
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isvisiondebug"></param>
+        private void VisionUpdateButton(bool isvisiondebug)
+        {
+            if (isvisiondebug)
+            {
+                btnReadImage.Visible = true;
+                btn2Gray.Visible = true;
+                btnMeanThreshold.Visible = true;
+            }
+            else
+            {
+                btnReadImage.Visible = false;
+                btn2Gray.Visible = false;
+                btnMeanThreshold.Visible = false;
+
+            }
+        }
+
+        private void btnReadImage_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtVisionImgFile.Text.Trim()))
+            {
+                ShowMsg show = new ShowMsg();
+                show.ShowMessageBoxTimeout("Please select image file first.", "Not Find Image File", MessageBoxButtons.OK,MessageBoxIcon.Information, 1000); //单位毫秒
+                txtVisionImgFile.Focus();
+                return;
+            }
+
+
+        }
+
+
+
+        #region Auto Close Messagebox
+
+        public class CloseState
+        {
+            private int _Timeout;
+
+            /// <summary>
+            /// In millisecond
+            /// </summary>
+            public int Timeout
+            {
+                get
+                {
+                    return _Timeout;
+                }
+            }
+
+            private string _Caption;
+
+            /// <summary>
+            /// Caption of dialog
+            /// </summary>
+            public string Caption
+            {
+                get
+                {
+                    return _Caption;
+                }
+            }
+
+            public CloseState(string caption, int timeout)
+            {
+                _Timeout = timeout;
+                _Caption = caption;
+            }
+        }
+
+        public class ShowMsg  //自动关闭提示框
+        {
+            [DllImport("user32.dll", SetLastError = true)]
+            static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+            [DllImport("user32.dll")]
+            static extern bool EndDialog(IntPtr hDlg, out IntPtr nResult);
+
+            //三个参数：1、文本提示-text，2、提示框标题-caption，3、按钮类型-MessageBoxButtons ，4、自动消失时间设置-timeout
+            public void ShowMessageBoxTimeout(string text, string caption,
+                MessageBoxButtons buttons, int timeout)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(CloseMessageBox),
+                    new CloseState(caption, timeout));
+                MessageBox.Show(text, caption, buttons);
+            }
+
+            public void ShowMessageBoxTimeout(string text, string caption,
+            MessageBoxButtons buttons,MessageBoxIcon icons, int timeout)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(CloseMessageBox),
+                    new CloseState(caption, timeout));
+                MessageBox.Show(text, caption, buttons, icons);
+            }
+
+
+
+            private static void CloseMessageBox(object state)
+            {
+                CloseState closeState = state as CloseState;
+
+                Thread.Sleep(closeState.Timeout);
+                IntPtr dlg = FindWindow(null, closeState.Caption);
+
+                if (dlg != IntPtr.Zero)
+                {
+                    IntPtr result;
+                    EndDialog(dlg, out result);
+                }
+            }
+        }
+
+        #endregion
 
     }
 }
