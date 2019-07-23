@@ -412,6 +412,7 @@
             this.hSmartWindowControl1.Size = new System.Drawing.Size(717, 596);
             this.hSmartWindowControl1.TabIndex = 0;
             this.hSmartWindowControl1.WindowSize = new System.Drawing.Size(717, 596);
+            this.hSmartWindowControl1.Resize += new System.EventHandler(this.hSmartWindowControl1_Resize);
             // 
             // tabSetting
             // 

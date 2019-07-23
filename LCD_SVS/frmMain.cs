@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.IO;
 using Edward;
+using HalconDotNet;
 
 
 namespace LCD_SVS
@@ -21,6 +22,8 @@ namespace LCD_SVS
         {
             InitializeComponent();
             gpanel = display.CreateGraphics();
+            hwindow = hSmartWindowControl1.HalconWindow;
+
         }
 
         public Thread acqThread;
@@ -40,6 +43,11 @@ namespace LCD_SVS
         public Bitmap[] display_img_rgb = new Bitmap[4];
         public Bitmap[] display_img_mono = new Bitmap[4];
         private bool newsize = false;
+
+        //
+        private static HWindow hwindow; //
+        public HTuple hv_ExpDefaultHwinHandle;
+
 
 
         class Cameracontainer
@@ -1315,11 +1323,77 @@ namespace LCD_SVS
             OpenFileDialog openfile = new OpenFileDialog();
             if (openfile.ShowDialog() == DialogResult.OK)
             {
-                txtImgFile.Text = openfile.FileName;
+                //txtImgFile.Text = openfile.FileName;
+                txtVisionImgFile.Text = openfile.FileName;
                // picCapturePicture.ImageLocation = txtImgFile.Text.Trim();
+                DisplayHalconImage(txtVisionImgFile.Text.Trim());
             }
         }
 
+        private void DisplayHalconImage( HTuple  imagefile)
+        {
+            HObject ho_Image;
+            HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, imagefile);
+            hv_Width.Dispose(); hv_Height.Dispose();
+
+            #region 縮放圖像
+            bool needResizeImage = true;
+
+            HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
+            int im_width = int.Parse(hv_Width.ToString());
+            int im_height = int.Parse(hv_Height.ToString());
+
+            double im_AspectRatio = (double)(im_width) / (double)(im_height);
+
+            int w_width = hSmartWindowControl1.Size.Width;
+            int w_height = hSmartWindowControl1.Size.Height;
+
+            double w_AspectRatio = (double)(w_width) / (double)(w_height);
+            HOperatorSet.SetSystem("int_zooming", "false");
+            HTuple para = new HTuple("constant");
+            HObject ho_zoomImage;
+            HOperatorSet.GenEmptyObj(out ho_zoomImage);
+            ho_zoomImage.Dispose();
+
+            if (w_width < im_width && im_AspectRatio > w_AspectRatio)
+            {
+                //超寬圖像
+                HOperatorSet.ZoomImageSize(ho_Image, out ho_zoomImage, w_width, w_width / im_AspectRatio, para);
+            }
+            else if (w_height < im_height && im_AspectRatio < w_AspectRatio)
+            {
+                //超高圖像
+                HOperatorSet.ZoomImageSize(ho_Image, out ho_zoomImage, w_height * im_AspectRatio, w_height, para);
+            }
+            else
+                needResizeImage = false;
+            #endregion
+
+
+            #region display
+            hwindow.SetPart(0, 0, -2, -2);
+            if (needResizeImage)
+                hwindow.DispObj(ho_zoomImage);
+            else
+                hwindow.DispObj(ho_Image);
+
+            #endregion
+
+            ho_Image.Dispose();
+            ho_zoomImage.Dispose();
+            hv_Width.Dispose();
+            hv_Height.Dispose();
+
+
+        }
+
+        private void hSmartWindowControl1_Resize(object sender, EventArgs e)
+        {
+           // DisplayHalconImage(txtVisionImgFile.Text.Trim());
+        }
 
     }
 }
