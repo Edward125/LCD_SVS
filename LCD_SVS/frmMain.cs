@@ -1339,15 +1339,15 @@ namespace LCD_SVS
         private void DisplayHalconImage(HTuple imagefile)
         {
             //HObject ho_Image;
-            HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
+          
             HOperatorSet.GenEmptyObj(out ho_Image);
             ho_Image.Dispose();
             HOperatorSet.ReadImage(out ho_Image, imagefile);
-            hv_Width.Dispose(); hv_Height.Dispose();
 
             #region 縮放圖像
+            HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
+            hv_Width.Dispose(); hv_Height.Dispose();
             bool needResizeImage = true;
-
             HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
             int im_width = int.Parse(hv_Width.ToString());
             int im_height = int.Parse(hv_Height.ToString());
@@ -1378,7 +1378,6 @@ namespace LCD_SVS
                 needResizeImage = false;
             #endregion
 
-
             #region display
             hwindow.SetPart(0, 0, -2, -2);
             if (needResizeImage)
@@ -1392,8 +1391,68 @@ namespace LCD_SVS
             ho_zoomImage.Dispose();
             hv_Width.Dispose();
             hv_Height.Dispose();
+        }
 
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ho_image"></param>
+        /// <param name="IsClear"></param>
+        private void VisionResizeImage(HObject ho_image,bool IsClearTuple)
+        {
+            #region 縮放圖像
+            HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
+            hv_Width.Dispose(); hv_Height.Dispose();
+            bool needResizeImage = true;
+            HOperatorSet.GetImageSize(ho_image, out hv_Width, out hv_Height);
+            int im_width = int.Parse(hv_Width.ToString());
+            int im_height = int.Parse(hv_Height.ToString());
+
+            double im_AspectRatio = (double)(im_width) / (double)(im_height);
+
+            int w_width = hSmartWindowControl1.Size.Width;
+            int w_height = hSmartWindowControl1.Size.Height;
+
+            double w_AspectRatio = (double)(w_width) / (double)(w_height);
+            HOperatorSet.SetSystem("int_zooming", "false");
+            HTuple para = new HTuple("constant");
+            HObject ho_zoomImage;
+            HOperatorSet.GenEmptyObj(out ho_zoomImage);
+            ho_zoomImage.Dispose();
+
+            if (w_width < im_width && im_AspectRatio > w_AspectRatio)
+            {
+                //超寬圖像
+                HOperatorSet.ZoomImageSize(ho_image, out ho_zoomImage, w_width, w_width / im_AspectRatio, para);
+            }
+            else if (w_height < im_height && im_AspectRatio < w_AspectRatio)
+            {
+                //超高圖像
+                HOperatorSet.ZoomImageSize(ho_image, out ho_zoomImage, w_height * im_AspectRatio, w_height, para);
+            }
+            else
+                needResizeImage = false;
+            #endregion
+
+            #region display
+            hwindow.SetPart(0, 0, -2, -2);
+            if (needResizeImage)
+                hwindow.DispObj(ho_zoomImage);
+            else
+                hwindow.DispObj(ho_image);
+
+            #endregion
+            
+            if (IsClearTuple)
+            {
+                ho_image.Dispose();
+            }
+            ho_zoomImage.Dispose();
+            hv_Width.Dispose();
+            hv_Height.Dispose();
         }
 
         private void hSmartWindowControl1_Resize(object sender, EventArgs e)
@@ -1424,7 +1483,8 @@ namespace LCD_SVS
             HOperatorSet.GenEmptyObj(out ho_ImageGray);
             ho_ImageGray.Dispose();
             HOperatorSet.Rgb3ToGray(ho_Image, ho_Image, ho_Image, out ho_ImageGray);
-            hwindow.DispObj(ho_ImageGray);
+            VisionResizeImage(ho_ImageGray, false);
+            ho_Image.Dispose();
 
         }
 
@@ -1474,6 +1534,19 @@ namespace LCD_SVS
                 return;
             }
 
+            if (!File.Exists(txtVisionImgFile.Text.Trim()))
+            {
+                ShowMsg show = new ShowMsg();
+                show.ShowMessageBoxTimeout("You select image file is not exists,retry it.", "Not Find Image File", MessageBoxButtons.OK, MessageBoxIcon.Information, 1000); //单位毫秒
+                txtVisionImgFile.SelectAll();
+                txtVisionImgFile.Focus();
+                return;
+            }
+
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, txtVisionImgFile.Text.Trim());
+            VisionResizeImage(ho_Image, false);
 
         }
 
