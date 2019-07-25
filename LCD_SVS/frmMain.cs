@@ -1747,6 +1747,7 @@ namespace LCD_SVS
             HOperatorSet.GenEmptyObj(out ho_RegionTrans);
             HOperatorSet.GenEmptyObj(out ho_Rectangle);
             HOperatorSet.GenEmptyObj(out ho_ImageReduced);
+            HOperatorSet.GenEmptyObj(out ho_ImagePart);
 
             //HOperatorSet.ClearObj(ho_RegionTrans);
             HOperatorSet.Threshold(ho_ImageRotate1, out ho_Region, comboMinGray.SelectedIndex, comboMaxGray.SelectedIndex);
@@ -1775,13 +1776,22 @@ namespace LCD_SVS
             HOperatorSet.GenRectangle1(out ho_Rectangle, hv_Row1, hv_Column1, hv_Row2, hv_Column2);
             ho_ImageReduced.Dispose();
             HOperatorSet.ReduceDomain(ho_ImageRotate1, ho_Rectangle, out ho_ImageReduced);
-
+            ho_ImagePart.Dispose();
+            HOperatorSet.CropDomain(ho_ImageReduced, out ho_ImagePart);
+            HOperatorSet.DispObj(ho_ImagePart, hwindow);
+            HOperatorSet.WriteImage(ho_ImagePart, "bmp", 0, "C:/Users/Administrator/Desktop/test.bmp");
             //
-            HOperatorSet.DispObj(ho_ImageReduced, hwindow);
-
-
+            HOperatorSet.DispObj(ho_ImagePart, hwindow);
             ho_Image.Dispose();
             ho_ImageGray.Dispose();
+            ho_ConnectedRegions.Dispose();
+            ho_SelectedRegions.Dispose();
+            ho_RegionFillUp.Dispose();
+            ho_RegionClosing.Dispose();
+            ho_RegionTrans.Dispose();
+            ho_Rectangle.Dispose();
+            ho_ImageReduced.Dispose();
+            HOperatorSet.GenEmptyObj(out ho_ImagePart);
  
         }
 
