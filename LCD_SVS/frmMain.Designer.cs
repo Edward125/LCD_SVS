@@ -64,10 +64,14 @@
             this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
             this.txtVisionImgFile = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.btn2Gray = new System.Windows.Forms.Button();
             this.btnMeanThreshold = new System.Windows.Forms.Button();
             this.btnStartDebug = new System.Windows.Forms.Button();
             this.btnReadImage = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboMinGray = new System.Windows.Forms.ComboBox();
+            this.comboMaxGray = new System.Windows.Forms.ComboBox();
+            this.btnGetROI = new System.Windows.Forms.Button();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -387,10 +391,14 @@
             // 
             // tabVision
             // 
+            this.tabVision.Controls.Add(this.btnGetROI);
+            this.tabVision.Controls.Add(this.comboMaxGray);
+            this.tabVision.Controls.Add(this.comboMinGray);
+            this.tabVision.Controls.Add(this.label9);
+            this.tabVision.Controls.Add(this.label8);
             this.tabVision.Controls.Add(this.btnReadImage);
             this.tabVision.Controls.Add(this.btnStartDebug);
             this.tabVision.Controls.Add(this.btnMeanThreshold);
-            this.tabVision.Controls.Add(this.btn2Gray);
             this.tabVision.Controls.Add(this.label7);
             this.tabVision.Controls.Add(this.txtVisionImgFile);
             this.tabVision.Controls.Add(this.hSmartWindowControl1);
@@ -523,30 +531,18 @@
             this.label7.TabIndex = 2;
             this.label7.Text = "Img File:";
             // 
-            // btn2Gray
-            // 
-            this.btn2Gray.BackColor = System.Drawing.Color.LightGray;
-            this.btn2Gray.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn2Gray.Location = new System.Drawing.Point(816, 104);
-            this.btn2Gray.Name = "btn2Gray";
-            this.btn2Gray.Size = new System.Drawing.Size(125, 32);
-            this.btn2Gray.TabIndex = 12;
-            this.btn2Gray.Text = "RGB To Gray";
-            this.btn2Gray.UseVisualStyleBackColor = false;
-            this.btn2Gray.Visible = false;
-            this.btn2Gray.Click += new System.EventHandler(this.btn2Gray_Click);
-            // 
             // btnMeanThreshold
             // 
             this.btnMeanThreshold.BackColor = System.Drawing.Color.LightGray;
             this.btnMeanThreshold.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMeanThreshold.Location = new System.Drawing.Point(816, 142);
+            this.btnMeanThreshold.Location = new System.Drawing.Point(816, 165);
             this.btnMeanThreshold.Name = "btnMeanThreshold";
             this.btnMeanThreshold.Size = new System.Drawing.Size(125, 32);
             this.btnMeanThreshold.TabIndex = 13;
-            this.btnMeanThreshold.Text = "MeanThreshold";
+            this.btnMeanThreshold.Text = "Threshold";
             this.btnMeanThreshold.UseVisualStyleBackColor = false;
             this.btnMeanThreshold.Visible = false;
+            this.btnMeanThreshold.Click += new System.EventHandler(this.btnMeanThreshold_Click);
             // 
             // btnStartDebug
             // 
@@ -572,6 +568,54 @@
             this.btnReadImage.UseVisualStyleBackColor = false;
             this.btnReadImage.Visible = false;
             this.btnReadImage.Click += new System.EventHandler(this.btnReadImage_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(814, 107);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(58, 14);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Min Gray:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(813, 135);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(59, 14);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "Max Gray:";
+            // 
+            // comboMinGray
+            // 
+            this.comboMinGray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboMinGray.FormattingEnabled = true;
+            this.comboMinGray.Location = new System.Drawing.Point(875, 104);
+            this.comboMinGray.Name = "comboMinGray";
+            this.comboMinGray.Size = new System.Drawing.Size(66, 22);
+            this.comboMinGray.TabIndex = 18;
+            // 
+            // comboMaxGray
+            // 
+            this.comboMaxGray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboMaxGray.FormattingEnabled = true;
+            this.comboMaxGray.Location = new System.Drawing.Point(875, 132);
+            this.comboMaxGray.Name = "comboMaxGray";
+            this.comboMaxGray.Size = new System.Drawing.Size(66, 22);
+            this.comboMaxGray.TabIndex = 19;
+            // 
+            // btnGetROI
+            // 
+            this.btnGetROI.BackColor = System.Drawing.Color.LightGray;
+            this.btnGetROI.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGetROI.Location = new System.Drawing.Point(817, 202);
+            this.btnGetROI.Name = "btnGetROI";
+            this.btnGetROI.Size = new System.Drawing.Size(125, 32);
+            this.btnGetROI.TabIndex = 20;
+            this.btnGetROI.Text = "Get ROI";
+            this.btnGetROI.UseVisualStyleBackColor = false;
+            this.btnGetROI.Click += new System.EventHandler(this.btnGetROI_Click);
             // 
             // frmMain
             // 
@@ -642,9 +686,13 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtVisionImgFile;
         private System.Windows.Forms.Button btnMeanThreshold;
-        private System.Windows.Forms.Button btn2Gray;
         private System.Windows.Forms.Button btnStartDebug;
         private System.Windows.Forms.Button btnReadImage;
+        private System.Windows.Forms.ComboBox comboMinGray;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboMaxGray;
+        private System.Windows.Forms.Button btnGetROI;
     }
 }
 
