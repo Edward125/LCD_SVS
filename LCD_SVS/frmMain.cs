@@ -1554,15 +1554,19 @@ namespace LCD_SVS
             //VisionResizeImage(ho_Image, false);
             HOperatorSet.DispObj(ho_Image, hwindow);
 
-
-
             //  獲取建議value
+            HObject ho_ImageEmphasize = new HObject();
             HOperatorSet.GenEmptyObj(out ho_ImageMean);
             HOperatorSet.GenEmptyObj(out ho_ImageGray);
+            HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
+            HOperatorSet.GenEmptyObj(out ho_ImagePart);
+            ho_ImagePart.Dispose();
             ho_ImageGray.Dispose();
-            HOperatorSet.Rgb3ToGray(ho_Image, ho_Image, ho_Image, out ho_ImageGray);
+            HOperatorSet.Emphasize(ho_Image, out ho_ImageEmphasize, 7, 7, 1);
+            HOperatorSet.Rgb3ToGray(ho_ImageEmphasize, ho_ImageEmphasize, ho_ImageEmphasize, out ho_ImageGray);
             ho_ImageMean.Dispose();
 
+            
             HTuple hv_AbsoluteHisto = new HTuple(), hv_RelativeHisto = new HTuple();
             HTuple hv_MinThresh = new HTuple(), hv_MaxThresh = new HTuple();
             HOperatorSet.MeanImage(ho_ImageGray, out ho_ImageMean, 9, 9);
@@ -1573,6 +1577,7 @@ namespace LCD_SVS
 
             ho_ImageMean.Dispose();
             ho_ImageGray.Dispose();
+            ho_ImageEmphasize.Dispose();
 
             comboMinGray.SelectedIndex = (int)hv_MaxThresh.TupleSelect(0);
             comboMaxGray.SelectedIndex = (int) hv_MaxThresh.TupleSelect(1);
@@ -1664,12 +1669,20 @@ namespace LCD_SVS
 
         private void btnMeanThreshold_Click(object sender, EventArgs e)
         {
-            
-            
+
+
+
+
+            //  獲取建議value
+            HObject ho_ImageEmphasize = new HObject();
+
+            HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
+            ho_ImageEmphasize.Dispose();
+            HOperatorSet.Emphasize(ho_Image, out ho_ImageEmphasize, 7, 7, 1);
             //
             HOperatorSet.GenEmptyObj(out ho_ImageGray);
             ho_ImageGray.Dispose();
-            HOperatorSet.Rgb3ToGray(ho_Image, ho_Image, ho_Image, out ho_ImageGray);
+            HOperatorSet.Rgb3ToGray(ho_ImageEmphasize, ho_ImageEmphasize, ho_ImageEmphasize, out ho_ImageGray);
             //VisionResizeImage(ho_ImageGray, false);
             HOperatorSet.DispObj(ho_ImageGray, hwindow);
             ho_Image.Dispose();
@@ -1793,6 +1806,18 @@ namespace LCD_SVS
             ho_ImageReduced.Dispose();
             HOperatorSet.GenEmptyObj(out ho_ImagePart);
  
+        }
+
+        private void btnAnalyze_Click(object sender, EventArgs e)
+        {
+
+            
+
+        }
+
+        private void comboMult_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
     }

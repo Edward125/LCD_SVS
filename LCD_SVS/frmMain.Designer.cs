@@ -72,6 +72,17 @@
             this.comboMinGray = new System.Windows.Forms.ComboBox();
             this.comboMaxGray = new System.Windows.Forms.ComboBox();
             this.btnGetROI = new System.Windows.Forms.Button();
+            this.btnAnalyze = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboSigma1 = new System.Windows.Forms.ComboBox();
+            this.comboSigma2 = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.comboMult = new System.Windows.Forms.ComboBox();
+            this.comboRadius = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.lblAlpha = new System.Windows.Forms.Label();
+            this.comboAlpha = new System.Windows.Forms.ComboBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -391,6 +402,17 @@
             // 
             // tabVision
             // 
+            this.tabVision.Controls.Add(this.lblAlpha);
+            this.tabVision.Controls.Add(this.comboAlpha);
+            this.tabVision.Controls.Add(this.label13);
+            this.tabVision.Controls.Add(this.comboRadius);
+            this.tabVision.Controls.Add(this.comboMult);
+            this.tabVision.Controls.Add(this.label12);
+            this.tabVision.Controls.Add(this.comboSigma2);
+            this.tabVision.Controls.Add(this.comboSigma1);
+            this.tabVision.Controls.Add(this.label11);
+            this.tabVision.Controls.Add(this.label10);
+            this.tabVision.Controls.Add(this.btnAnalyze);
             this.tabVision.Controls.Add(this.btnGetROI);
             this.tabVision.Controls.Add(this.comboMaxGray);
             this.tabVision.Controls.Add(this.comboMinGray);
@@ -533,6 +555,7 @@
             // 
             // btnMeanThreshold
             // 
+            this.btnMeanThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMeanThreshold.BackColor = System.Drawing.Color.LightGray;
             this.btnMeanThreshold.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMeanThreshold.Location = new System.Drawing.Point(816, 165);
@@ -546,6 +569,7 @@
             // 
             // btnStartDebug
             // 
+            this.btnStartDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartDebug.BackColor = System.Drawing.Color.LightGray;
             this.btnStartDebug.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStartDebug.Location = new System.Drawing.Point(816, 28);
@@ -558,6 +582,7 @@
             // 
             // btnReadImage
             // 
+            this.btnReadImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReadImage.BackColor = System.Drawing.Color.LightGray;
             this.btnReadImage.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReadImage.Location = new System.Drawing.Point(816, 66);
@@ -571,6 +596,7 @@
             // 
             // label8
             // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(814, 107);
             this.label8.Name = "label8";
@@ -580,6 +606,7 @@
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(813, 135);
             this.label9.Name = "label9";
@@ -589,6 +616,7 @@
             // 
             // comboMinGray
             // 
+            this.comboMinGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboMinGray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboMinGray.FormattingEnabled = true;
             this.comboMinGray.Location = new System.Drawing.Point(875, 104);
@@ -598,6 +626,7 @@
             // 
             // comboMaxGray
             // 
+            this.comboMaxGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboMaxGray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboMaxGray.FormattingEnabled = true;
             this.comboMaxGray.Location = new System.Drawing.Point(875, 132);
@@ -607,6 +636,7 @@
             // 
             // btnGetROI
             // 
+            this.btnGetROI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGetROI.BackColor = System.Drawing.Color.LightGray;
             this.btnGetROI.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGetROI.Location = new System.Drawing.Point(817, 202);
@@ -616,6 +646,177 @@
             this.btnGetROI.Text = "Get ROI";
             this.btnGetROI.UseVisualStyleBackColor = false;
             this.btnGetROI.Click += new System.EventHandler(this.btnGetROI_Click);
+            // 
+            // btnAnalyze
+            // 
+            this.btnAnalyze.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAnalyze.BackColor = System.Drawing.Color.LightGray;
+            this.btnAnalyze.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAnalyze.Location = new System.Drawing.Point(816, 383);
+            this.btnAnalyze.Name = "btnAnalyze";
+            this.btnAnalyze.Size = new System.Drawing.Size(125, 32);
+            this.btnAnalyze.TabIndex = 21;
+            this.btnAnalyze.Text = "Analyze";
+            this.btnAnalyze.UseVisualStyleBackColor = false;
+            this.btnAnalyze.Click += new System.EventHandler(this.btnAnalyze_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(813, 243);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(49, 14);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "Sigma1:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(814, 270);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(49, 14);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "Sigma2:";
+            // 
+            // comboSigma1
+            // 
+            this.comboSigma1.FormattingEnabled = true;
+            this.comboSigma1.Items.AddRange(new object[] {
+            "0.7",
+            "0.8",
+            "0.9",
+            "1.0",
+            "1.1",
+            "1.2",
+            "1.5",
+            "2.0",
+            "3.0",
+            "4.0",
+            "5.0",
+            "6.0",
+            "7.0",
+            "8.0",
+            "9.0",
+            "10.0"});
+            this.comboSigma1.Location = new System.Drawing.Point(865, 240);
+            this.comboSigma1.Name = "comboSigma1";
+            this.comboSigma1.Size = new System.Drawing.Size(76, 22);
+            this.comboSigma1.TabIndex = 24;
+            // 
+            // comboSigma2
+            // 
+            this.comboSigma2.FormattingEnabled = true;
+            this.comboSigma2.Items.AddRange(new object[] {
+            "0.7",
+            "0.8",
+            "0.9",
+            "1.0",
+            "1.1",
+            "1.2",
+            "1.5",
+            "2.0",
+            "3.0",
+            "4.0",
+            "5.0",
+            "6.0",
+            "7.0",
+            "8.0",
+            "9.0",
+            "10.0"});
+            this.comboSigma2.Location = new System.Drawing.Point(865, 266);
+            this.comboSigma2.Name = "comboSigma2";
+            this.comboSigma2.Size = new System.Drawing.Size(76, 22);
+            this.comboSigma2.TabIndex = 25;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(819, 297);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(35, 14);
+            this.label12.TabIndex = 26;
+            this.label12.Text = "Mult:";
+            // 
+            // comboMult
+            // 
+            this.comboMult.FormattingEnabled = true;
+            this.comboMult.Items.AddRange(new object[] {
+            "0.0",
+            "1.0",
+            "2.0",
+            "3.0",
+            "4.0"});
+            this.comboMult.Location = new System.Drawing.Point(865, 292);
+            this.comboMult.Name = "comboMult";
+            this.comboMult.Size = new System.Drawing.Size(76, 22);
+            this.comboMult.TabIndex = 27;
+            this.comboMult.SelectedIndexChanged += new System.EventHandler(this.comboMult_SelectedIndexChanged);
+            // 
+            // comboRadius
+            // 
+            this.comboRadius.FormattingEnabled = true;
+            this.comboRadius.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "11",
+            "15",
+            "19",
+            "25",
+            "31",
+            "39",
+            "47",
+            "59"});
+            this.comboRadius.Location = new System.Drawing.Point(865, 319);
+            this.comboRadius.Name = "comboRadius";
+            this.comboRadius.Size = new System.Drawing.Size(76, 22);
+            this.comboRadius.TabIndex = 28;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(811, 322);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(48, 14);
+            this.label13.TabIndex = 29;
+            this.label13.Text = "Radius:";
+            // 
+            // lblAlpha
+            // 
+            this.lblAlpha.AutoSize = true;
+            this.lblAlpha.Location = new System.Drawing.Point(814, 350);
+            this.lblAlpha.Name = "lblAlpha";
+            this.lblAlpha.Size = new System.Drawing.Size(42, 14);
+            this.lblAlpha.TabIndex = 31;
+            this.lblAlpha.Text = "Alpha:";
+            // 
+            // comboAlpha
+            // 
+            this.comboAlpha.FormattingEnabled = true;
+            this.comboAlpha.Items.AddRange(new object[] {
+            "0.1",
+            "0.2",
+            "0.3",
+            "0.5",
+            "1.0",
+            "1.5",
+            "2.0",
+            "2.5",
+            "3.0",
+            "4.0",
+            "5.0",
+            "7.0",
+            "10.0"});
+            this.comboAlpha.Location = new System.Drawing.Point(865, 347);
+            this.comboAlpha.Name = "comboAlpha";
+            this.comboAlpha.Size = new System.Drawing.Size(76, 22);
+            this.comboAlpha.TabIndex = 30;
             // 
             // frmMain
             // 
@@ -693,6 +894,17 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox comboMaxGray;
         private System.Windows.Forms.Button btnGetROI;
+        private System.Windows.Forms.Button btnAnalyze;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox comboSigma2;
+        private System.Windows.Forms.ComboBox comboSigma1;
+        private System.Windows.Forms.ComboBox comboMult;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox comboRadius;
+        private System.Windows.Forms.Label lblAlpha;
+        private System.Windows.Forms.ComboBox comboAlpha;
     }
 }
 
