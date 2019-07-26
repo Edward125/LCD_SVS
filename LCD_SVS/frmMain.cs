@@ -1497,6 +1497,12 @@ namespace LCD_SVS
 
         private void btnStartDebug_Click(object sender, EventArgs e)
         {
+
+
+            HDevelopExport HD = new HDevelopExport();
+            HD.RunHalcon(hSmartWindowControl1.HalconWindow);
+
+            return;
             IsVisionDebug = !IsVisionDebug;
 
             if (IsVisionDebug)
@@ -1531,6 +1537,9 @@ namespace LCD_SVS
 
         private void btnReadImage_Click(object sender, EventArgs e)
         {
+            
+
+
             if (string.IsNullOrEmpty(txtVisionImgFile.Text.Trim()))
             {
                 ShowMsg show = new ShowMsg();
@@ -1553,6 +1562,15 @@ namespace LCD_SVS
             HOperatorSet.ReadImage(out ho_Image, txtVisionImgFile.Text.Trim());
             //VisionResizeImage(ho_Image, false);
             HOperatorSet.DispObj(ho_Image, hwindow);
+
+            HTuple hv_Height = new HTuple(), hv_Weight = new HTuple();
+            hv_Height.Dispose();
+            hv_Weight.Dispose();
+            HOperatorSet.GetImageSize(ho_Image, out hv_Weight, out hv_Height);
+
+
+
+
 
             //  獲取建議value
             HObject ho_ImageEmphasize = new HObject();
@@ -1805,13 +1823,125 @@ namespace LCD_SVS
             ho_Rectangle.Dispose();
             ho_ImageReduced.Dispose();
             HOperatorSet.GenEmptyObj(out ho_ImagePart);
+            ho_ImagePart.Dispose();
  
         }
 
         private void btnAnalyze_Click(object sender, EventArgs e)
         {
 
-            
+
+            HOperatorSet.SetDraw(hwindow, "margin");
+            HOperatorSet.SetColor(hwindow, "red");
+            HOperatorSet.SetColored(hwindow, 12);
+            HOperatorSet.SetLineWidth(hwindow, 1);
+
+            HTuple  hv_Width = new HTuple() ,hv_Height = new HTuple();
+            HTuple  hv_Sigma1 = new HTuple(), hv_Sigma2 = new HTuple();
+            HTuple hv_Mult = new HTuple(), hv_Alpha = new HTuple();
+
+
+            HObject ho_GsFilter1, ho_GsFilter2;
+            HObject ho_Image, ho_Filter, ho_GrayImage, ho_ImageInvert, ho_ImageFFT;
+            HObject ho_ImageConvol, ho_ImageFiltered, ho_ImageMedian;
+            HObject ho_ImageSmooth, ho_Regions, ho_ConnectedRegions;
+            HObject ho_RegionDilation;
+
+
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            HOperatorSet.GenEmptyObj(out ho_GsFilter1);
+            HOperatorSet.GenEmptyObj(out ho_GsFilter2);
+            HOperatorSet.GenEmptyObj(out ho_Filter);
+            HOperatorSet.GenEmptyObj(out ho_GrayImage);
+            HOperatorSet.GenEmptyObj(out ho_ImageInvert);
+            HOperatorSet.GenEmptyObj(out ho_ImageFFT);
+            HOperatorSet.GenEmptyObj(out ho_ImageConvol);
+            HOperatorSet.GenEmptyObj(out ho_ImageFiltered);
+            HOperatorSet.GenEmptyObj(out ho_ImageMedian);
+            HOperatorSet.GenEmptyObj(out ho_ImageSmooth);
+            HOperatorSet.GenEmptyObj(out ho_Regions);
+            HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
+            HOperatorSet.GenEmptyObj(out ho_RegionDilation);
+
+            ho_Image.Dispose();
+            hv_Width .Dispose();
+            hv_Height.Dispose();
+            hv_Sigma1.Dispose();
+            hv_Sigma2.Dispose();
+            hv_Mult.Dispose();
+            hv_Alpha.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, "C:/Users/Administrator/Desktop/test.bmp");
+            HOperatorSet.DispObj(ho_Image, hwindow);
+            HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
+
+            hv_Sigma1 = Convert.ToDouble(comboSigma1.Text);
+            hv_Sigma2 = Convert.ToDouble(comboSigma2.Text);
+
+            ho_GsFilter1.Dispose();
+            HOperatorSet.GenGaussFilter(out ho_GsFilter1, hv_Sigma1, hv_Sigma1, 0.0, "none",
+                "rft", hv_Width, hv_Height);
+            ho_GsFilter2.Dispose();
+            HOperatorSet.GenGaussFilter(out ho_GsFilter2, hv_Sigma2, hv_Sigma2, 0.0, "none",
+                "rft", hv_Width, hv_Height);
+            ho_Filter.Dispose();
+            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, 1, 0);
+
+            ho_ImageInvert.Dispose();
+            HOperatorSet.InvertImage(ho_GrayImage, out ho_ImageInvert);
+
+            ho_ImageFFT.Dispose();
+            HOperatorSet.RftGeneric(ho_ImageInvert, out ho_ImageFFT, "to_freq", "sqrt", "complex",
+                hv_Width);
+
+
+            ho_ImageConvol.Dispose();
+            HOperatorSet.ConvolFft(ho_ImageFFT, ho_Filter, out ho_ImageConvol);
+
+            ho_ImageFiltered.Dispose();
+            HOperatorSet.RftGeneric(ho_ImageConvol, out ho_ImageFiltered, "from_freq", "n",
+                "real", hv_Width);
+
+            //gen_rectangle1 (Rectangle, 0, 0, Width, Height)
+            //reduce_domain (ImageFiltered, Rectangle, ROI)
+
+            ho_ImageMedian.Dispose();
+            HOperatorSet.MedianImage(ho_ImageFiltered, out ho_ImageMedian, "circle", 9, "mirrored");
+
+ 
+            ho_ImageSmooth.Dispose();
+            HOperatorSet.SmoothImage(ho_ImageFiltered, out ho_ImageSmooth, "gauss", 8);
+
+            ho_Regions.Dispose();
+            HOperatorSet.Threshold(ho_ImageSmooth, out ho_Regions, -0.0016783, -0.0006434);
+
+
+            ho_ConnectedRegions.Dispose();
+            HOperatorSet.Connection(ho_Regions, out ho_ConnectedRegions);
+
+            ho_RegionDilation.Dispose();
+            HOperatorSet.DilationCircle(ho_ConnectedRegions, out ho_RegionDilation, 5);
+            HOperatorSet.DispObj(ho_RegionDilation, hwindow);
+
+
+            ho_Image.Dispose();
+            ho_GsFilter1.Dispose();
+            ho_GsFilter2.Dispose();
+            ho_Filter.Dispose();
+            ho_GrayImage.Dispose();
+            ho_ImageInvert.Dispose();
+            ho_ImageFFT.Dispose();
+            ho_ImageConvol.Dispose();
+            ho_ImageFiltered.Dispose();
+            ho_ImageMedian.Dispose();
+            ho_ImageSmooth.Dispose();
+            ho_Regions.Dispose();
+            ho_ConnectedRegions.Dispose();
+            ho_RegionDilation.Dispose();
+
+            hv_Width.Dispose();
+            hv_Height.Dispose();
+            hv_Sigma1.Dispose();
+            hv_Sigma2.Dispose();
 
         }
 

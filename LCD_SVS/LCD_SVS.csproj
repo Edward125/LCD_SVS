@@ -52,6 +52,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Demodd.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
