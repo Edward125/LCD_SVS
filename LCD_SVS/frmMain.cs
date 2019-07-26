@@ -1498,11 +1498,6 @@ namespace LCD_SVS
         private void btnStartDebug_Click(object sender, EventArgs e)
         {
 
-
-            HDevelopExport HD = new HDevelopExport();
-            HD.RunHalcon(hSmartWindowControl1.HalconWindow);
-
-            return;
             IsVisionDebug = !IsVisionDebug;
 
             if (IsVisionDebug)
@@ -1840,12 +1835,21 @@ namespace LCD_SVS
             HTuple  hv_Sigma1 = new HTuple(), hv_Sigma2 = new HTuple();
             HTuple hv_Mult = new HTuple(), hv_Alpha = new HTuple();
 
+            HTuple hv_Row = new HTuple(), hv_Column = new HTuple(), hv_Radius = new HTuple(), hv_StartPhi = new HTuple(),hv_EndPhi = new HTuple(),hv_PointOrder = new HTuple ();
+
+
 
             HObject ho_GsFilter1, ho_GsFilter2;
             HObject ho_Image, ho_Filter, ho_GrayImage, ho_ImageInvert, ho_ImageFFT;
             HObject ho_ImageConvol, ho_ImageFiltered, ho_ImageMedian;
             HObject ho_ImageSmooth, ho_Regions, ho_ConnectedRegions;
             HObject ho_RegionDilation;
+            HObject ho_Contours, ho_ContCircle;
+
+           
+
+
+
 
 
             HOperatorSet.GenEmptyObj(out ho_Image);
@@ -1862,6 +1866,10 @@ namespace LCD_SVS
             HOperatorSet.GenEmptyObj(out ho_Regions);
             HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
             HOperatorSet.GenEmptyObj(out ho_RegionDilation);
+            HOperatorSet.GenEmptyObj(out ho_Contours);
+            HOperatorSet.GenEmptyObj(out ho_ContCircle);
+            HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
+
 
             ho_Image.Dispose();
             hv_Width .Dispose();
@@ -1876,6 +1884,11 @@ namespace LCD_SVS
 
             hv_Sigma1 = Convert.ToDouble(comboSigma1.Text);
             hv_Sigma2 = Convert.ToDouble(comboSigma2.Text);
+
+            //优化FFT的速度
+            HOperatorSet.OptimizeRftSpeed(hv_Width, hv_Height, "standard");
+
+
 
             ho_GsFilter1.Dispose();
             HOperatorSet.GenGaussFilter(out ho_GsFilter1, hv_Sigma1, hv_Sigma1, 0.0, "none",
@@ -1919,8 +1932,40 @@ namespace LCD_SVS
             HOperatorSet.Connection(ho_Regions, out ho_ConnectedRegions);
 
             ho_RegionDilation.Dispose();
+
             HOperatorSet.DilationCircle(ho_ConnectedRegions, out ho_RegionDilation, 5);
-            HOperatorSet.DispObj(ho_RegionDilation, hwindow);
+
+            //���˳�ָ�������С��ȱ��
+            ho_SelectedRegions.Dispose();
+            HOperatorSet.SelectShape(ho_RegionDilation, out ho_SelectedRegions, "area",
+                "and", 800, 99999);
+
+            //������������XLD����
+            ho_Contours.Dispose();
+            HOperatorSet.GenContourRegionXld(ho_SelectedRegions, out ho_Contours, "border");
+
+            hv_Row.Dispose(); hv_Column.Dispose(); hv_Radius.Dispose(); hv_StartPhi.Dispose(); hv_EndPhi.Dispose(); hv_PointOrder.Dispose();
+            HOperatorSet.FitCircleContourXld(ho_Contours, "atukey", -1, 2, 0, 5, 2, out hv_Row,
+                out hv_Column, out hv_Radius, out hv_StartPhi, out hv_EndPhi, out hv_PointOrder);
+
+            //����һ��Բ����
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                ho_ContCircle.Dispose();
+                HOperatorSet.GenCircleContourXld(out ho_ContCircle, hv_Row, hv_Column, hv_Radius + 20,
+                    0, 6.28318, "positive", 1);
+            }
+
+
+            //��ʾͼ��
+            HOperatorSet.DispObj(ho_Image, hwindow);
+
+
+            //��ʾԲ���
+            HOperatorSet.DispObj(ho_ContCircle, hwindow);
+
+
+
 
 
             ho_Image.Dispose();
