@@ -61,6 +61,32 @@ namespace Edward
         }
 
         /// <summary>
+        /// 写INI文件
+        /// </summary>
+        /// <param name="section">段落</param>
+        /// <param name="key">键</param>
+        /// <param name="iValue">值</param>
+        /// <param name="filePath">ini文件地址</param>
+
+        public static void IniWriteValue(string section, string key, int  iValue, string filePath)
+        {
+            WritePrivateProfileString(section, key, iValue.ToString(), filePath);
+        }
+
+        /// <summary>
+        /// 写INI文件
+        /// </summary>
+        /// <param name="section">段落</param>
+        /// <param name="key">键</param>
+        /// <param name="iValue">值</param>
+        /// <param name="filePath">ini文件地址</param>
+
+        public static void IniWriteValue(string section, string key, double  iValue, string filePath)
+        {
+            WritePrivateProfileString(section, key, iValue.ToString(), filePath);
+        }
+
+        /// <summary>
         ///  Write INI File
         /// </summary>
         /// <param name="section">段落</param>
@@ -96,6 +122,19 @@ namespace Edward
         }
 
 
+
+        ///// <summary>
+        ///// 读取INI文件
+        ///// </summary>
+        ///// <param name="section">段落</param>
+        ///// <param name="key">键</param>
+        ///// <param name="filePath">ini文件的地址</param>      
+        //public static int  IniReadValue(string section, string key, string filePath)
+        //{
+        //    StringBuilder temp = new StringBuilder(255);
+        //    int i = GetPrivateProfileString(section, key, "", temp, 255, filePath);
+        //    return Convert.ToInt16(temp);
+        //}
 
         /// <summary>
         /// 读取INI文件
