@@ -53,6 +53,27 @@
             this.label2 = new System.Windows.Forms.Label();
             this.picCapturePicture = new System.Windows.Forms.PictureBox();
             this.tabVision = new System.Windows.Forms.TabPage();
+            this.lblAlpha = new System.Windows.Forms.Label();
+            this.comboAlpha = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.comboRadius = new System.Windows.Forms.ComboBox();
+            this.comboMult = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.comboSigma2 = new System.Windows.Forms.ComboBox();
+            this.comboSigma1 = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.btnAnalyze = new System.Windows.Forms.Button();
+            this.btnGetROI = new System.Windows.Forms.Button();
+            this.comboMaxGray = new System.Windows.Forms.ComboBox();
+            this.comboMinGray = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btnReadImage = new System.Windows.Forms.Button();
+            this.btnStartDebug = new System.Windows.Forms.Button();
+            this.btnMeanThreshold = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtVisionImgFile = new System.Windows.Forms.TextBox();
             this.hSmartWindowControl1 = new HalconDotNet.HSmartWindowControl();
             this.tabSetting = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -62,27 +83,14 @@
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
             this.chkTestNGSavePictures = new System.Windows.Forms.CheckBox();
             this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
-            this.txtVisionImgFile = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.btnMeanThreshold = new System.Windows.Forms.Button();
-            this.btnStartDebug = new System.Windows.Forms.Button();
-            this.btnReadImage = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.comboMinGray = new System.Windows.Forms.ComboBox();
-            this.comboMaxGray = new System.Windows.Forms.ComboBox();
-            this.btnGetROI = new System.Windows.Forms.Button();
-            this.btnAnalyze = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.comboSigma1 = new System.Windows.Forms.ComboBox();
-            this.comboSigma2 = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.comboMult = new System.Windows.Forms.ComboBox();
-            this.comboRadius = new System.Windows.Forms.ComboBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.lblAlpha = new System.Windows.Forms.Label();
-            this.comboAlpha = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtMinGray = new System.Windows.Forms.TextBox();
+            this.txtMaxGray = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtMaxArea = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txtMinArea = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -402,6 +410,14 @@
             // 
             // tabVision
             // 
+            this.tabVision.Controls.Add(this.txtMaxArea);
+            this.tabVision.Controls.Add(this.label16);
+            this.tabVision.Controls.Add(this.txtMinArea);
+            this.tabVision.Controls.Add(this.label17);
+            this.tabVision.Controls.Add(this.txtMaxGray);
+            this.tabVision.Controls.Add(this.label15);
+            this.tabVision.Controls.Add(this.txtMinGray);
+            this.tabVision.Controls.Add(this.label14);
             this.tabVision.Controls.Add(this.lblAlpha);
             this.tabVision.Controls.Add(this.comboAlpha);
             this.tabVision.Controls.Add(this.label13);
@@ -431,6 +447,307 @@
             this.tabVision.Text = "Vision";
             this.tabVision.UseVisualStyleBackColor = true;
             // 
+            // lblAlpha
+            // 
+            this.lblAlpha.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblAlpha.AutoSize = true;
+            this.lblAlpha.Location = new System.Drawing.Point(814, 350);
+            this.lblAlpha.Name = "lblAlpha";
+            this.lblAlpha.Size = new System.Drawing.Size(42, 14);
+            this.lblAlpha.TabIndex = 31;
+            this.lblAlpha.Text = "Alpha:";
+            // 
+            // comboAlpha
+            // 
+            this.comboAlpha.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboAlpha.FormattingEnabled = true;
+            this.comboAlpha.Items.AddRange(new object[] {
+            "0.1",
+            "0.2",
+            "0.3",
+            "0.5",
+            "1.0",
+            "1.5",
+            "2.0",
+            "2.5",
+            "3.0",
+            "4.0",
+            "5.0",
+            "7.0",
+            "10.0"});
+            this.comboAlpha.Location = new System.Drawing.Point(865, 347);
+            this.comboAlpha.Name = "comboAlpha";
+            this.comboAlpha.Size = new System.Drawing.Size(76, 22);
+            this.comboAlpha.TabIndex = 30;
+            this.comboAlpha.Text = "1";
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(811, 322);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(48, 14);
+            this.label13.TabIndex = 29;
+            this.label13.Text = "Radius:";
+            // 
+            // comboRadius
+            // 
+            this.comboRadius.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboRadius.FormattingEnabled = true;
+            this.comboRadius.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "11",
+            "15",
+            "19",
+            "25",
+            "31",
+            "39",
+            "47",
+            "59"});
+            this.comboRadius.Location = new System.Drawing.Point(865, 319);
+            this.comboRadius.Name = "comboRadius";
+            this.comboRadius.Size = new System.Drawing.Size(76, 22);
+            this.comboRadius.TabIndex = 28;
+            this.comboRadius.Text = "3";
+            // 
+            // comboMult
+            // 
+            this.comboMult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboMult.FormattingEnabled = true;
+            this.comboMult.Items.AddRange(new object[] {
+            "0.0",
+            "1.0",
+            "2.0",
+            "3.0",
+            "4.0"});
+            this.comboMult.Location = new System.Drawing.Point(865, 292);
+            this.comboMult.Name = "comboMult";
+            this.comboMult.Size = new System.Drawing.Size(76, 22);
+            this.comboMult.TabIndex = 27;
+            this.comboMult.Text = "1";
+            this.comboMult.SelectedIndexChanged += new System.EventHandler(this.comboMult_SelectedIndexChanged);
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(819, 297);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(35, 14);
+            this.label12.TabIndex = 26;
+            this.label12.Text = "Mult:";
+            // 
+            // comboSigma2
+            // 
+            this.comboSigma2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboSigma2.FormattingEnabled = true;
+            this.comboSigma2.Items.AddRange(new object[] {
+            "0.7",
+            "0.8",
+            "0.9",
+            "1.0",
+            "1.1",
+            "1.2",
+            "1.5",
+            "2.0",
+            "3.0",
+            "4.0",
+            "5.0",
+            "6.0",
+            "7.0",
+            "8.0",
+            "9.0",
+            "10.0"});
+            this.comboSigma2.Location = new System.Drawing.Point(865, 266);
+            this.comboSigma2.Name = "comboSigma2";
+            this.comboSigma2.Size = new System.Drawing.Size(76, 22);
+            this.comboSigma2.TabIndex = 25;
+            this.comboSigma2.Text = "2";
+            // 
+            // comboSigma1
+            // 
+            this.comboSigma1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboSigma1.FormattingEnabled = true;
+            this.comboSigma1.Items.AddRange(new object[] {
+            "0.7",
+            "0.8",
+            "0.9",
+            "1.0",
+            "1.1",
+            "1.2",
+            "1.5",
+            "2.0",
+            "3.0",
+            "4.0",
+            "5.0",
+            "6.0",
+            "7.0",
+            "8.0",
+            "9.0",
+            "10.0"});
+            this.comboSigma1.Location = new System.Drawing.Point(865, 240);
+            this.comboSigma1.Name = "comboSigma1";
+            this.comboSigma1.Size = new System.Drawing.Size(76, 22);
+            this.comboSigma1.TabIndex = 24;
+            this.comboSigma1.Text = "10";
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(814, 270);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(49, 14);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "Sigma2:";
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(813, 243);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(49, 14);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "Sigma1:";
+            // 
+            // btnAnalyze
+            // 
+            this.btnAnalyze.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAnalyze.BackColor = System.Drawing.Color.LightGray;
+            this.btnAnalyze.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAnalyze.Location = new System.Drawing.Point(822, 491);
+            this.btnAnalyze.Name = "btnAnalyze";
+            this.btnAnalyze.Size = new System.Drawing.Size(125, 32);
+            this.btnAnalyze.TabIndex = 21;
+            this.btnAnalyze.Text = "Analyze";
+            this.btnAnalyze.UseVisualStyleBackColor = false;
+            this.btnAnalyze.Click += new System.EventHandler(this.btnAnalyze_Click);
+            // 
+            // btnGetROI
+            // 
+            this.btnGetROI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetROI.BackColor = System.Drawing.Color.LightGray;
+            this.btnGetROI.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGetROI.Location = new System.Drawing.Point(817, 202);
+            this.btnGetROI.Name = "btnGetROI";
+            this.btnGetROI.Size = new System.Drawing.Size(125, 32);
+            this.btnGetROI.TabIndex = 20;
+            this.btnGetROI.Text = "Get ROI";
+            this.btnGetROI.UseVisualStyleBackColor = false;
+            this.btnGetROI.Click += new System.EventHandler(this.btnGetROI_Click);
+            // 
+            // comboMaxGray
+            // 
+            this.comboMaxGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboMaxGray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboMaxGray.FormattingEnabled = true;
+            this.comboMaxGray.Location = new System.Drawing.Point(875, 132);
+            this.comboMaxGray.Name = "comboMaxGray";
+            this.comboMaxGray.Size = new System.Drawing.Size(66, 22);
+            this.comboMaxGray.TabIndex = 19;
+            // 
+            // comboMinGray
+            // 
+            this.comboMinGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboMinGray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboMinGray.FormattingEnabled = true;
+            this.comboMinGray.Location = new System.Drawing.Point(875, 104);
+            this.comboMinGray.Name = "comboMinGray";
+            this.comboMinGray.Size = new System.Drawing.Size(66, 22);
+            this.comboMinGray.TabIndex = 18;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(813, 135);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(59, 14);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "Max Gray:";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(814, 107);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(58, 14);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Min Gray:";
+            // 
+            // btnReadImage
+            // 
+            this.btnReadImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReadImage.BackColor = System.Drawing.Color.LightGray;
+            this.btnReadImage.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReadImage.Location = new System.Drawing.Point(816, 66);
+            this.btnReadImage.Name = "btnReadImage";
+            this.btnReadImage.Size = new System.Drawing.Size(125, 32);
+            this.btnReadImage.TabIndex = 15;
+            this.btnReadImage.Text = "Read Image";
+            this.btnReadImage.UseVisualStyleBackColor = false;
+            this.btnReadImage.Visible = false;
+            this.btnReadImage.Click += new System.EventHandler(this.btnReadImage_Click);
+            // 
+            // btnStartDebug
+            // 
+            this.btnStartDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStartDebug.BackColor = System.Drawing.Color.LightGray;
+            this.btnStartDebug.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStartDebug.Location = new System.Drawing.Point(816, 28);
+            this.btnStartDebug.Name = "btnStartDebug";
+            this.btnStartDebug.Size = new System.Drawing.Size(125, 32);
+            this.btnStartDebug.TabIndex = 14;
+            this.btnStartDebug.Text = "Start Debug";
+            this.btnStartDebug.UseVisualStyleBackColor = false;
+            this.btnStartDebug.Click += new System.EventHandler(this.btnStartDebug_Click);
+            // 
+            // btnMeanThreshold
+            // 
+            this.btnMeanThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMeanThreshold.BackColor = System.Drawing.Color.LightGray;
+            this.btnMeanThreshold.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMeanThreshold.Location = new System.Drawing.Point(816, 165);
+            this.btnMeanThreshold.Name = "btnMeanThreshold";
+            this.btnMeanThreshold.Size = new System.Drawing.Size(125, 32);
+            this.btnMeanThreshold.TabIndex = 13;
+            this.btnMeanThreshold.Text = "Threshold";
+            this.btnMeanThreshold.UseVisualStyleBackColor = false;
+            this.btnMeanThreshold.Visible = false;
+            this.btnMeanThreshold.Click += new System.EventHandler(this.btnMeanThreshold_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 6);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(54, 14);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "Img File:";
+            // 
+            // txtVisionImgFile
+            // 
+            this.txtVisionImgFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtVisionImgFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.txtVisionImgFile.Location = new System.Drawing.Point(60, 3);
+            this.txtVisionImgFile.Name = "txtVisionImgFile";
+            this.txtVisionImgFile.Size = new System.Drawing.Size(738, 22);
+            this.txtVisionImgFile.TabIndex = 1;
+            this.txtVisionImgFile.TextChanged += new System.EventHandler(this.txtVisionImgFile_TextChanged);
+            this.txtVisionImgFile.DoubleClick += new System.EventHandler(this.txtVisionImgFile_DoubleClick);
+            // 
             // hSmartWindowControl1
             // 
             this.hSmartWindowControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -438,6 +755,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hSmartWindowControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.hSmartWindowControl1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.hSmartWindowControl1.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hSmartWindowControl1.HDoubleClickToFitContent = true;
             this.hSmartWindowControl1.HDrawingObjectsModifier = HalconDotNet.HSmartWindowControl.DrawingObjectsModifier.None;
             this.hSmartWindowControl1.HImagePart = new System.Drawing.Rectangle(0, 0, 640, 480);
@@ -533,290 +851,85 @@
             this.chkTestOKSavePictures.UseVisualStyleBackColor = true;
             this.chkTestOKSavePictures.CheckedChanged += new System.EventHandler(this.chkTestOKSavePictures_CheckedChanged);
             // 
-            // txtVisionImgFile
+            // label14
             // 
-            this.txtVisionImgFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtVisionImgFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.txtVisionImgFile.Location = new System.Drawing.Point(60, 3);
-            this.txtVisionImgFile.Name = "txtVisionImgFile";
-            this.txtVisionImgFile.Size = new System.Drawing.Size(738, 22);
-            this.txtVisionImgFile.TabIndex = 1;
-            this.txtVisionImgFile.DoubleClick += new System.EventHandler(this.txtVisionImgFile_DoubleClick);
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(811, 380);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(52, 14);
+            this.label14.TabIndex = 32;
+            this.label14.Text = "MinGray";
             // 
-            // label7
+            // txtMinGray
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 6);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(54, 14);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "Img File:";
+            this.txtMinGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMinGray.Location = new System.Drawing.Point(865, 377);
+            this.txtMinGray.Name = "txtMinGray";
+            this.txtMinGray.Size = new System.Drawing.Size(77, 22);
+            this.txtMinGray.TabIndex = 33;
+            this.txtMinGray.Text = "-0.012866";
+            this.txtMinGray.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // btnMeanThreshold
+            // txtMaxGray
             // 
-            this.btnMeanThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMeanThreshold.BackColor = System.Drawing.Color.LightGray;
-            this.btnMeanThreshold.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMeanThreshold.Location = new System.Drawing.Point(816, 165);
-            this.btnMeanThreshold.Name = "btnMeanThreshold";
-            this.btnMeanThreshold.Size = new System.Drawing.Size(125, 32);
-            this.btnMeanThreshold.TabIndex = 13;
-            this.btnMeanThreshold.Text = "Threshold";
-            this.btnMeanThreshold.UseVisualStyleBackColor = false;
-            this.btnMeanThreshold.Visible = false;
-            this.btnMeanThreshold.Click += new System.EventHandler(this.btnMeanThreshold_Click);
+            this.txtMaxGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMaxGray.Location = new System.Drawing.Point(864, 405);
+            this.txtMaxGray.Name = "txtMaxGray";
+            this.txtMaxGray.Size = new System.Drawing.Size(77, 22);
+            this.txtMaxGray.TabIndex = 35;
+            this.txtMaxGray.Text = "-0.005549";
+            this.txtMaxGray.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // btnStartDebug
+            // label15
             // 
-            this.btnStartDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStartDebug.BackColor = System.Drawing.Color.LightGray;
-            this.btnStartDebug.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartDebug.Location = new System.Drawing.Point(816, 28);
-            this.btnStartDebug.Name = "btnStartDebug";
-            this.btnStartDebug.Size = new System.Drawing.Size(125, 32);
-            this.btnStartDebug.TabIndex = 14;
-            this.btnStartDebug.Text = "Start Debug";
-            this.btnStartDebug.UseVisualStyleBackColor = false;
-            this.btnStartDebug.Click += new System.EventHandler(this.btnStartDebug_Click);
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(810, 408);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(53, 14);
+            this.label15.TabIndex = 34;
+            this.label15.Text = "MaxGray";
             // 
-            // btnReadImage
+            // txtMaxArea
             // 
-            this.btnReadImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReadImage.BackColor = System.Drawing.Color.LightGray;
-            this.btnReadImage.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReadImage.Location = new System.Drawing.Point(816, 66);
-            this.btnReadImage.Name = "btnReadImage";
-            this.btnReadImage.Size = new System.Drawing.Size(125, 32);
-            this.btnReadImage.TabIndex = 15;
-            this.btnReadImage.Text = "Read Image";
-            this.btnReadImage.UseVisualStyleBackColor = false;
-            this.btnReadImage.Visible = false;
-            this.btnReadImage.Click += new System.EventHandler(this.btnReadImage_Click);
+            this.txtMaxArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMaxArea.Location = new System.Drawing.Point(863, 461);
+            this.txtMaxArea.Name = "txtMaxArea";
+            this.txtMaxArea.Size = new System.Drawing.Size(77, 22);
+            this.txtMaxArea.TabIndex = 39;
+            this.txtMaxArea.Text = "99999";
+            this.txtMaxArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label8
+            // label16
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(814, 107);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(58, 14);
-            this.label8.TabIndex = 16;
-            this.label8.Text = "Min Gray:";
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(809, 464);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(54, 14);
+            this.label16.TabIndex = 38;
+            this.label16.Text = "MaxArea";
             // 
-            // label9
+            // txtMinArea
             // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(813, 135);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(59, 14);
-            this.label9.TabIndex = 17;
-            this.label9.Text = "Max Gray:";
+            this.txtMinArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMinArea.Location = new System.Drawing.Point(864, 433);
+            this.txtMinArea.Name = "txtMinArea";
+            this.txtMinArea.Size = new System.Drawing.Size(77, 22);
+            this.txtMinArea.TabIndex = 37;
+            this.txtMinArea.Text = "800";
+            this.txtMinArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // comboMinGray
+            // label17
             // 
-            this.comboMinGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboMinGray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboMinGray.FormattingEnabled = true;
-            this.comboMinGray.Location = new System.Drawing.Point(875, 104);
-            this.comboMinGray.Name = "comboMinGray";
-            this.comboMinGray.Size = new System.Drawing.Size(66, 22);
-            this.comboMinGray.TabIndex = 18;
-            // 
-            // comboMaxGray
-            // 
-            this.comboMaxGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboMaxGray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboMaxGray.FormattingEnabled = true;
-            this.comboMaxGray.Location = new System.Drawing.Point(875, 132);
-            this.comboMaxGray.Name = "comboMaxGray";
-            this.comboMaxGray.Size = new System.Drawing.Size(66, 22);
-            this.comboMaxGray.TabIndex = 19;
-            // 
-            // btnGetROI
-            // 
-            this.btnGetROI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetROI.BackColor = System.Drawing.Color.LightGray;
-            this.btnGetROI.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGetROI.Location = new System.Drawing.Point(817, 202);
-            this.btnGetROI.Name = "btnGetROI";
-            this.btnGetROI.Size = new System.Drawing.Size(125, 32);
-            this.btnGetROI.TabIndex = 20;
-            this.btnGetROI.Text = "Get ROI";
-            this.btnGetROI.UseVisualStyleBackColor = false;
-            this.btnGetROI.Click += new System.EventHandler(this.btnGetROI_Click);
-            // 
-            // btnAnalyze
-            // 
-            this.btnAnalyze.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAnalyze.BackColor = System.Drawing.Color.LightGray;
-            this.btnAnalyze.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAnalyze.Location = new System.Drawing.Point(816, 383);
-            this.btnAnalyze.Name = "btnAnalyze";
-            this.btnAnalyze.Size = new System.Drawing.Size(125, 32);
-            this.btnAnalyze.TabIndex = 21;
-            this.btnAnalyze.Text = "Analyze";
-            this.btnAnalyze.UseVisualStyleBackColor = false;
-            this.btnAnalyze.Click += new System.EventHandler(this.btnAnalyze_Click);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(813, 243);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(49, 14);
-            this.label10.TabIndex = 22;
-            this.label10.Text = "Sigma1:";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(814, 270);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 14);
-            this.label11.TabIndex = 23;
-            this.label11.Text = "Sigma2:";
-            // 
-            // comboSigma1
-            // 
-            this.comboSigma1.FormattingEnabled = true;
-            this.comboSigma1.Items.AddRange(new object[] {
-            "0.7",
-            "0.8",
-            "0.9",
-            "1.0",
-            "1.1",
-            "1.2",
-            "1.5",
-            "2.0",
-            "3.0",
-            "4.0",
-            "5.0",
-            "6.0",
-            "7.0",
-            "8.0",
-            "9.0",
-            "10.0"});
-            this.comboSigma1.Location = new System.Drawing.Point(865, 240);
-            this.comboSigma1.Name = "comboSigma1";
-            this.comboSigma1.Size = new System.Drawing.Size(76, 22);
-            this.comboSigma1.TabIndex = 24;
-            // 
-            // comboSigma2
-            // 
-            this.comboSigma2.FormattingEnabled = true;
-            this.comboSigma2.Items.AddRange(new object[] {
-            "0.7",
-            "0.8",
-            "0.9",
-            "1.0",
-            "1.1",
-            "1.2",
-            "1.5",
-            "2.0",
-            "3.0",
-            "4.0",
-            "5.0",
-            "6.0",
-            "7.0",
-            "8.0",
-            "9.0",
-            "10.0"});
-            this.comboSigma2.Location = new System.Drawing.Point(865, 266);
-            this.comboSigma2.Name = "comboSigma2";
-            this.comboSigma2.Size = new System.Drawing.Size(76, 22);
-            this.comboSigma2.TabIndex = 25;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(819, 297);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(35, 14);
-            this.label12.TabIndex = 26;
-            this.label12.Text = "Mult:";
-            // 
-            // comboMult
-            // 
-            this.comboMult.FormattingEnabled = true;
-            this.comboMult.Items.AddRange(new object[] {
-            "0.0",
-            "1.0",
-            "2.0",
-            "3.0",
-            "4.0"});
-            this.comboMult.Location = new System.Drawing.Point(865, 292);
-            this.comboMult.Name = "comboMult";
-            this.comboMult.Size = new System.Drawing.Size(76, 22);
-            this.comboMult.TabIndex = 27;
-            this.comboMult.SelectedIndexChanged += new System.EventHandler(this.comboMult_SelectedIndexChanged);
-            // 
-            // comboRadius
-            // 
-            this.comboRadius.FormattingEnabled = true;
-            this.comboRadius.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "11",
-            "15",
-            "19",
-            "25",
-            "31",
-            "39",
-            "47",
-            "59"});
-            this.comboRadius.Location = new System.Drawing.Point(865, 319);
-            this.comboRadius.Name = "comboRadius";
-            this.comboRadius.Size = new System.Drawing.Size(76, 22);
-            this.comboRadius.TabIndex = 28;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(811, 322);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(48, 14);
-            this.label13.TabIndex = 29;
-            this.label13.Text = "Radius:";
-            // 
-            // lblAlpha
-            // 
-            this.lblAlpha.AutoSize = true;
-            this.lblAlpha.Location = new System.Drawing.Point(814, 350);
-            this.lblAlpha.Name = "lblAlpha";
-            this.lblAlpha.Size = new System.Drawing.Size(42, 14);
-            this.lblAlpha.TabIndex = 31;
-            this.lblAlpha.Text = "Alpha:";
-            // 
-            // comboAlpha
-            // 
-            this.comboAlpha.FormattingEnabled = true;
-            this.comboAlpha.Items.AddRange(new object[] {
-            "0.1",
-            "0.2",
-            "0.3",
-            "0.5",
-            "1.0",
-            "1.5",
-            "2.0",
-            "2.5",
-            "3.0",
-            "4.0",
-            "5.0",
-            "7.0",
-            "10.0"});
-            this.comboAlpha.Location = new System.Drawing.Point(865, 347);
-            this.comboAlpha.Name = "comboAlpha";
-            this.comboAlpha.Size = new System.Drawing.Size(76, 22);
-            this.comboAlpha.TabIndex = 30;
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(810, 436);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(53, 14);
+            this.label17.TabIndex = 36;
+            this.label17.Text = "MinArea";
             // 
             // frmMain
             // 
@@ -905,6 +1018,14 @@
         private System.Windows.Forms.ComboBox comboRadius;
         private System.Windows.Forms.Label lblAlpha;
         private System.Windows.Forms.ComboBox comboAlpha;
+        private System.Windows.Forms.TextBox txtMaxGray;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtMinGray;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtMaxArea;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox txtMinArea;
+        private System.Windows.Forms.Label label17;
     }
 }
 

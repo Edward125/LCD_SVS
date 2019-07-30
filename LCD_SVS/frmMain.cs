@@ -1346,7 +1346,9 @@ namespace LCD_SVS
                 //txtImgFile.Text = openfile.FileName;
                 txtVisionImgFile.Text = openfile.FileName;
                // picCapturePicture.ImageLocation = txtImgFile.Text.Trim();
+                HOperatorSet.ClearWindow(hwindow);
                 DisplayHalconImage(txtVisionImgFile.Text.Trim());
+               
             }
         }
 
@@ -1824,34 +1826,19 @@ namespace LCD_SVS
 
         private void btnAnalyze_Click(object sender, EventArgs e)
         {
+            // Local iconic variables 
+            HObject ho_Image, ho_GsFilter1, ho_GsFilter2;
+            HObject ho_Filter, ho_GrayImage, ho_ImageInvert, ho_ImageFFT;
+            HObject ho_ImageConvol, ho_ImageFiltered, ho_Rectangle;
+            HObject ho_ROI, ho_ImageMedian, ho_ImageSmooth, ho_ConnectedRegions;
+            HObject ho_SelectedRegions, ho_Contours;
 
+            // Local control variables 
+            HTuple hv_WindowHandle = new HTuple(), hv_Width = new HTuple();
+            HTuple hv_Height = new HTuple(), hv_Sigma1 = new HTuple();
+            HTuple hv_Sigma2 = new HTuple(), hv_Number = new HTuple();
 
-            HOperatorSet.SetDraw(hwindow, "margin");
-            HOperatorSet.SetColor(hwindow, "red");
-            HOperatorSet.SetColored(hwindow, 12);
-            HOperatorSet.SetLineWidth(hwindow, 1);
-
-            HTuple  hv_Width = new HTuple() ,hv_Height = new HTuple();
-            HTuple  hv_Sigma1 = new HTuple(), hv_Sigma2 = new HTuple();
-            HTuple hv_Mult = new HTuple(), hv_Alpha = new HTuple();
-
-            HTuple hv_Row = new HTuple(), hv_Column = new HTuple(), hv_Radius = new HTuple(), hv_StartPhi = new HTuple(),hv_EndPhi = new HTuple(),hv_PointOrder = new HTuple ();
-
-
-
-            HObject ho_GsFilter1, ho_GsFilter2;
-            HObject ho_Image, ho_Filter, ho_GrayImage, ho_ImageInvert, ho_ImageFFT;
-            HObject ho_ImageConvol, ho_ImageFiltered, ho_ImageMedian;
-            HObject ho_ImageSmooth, ho_Regions, ho_ConnectedRegions;
-            HObject ho_RegionDilation;
-            HObject ho_Contours, ho_ContCircle;
-
-           
-
-
-
-
-
+            // Initialize local and output iconic variables 
             HOperatorSet.GenEmptyObj(out ho_Image);
             HOperatorSet.GenEmptyObj(out ho_GsFilter1);
             HOperatorSet.GenEmptyObj(out ho_GsFilter2);
@@ -1861,51 +1848,49 @@ namespace LCD_SVS
             HOperatorSet.GenEmptyObj(out ho_ImageFFT);
             HOperatorSet.GenEmptyObj(out ho_ImageConvol);
             HOperatorSet.GenEmptyObj(out ho_ImageFiltered);
+            HOperatorSet.GenEmptyObj(out ho_Rectangle);
+            HOperatorSet.GenEmptyObj(out ho_ROI);
             HOperatorSet.GenEmptyObj(out ho_ImageMedian);
             HOperatorSet.GenEmptyObj(out ho_ImageSmooth);
-            HOperatorSet.GenEmptyObj(out ho_Regions);
             HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
-            HOperatorSet.GenEmptyObj(out ho_RegionDilation);
-            HOperatorSet.GenEmptyObj(out ho_Contours);
-            HOperatorSet.GenEmptyObj(out ho_ContCircle);
             HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
-
-
+            HOperatorSet.GenEmptyObj(out ho_Contours);
             ho_Image.Dispose();
-            hv_Width .Dispose();
-            hv_Height.Dispose();
-            hv_Sigma1.Dispose();
-            hv_Sigma2.Dispose();
-            hv_Mult.Dispose();
-            hv_Alpha.Dispose();
             HOperatorSet.ReadImage(out ho_Image, "C:/Users/Administrator/Desktop/test.bmp");
+
             HOperatorSet.DispObj(ho_Image, hwindow);
+            HOperatorSet.SetDraw(hwindow, "margin");
+            HOperatorSet.SetLineWidth(hwindow, 1);
+            HOperatorSet.SetColored(hwindow, 12);
+
+
+            hv_Width.Dispose(); hv_Height.Dispose();
             HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
 
-            hv_Sigma1 = Convert.ToDouble(comboSigma1.Text);
-            hv_Sigma2 = Convert.ToDouble(comboSigma2.Text);
-
-            //优化FFT的速度
-            HOperatorSet.OptimizeRftSpeed(hv_Width, hv_Height, "standard");
-
-
+            hv_Sigma1.Dispose();
+            hv_Sigma1 = Convert.ToDouble ( comboSigma1.Text);// 10.0;
+            hv_Sigma2.Dispose();
+            hv_Sigma2 = Convert.ToDouble(comboSigma2.Text); ;//2.0;
 
             ho_GsFilter1.Dispose();
             HOperatorSet.GenGaussFilter(out ho_GsFilter1, hv_Sigma1, hv_Sigma1, 0.0, "none",
                 "rft", hv_Width, hv_Height);
+
             ho_GsFilter2.Dispose();
             HOperatorSet.GenGaussFilter(out ho_GsFilter2, hv_Sigma2, hv_Sigma2, 0.0, "none",
                 "rft", hv_Width, hv_Height);
             ho_Filter.Dispose();
-            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, 1, 0);
+            //HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, 1, 0);
+            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter,Convert.ToDouble (comboMult.Text) , 0);
 
+            ho_GrayImage.Dispose();
+            HOperatorSet.Rgb1ToGray(ho_Image, out ho_GrayImage);
             ho_ImageInvert.Dispose();
             HOperatorSet.InvertImage(ho_GrayImage, out ho_ImageInvert);
 
             ho_ImageFFT.Dispose();
             HOperatorSet.RftGeneric(ho_ImageInvert, out ho_ImageFFT, "to_freq", "sqrt", "complex",
                 hv_Width);
-
 
             ho_ImageConvol.Dispose();
             HOperatorSet.ConvolFft(ho_ImageFFT, ho_Filter, out ho_ImageConvol);
@@ -1914,58 +1899,47 @@ namespace LCD_SVS
             HOperatorSet.RftGeneric(ho_ImageConvol, out ho_ImageFiltered, "from_freq", "n",
                 "real", hv_Width);
 
-            //gen_rectangle1 (Rectangle, 0, 0, Width, Height)
-            //reduce_domain (ImageFiltered, Rectangle, ROI)
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                ho_Rectangle.Dispose();
+                HOperatorSet.GenRectangle1(out ho_Rectangle, 10, 10, hv_Height - 10, hv_Width - 10);
+            }
+
+            ho_ROI.Dispose();
+            HOperatorSet.ReduceDomain(ho_ImageFiltered, ho_Rectangle, out ho_ROI);
 
             ho_ImageMedian.Dispose();
-            HOperatorSet.MedianImage(ho_ImageFiltered, out ho_ImageMedian, "circle", 9, "mirrored");
+            HOperatorSet.MedianImage(ho_ROI, out ho_ImageMedian, "circle", Convert.ToDouble(comboRadius.Text), "mirrored");
 
- 
             ho_ImageSmooth.Dispose();
-            HOperatorSet.SmoothImage(ho_ImageFiltered, out ho_ImageSmooth, "gauss", 8);
+            HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToDouble(comboAlpha.Text));
 
-            ho_Regions.Dispose();
-            HOperatorSet.Threshold(ho_ImageSmooth, out ho_Regions, -0.0016783, -0.0006434);
-
+            ho_ImageSmooth.Dispose();
+            //HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, -0.012866, -0.005549);
+            HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, Convert.ToDouble (txtMinGray.Text), Convert.ToDouble (txtMaxGray.Text ));
 
             ho_ConnectedRegions.Dispose();
-            HOperatorSet.Connection(ho_Regions, out ho_ConnectedRegions);
+            HOperatorSet.Connection(ho_ImageSmooth, out ho_ConnectedRegions);
 
-            ho_RegionDilation.Dispose();
 
-            HOperatorSet.DilationCircle(ho_ConnectedRegions, out ho_RegionDilation, 5);
-
-            //���˳�ָ�������С��ȱ��
             ho_SelectedRegions.Dispose();
-            HOperatorSet.SelectShape(ho_RegionDilation, out ho_SelectedRegions, "area",
-                "and", 800, 99999);
+            HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions, "area",
+                "and", Convert.ToInt64 (txtMinArea.Text), Convert.ToInt64 (txtMaxArea .Text));
 
-            //������������XLD����
             ho_Contours.Dispose();
             HOperatorSet.GenContourRegionXld(ho_SelectedRegions, out ho_Contours, "border");
 
-            hv_Row.Dispose(); hv_Column.Dispose(); hv_Radius.Dispose(); hv_StartPhi.Dispose(); hv_EndPhi.Dispose(); hv_PointOrder.Dispose();
-            HOperatorSet.FitCircleContourXld(ho_Contours, "atukey", -1, 2, 0, 5, 2, out hv_Row,
-                out hv_Column, out hv_Radius, out hv_StartPhi, out hv_EndPhi, out hv_PointOrder);
+            hv_Number.Dispose();
+            HOperatorSet.CountObj(ho_Contours, out hv_Number);
+            HOperatorSet.DispObj(ho_Contours, hwindow);
 
-            //����һ��Բ����
-            using (HDevDisposeHelper dh = new HDevDisposeHelper())
-            {
-                ho_ContCircle.Dispose();
-                HOperatorSet.GenCircleContourXld(out ho_ContCircle, hv_Row, hv_Column, hv_Radius + 20,
-                    0, 6.28318, "positive", 1);
-            }
+            if (hv_Number > 0 )
+                disp_message(hwindow, "FAIL", "window", 12, 12, "red", "false");
+            else
+                disp_message(hwindow, "PASS", "window", 12, 12, "green", "false");
 
-
-            //��ʾͼ��
-            HOperatorSet.DispObj(ho_Image, hwindow);
-
-
-            //��ʾԲ���
-            HOperatorSet.DispObj(ho_ContCircle, hwindow);
-
-
-
+           
+           
 
 
             ho_Image.Dispose();
@@ -1977,20 +1951,254 @@ namespace LCD_SVS
             ho_ImageFFT.Dispose();
             ho_ImageConvol.Dispose();
             ho_ImageFiltered.Dispose();
+            ho_Rectangle.Dispose();
+            ho_ROI.Dispose();
             ho_ImageMedian.Dispose();
             ho_ImageSmooth.Dispose();
-            ho_Regions.Dispose();
             ho_ConnectedRegions.Dispose();
-            ho_RegionDilation.Dispose();
+            ho_SelectedRegions.Dispose();
+            ho_Contours.Dispose();
 
+            hv_WindowHandle.Dispose();
             hv_Width.Dispose();
             hv_Height.Dispose();
             hv_Sigma1.Dispose();
             hv_Sigma2.Dispose();
+            hv_Number.Dispose();
 
         }
 
+
+
+          public void disp_message (HTuple hv_WindowHandle, HTuple hv_String, HTuple hv_CoordSystem, 
+      HTuple hv_Row, HTuple hv_Column, HTuple hv_Color, HTuple hv_Box)
+  {
+
+
+
+    // Local iconic variables 
+
+    // Local control variables 
+
+    HTuple hv_GenParamName = new HTuple(), hv_GenParamValue = new HTuple();
+    HTuple   hv_Color_COPY_INP_TMP = new HTuple(hv_Color);
+    HTuple   hv_Column_COPY_INP_TMP = new HTuple(hv_Column);
+    HTuple   hv_CoordSystem_COPY_INP_TMP = new HTuple(hv_CoordSystem);
+    HTuple   hv_Row_COPY_INP_TMP = new HTuple(hv_Row);
+    // Initialize local and output iconic variables 
+    //This procedure displays text in a graphics window.
+    //
+    //Input parameters:
+    //WindowHandle: The WindowHandle of the graphics window, where
+    //   the message should be displayed
+    //String: A tuple of strings containing the text message to be displayed
+    //CoordSystem: If set to 'window', the text position is given
+    //   with respect to the window coordinate system.
+    //   If set to 'image', image coordinates are used.
+    //   (This may be useful in zoomed images.)
+    //Row: The row coordinate of the desired text position
+    //   A tuple of values is allowed to display text at different
+    //   positions.
+    //Column: The column coordinate of the desired text position
+    //   A tuple of values is allowed to display text at different
+    //   positions.
+    //Color: defines the color of the text as string.
+    //   If set to [], '' or 'auto' the currently set color is used.
+    //   If a tuple of strings is passed, the colors are used cyclically...
+    //   - if |Row| == |Column| == 1: for each new textline
+    //   = else for each text position.
+    //Box: If Box[0] is set to 'true', the text is written within an orange box.
+    //     If set to' false', no box is displayed.
+    //     If set to a color string (e.g. 'white', '#FF00CC', etc.),
+    //       the text is written in a box of that color.
+    //     An optional second value for Box (Box[1]) controls if a shadow is displayed:
+    //       'true' -> display a shadow in a default color
+    //       'false' -> display no shadow
+    //       otherwise -> use given string as color string for the shadow color
+    //
+    //It is possible to display multiple text strings in a single call.
+    //In this case, some restrictions apply:
+    //- Multiple text positions can be defined by specifying a tuple
+    //  with multiple Row and/or Column coordinates, i.e.:
+    //  - |Row| == n, |Column| == n
+    //  - |Row| == n, |Column| == 1
+    //  - |Row| == 1, |Column| == n
+    //- If |Row| == |Column| == 1,
+    //  each element of String is display in a new textline.
+    //- If multiple positions or specified, the number of Strings
+    //  must match the number of positions, i.e.:
+    //  - Either |String| == n (each string is displayed at the
+    //                          corresponding position),
+    //  - or     |String| == 1 (The string is displayed n times).
+    //
+    //
+    //Convert the parameters for disp_text.
+    if ((int)((new HTuple(hv_Row_COPY_INP_TMP.TupleEqual(new HTuple()))).TupleOr(
+        new HTuple(hv_Column_COPY_INP_TMP.TupleEqual(new HTuple())))) != 0)
+    {
+
+      hv_Color_COPY_INP_TMP.Dispose();
+      hv_Column_COPY_INP_TMP.Dispose();
+      hv_CoordSystem_COPY_INP_TMP.Dispose();
+      hv_Row_COPY_INP_TMP.Dispose();
+      hv_GenParamName.Dispose();
+      hv_GenParamValue.Dispose();
+
+      return;
+    }
+    if ((int)(new HTuple(hv_Row_COPY_INP_TMP.TupleEqual(-1))) != 0)
+    {
+      hv_Row_COPY_INP_TMP.Dispose();
+      hv_Row_COPY_INP_TMP = 12;
+    }
+    if ((int)(new HTuple(hv_Column_COPY_INP_TMP.TupleEqual(-1))) != 0)
+    {
+      hv_Column_COPY_INP_TMP.Dispose();
+      hv_Column_COPY_INP_TMP = 12;
+    }
+    //
+    //Convert the parameter Box to generic parameters.
+    hv_GenParamName.Dispose();
+    hv_GenParamName = new HTuple();
+    hv_GenParamValue.Dispose();
+    hv_GenParamValue = new HTuple();
+    if ((int)(new HTuple((new HTuple(hv_Box.TupleLength())).TupleGreater(0))) != 0)
+    {
+      if ((int)(new HTuple(((hv_Box.TupleSelect(0))).TupleEqual("false"))) != 0)
+      {
+        //Display no box
+        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        {
+        {
+        HTuple 
+          ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
+            "box");
+        hv_GenParamName.Dispose();
+        hv_GenParamName = ExpTmpLocalVar_GenParamName;
+        }
+        }
+        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        {
+        {
+        HTuple 
+          ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
+            "false");
+        hv_GenParamValue.Dispose();
+        hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
+        }
+        }
+      }
+      else if ((int)(new HTuple(((hv_Box.TupleSelect(0))).TupleNotEqual("true"))) != 0)
+      {
+        //Set a color other than the default.
+        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        {
+        {
+        HTuple 
+          ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
+            "box_color");
+        hv_GenParamName.Dispose();
+        hv_GenParamName = ExpTmpLocalVar_GenParamName;
+        }
+        }
+        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        {
+        {
+        HTuple 
+          ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
+            hv_Box.TupleSelect(0));
+        hv_GenParamValue.Dispose();
+        hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
+        }
+        }
+      }
+    }
+    if ((int)(new HTuple((new HTuple(hv_Box.TupleLength())).TupleGreater(1))) != 0)
+    {
+      if ((int)(new HTuple(((hv_Box.TupleSelect(1))).TupleEqual("false"))) != 0)
+      {
+        //Display no shadow.
+        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        {
+        {
+        HTuple 
+          ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
+            "shadow");
+        hv_GenParamName.Dispose();
+        hv_GenParamName = ExpTmpLocalVar_GenParamName;
+        }
+        }
+        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        {
+        {
+        HTuple 
+          ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
+            "false");
+        hv_GenParamValue.Dispose();
+        hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
+        }
+        }
+      }
+      else if ((int)(new HTuple(((hv_Box.TupleSelect(1))).TupleNotEqual("true"))) != 0)
+      {
+        //Set a shadow color other than the default.
+        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        {
+        {
+        HTuple 
+          ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
+            "shadow_color");
+        hv_GenParamName.Dispose();
+        hv_GenParamName = ExpTmpLocalVar_GenParamName;
+        }
+        }
+        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        {
+        {
+        HTuple 
+          ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
+            hv_Box.TupleSelect(1));
+        hv_GenParamValue.Dispose();
+        hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
+        }
+        }
+      }
+    }
+    //Restore default CoordSystem behavior.
+    if ((int)(new HTuple(hv_CoordSystem_COPY_INP_TMP.TupleNotEqual("window"))) != 0)
+    {
+      hv_CoordSystem_COPY_INP_TMP.Dispose();
+      hv_CoordSystem_COPY_INP_TMP = "image";
+    }
+    //
+    if ((int)(new HTuple(hv_Color_COPY_INP_TMP.TupleEqual(""))) != 0)
+    {
+      //disp_text does not accept an empty string for Color.
+      hv_Color_COPY_INP_TMP.Dispose();
+      hv_Color_COPY_INP_TMP = new HTuple();
+    }
+    //
+    HOperatorSet.DispText(hv_WindowHandle, hv_String, hv_CoordSystem_COPY_INP_TMP, 
+        hv_Row_COPY_INP_TMP, hv_Column_COPY_INP_TMP, hv_Color_COPY_INP_TMP, hv_GenParamName, 
+        hv_GenParamValue);
+
+    hv_Color_COPY_INP_TMP.Dispose();
+    hv_Column_COPY_INP_TMP.Dispose();
+    hv_CoordSystem_COPY_INP_TMP.Dispose();
+    hv_Row_COPY_INP_TMP.Dispose();
+    hv_GenParamName.Dispose();
+    hv_GenParamValue.Dispose();
+
+    return;
+  }
+
+
         private void comboMult_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtVisionImgFile_TextChanged(object sender, EventArgs e)
         {
 
         }
