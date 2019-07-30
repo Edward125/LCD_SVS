@@ -1867,6 +1867,7 @@ namespace LCD_SVS
             hv_Width.Dispose(); hv_Height.Dispose();
             HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
 
+            
             hv_Sigma1.Dispose();
             hv_Sigma1 = Convert.ToDouble ( comboSigma1.Text);// 10.0;
             hv_Sigma2.Dispose();
@@ -1881,7 +1882,7 @@ namespace LCD_SVS
                 "rft", hv_Width, hv_Height);
             ho_Filter.Dispose();
             //HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, 1, 0);
-            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter,Convert.ToDouble (comboMult.Text) , 0);
+            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, Convert.ToInt16 (comboMult.Text )  , 0);
 
             ho_GrayImage.Dispose();
             HOperatorSet.Rgb1ToGray(ho_Image, out ho_GrayImage);
@@ -1902,21 +1903,30 @@ namespace LCD_SVS
             using (HDevDisposeHelper dh = new HDevDisposeHelper())
             {
                 ho_Rectangle.Dispose();
-                HOperatorSet.GenRectangle1(out ho_Rectangle, 10, 10, hv_Height - 10, hv_Width - 10);
+
+                Int32 Height = hv_Height.I - Convert.ToInt32(txtBotL.Text);
+                Int32 Width = hv_Width.I - Convert.ToInt32(txtBotR.Text);
+
+                HOperatorSet.GenRectangle1(out ho_Rectangle, Convert.ToInt16 ( txtTopL.Text)  , Convert.ToInt16 ( txtTopR.Text) ,Height , Width);
+               // HOperatorSet.GenRectangle1(out ho_Rectangle, 10,10, hv_Height-10, hv_Width-10);
             }
 
             ho_ROI.Dispose();
             HOperatorSet.ReduceDomain(ho_ImageFiltered, ho_Rectangle, out ho_ROI);
 
             ho_ImageMedian.Dispose();
-            HOperatorSet.MedianImage(ho_ROI, out ho_ImageMedian, "circle", Convert.ToDouble(comboRadius.Text), "mirrored");
+            HOperatorSet.MedianImage(ho_ROI, out ho_ImageMedian, "circle", Convert.ToInt16 (comboRadius.Text ) , "mirrored");
 
             ho_ImageSmooth.Dispose();
-            HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToDouble(comboAlpha.Text));
+            HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToInt16(comboAlpha.Text) );
 
             ho_ImageSmooth.Dispose();
             //HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, -0.012866, -0.005549);
-            HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, Convert.ToDouble (txtMinGray.Text), Convert.ToDouble (txtMaxGray.Text ));
+
+            double MinGray = Convert.ToDouble(txtMinGray.Text);
+            double MaxGray = Convert.ToDouble(txtMaxGray.Text);
+            
+            HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, MinGray , MaxGray );
 
             ho_ConnectedRegions.Dispose();
             HOperatorSet.Connection(ho_ImageSmooth, out ho_ConnectedRegions);
@@ -1933,10 +1943,18 @@ namespace LCD_SVS
             HOperatorSet.CountObj(ho_Contours, out hv_Number);
             HOperatorSet.DispObj(ho_Contours, hwindow);
 
-            if (hv_Number > 0 )
-                disp_message(hwindow, "FAIL", "window", 12, 12, "red", "false");
+
+
+            if (hv_Number > 0)
+            {
+                string msg = "FAIL,There is " + hv_Number + " error(s)";
+                disp_message(hwindow, msg, "window", 12, 12, "red", "false");
+            }
             else
-                disp_message(hwindow, "PASS", "window", 12, 12, "green", "false");
+            {
+                string msg = "PASS,There is " + hv_Number + " error(s)";
+                disp_message(hwindow, msg , "window", 12, 12, "green", "false");
+            }
 
            
            
