@@ -53,6 +53,22 @@
             this.label2 = new System.Windows.Forms.Label();
             this.picCapturePicture = new System.Windows.Forms.PictureBox();
             this.tabVision = new System.Windows.Forms.TabPage();
+            this.txtBotR = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtBotL = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.txtMaxGray = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtMinGray = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtMaxArea = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txtMinArea = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.txtTopR = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtTopL = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.lblAlpha = new System.Windows.Forms.Label();
             this.comboAlpha = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -83,22 +99,6 @@
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
             this.chkTestNGSavePictures = new System.Windows.Forms.CheckBox();
             this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtTopL = new System.Windows.Forms.TextBox();
-            this.txtTopR = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtMaxArea = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.txtMinArea = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.txtMinGray = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.txtMaxGray = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.txtBotR = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.txtBotL = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -463,6 +463,172 @@
             this.tabVision.Text = "Vision";
             this.tabVision.UseVisualStyleBackColor = true;
             // 
+            // txtBotR
+            // 
+            this.txtBotR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBotR.Location = new System.Drawing.Point(864, 474);
+            this.txtBotR.Name = "txtBotR";
+            this.txtBotR.Size = new System.Drawing.Size(77, 22);
+            this.txtBotR.TabIndex = 47;
+            this.txtBotR.Text = "10";
+            this.txtBotR.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBotR.TextChanged += new System.EventHandler(this.txtBotR_TextChanged);
+            // 
+            // label20
+            // 
+            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(813, 478);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(41, 14);
+            this.label20.TabIndex = 46;
+            this.label20.Text = "Bot_R:";
+            // 
+            // txtBotL
+            // 
+            this.txtBotL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBotL.Location = new System.Drawing.Point(864, 447);
+            this.txtBotL.Name = "txtBotL";
+            this.txtBotL.Size = new System.Drawing.Size(77, 22);
+            this.txtBotL.TabIndex = 45;
+            this.txtBotL.Text = "10";
+            this.txtBotL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBotL.TextChanged += new System.EventHandler(this.txtBotL_TextChanged);
+            // 
+            // label21
+            // 
+            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(814, 451);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(39, 14);
+            this.label21.TabIndex = 44;
+            this.label21.Text = "Bot_L:";
+            // 
+            // txtMaxGray
+            // 
+            this.txtMaxGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMaxGray.Location = new System.Drawing.Point(864, 366);
+            this.txtMaxGray.Name = "txtMaxGray";
+            this.txtMaxGray.Size = new System.Drawing.Size(77, 22);
+            this.txtMaxGray.TabIndex = 43;
+            this.txtMaxGray.Text = "-0.005549";
+            this.txtMaxGray.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxGray.TextChanged += new System.EventHandler(this.txtMaxGray_TextChanged);
+            // 
+            // label19
+            // 
+            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(810, 370);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(53, 14);
+            this.label19.TabIndex = 42;
+            this.label19.Text = "MaxGray";
+            // 
+            // txtMinGray
+            // 
+            this.txtMinGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMinGray.Location = new System.Drawing.Point(864, 339);
+            this.txtMinGray.Name = "txtMinGray";
+            this.txtMinGray.Size = new System.Drawing.Size(77, 22);
+            this.txtMinGray.TabIndex = 41;
+            this.txtMinGray.Text = "-0.012866";
+            this.txtMinGray.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMinGray.TextChanged += new System.EventHandler(this.txtMinGray_TextChanged);
+            // 
+            // label18
+            // 
+            this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(810, 342);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(52, 14);
+            this.label18.TabIndex = 40;
+            this.label18.Text = "MinGray";
+            // 
+            // txtMaxArea
+            // 
+            this.txtMaxArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMaxArea.Location = new System.Drawing.Point(864, 528);
+            this.txtMaxArea.Name = "txtMaxArea";
+            this.txtMaxArea.Size = new System.Drawing.Size(77, 22);
+            this.txtMaxArea.TabIndex = 39;
+            this.txtMaxArea.Text = "99999";
+            this.txtMaxArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label16
+            // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(809, 531);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(54, 14);
+            this.label16.TabIndex = 38;
+            this.label16.Text = "MaxArea";
+            // 
+            // txtMinArea
+            // 
+            this.txtMinArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMinArea.Location = new System.Drawing.Point(864, 501);
+            this.txtMinArea.Name = "txtMinArea";
+            this.txtMinArea.Size = new System.Drawing.Size(77, 22);
+            this.txtMinArea.TabIndex = 37;
+            this.txtMinArea.Text = "800";
+            this.txtMinArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(810, 504);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(53, 14);
+            this.label17.TabIndex = 36;
+            this.label17.Text = "MinArea";
+            // 
+            // txtTopR
+            // 
+            this.txtTopR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTopR.Location = new System.Drawing.Point(864, 420);
+            this.txtTopR.Name = "txtTopR";
+            this.txtTopR.Size = new System.Drawing.Size(77, 22);
+            this.txtTopR.TabIndex = 35;
+            this.txtTopR.Text = "10";
+            this.txtTopR.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTopR.TextChanged += new System.EventHandler(this.txtTopR_TextChanged);
+            // 
+            // label15
+            // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(813, 424);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(42, 14);
+            this.label15.TabIndex = 34;
+            this.label15.Text = "Top_R:";
+            // 
+            // txtTopL
+            // 
+            this.txtTopL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTopL.Location = new System.Drawing.Point(864, 393);
+            this.txtTopL.Name = "txtTopL";
+            this.txtTopL.Size = new System.Drawing.Size(77, 22);
+            this.txtTopL.TabIndex = 33;
+            this.txtTopL.Text = "10";
+            this.txtTopL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTopL.TextChanged += new System.EventHandler(this.txtTopL_TextChanged);
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(814, 397);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(40, 14);
+            this.label14.TabIndex = 32;
+            this.label14.Text = "Top_L:";
+            // 
             // lblAlpha
             // 
             this.lblAlpha.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -495,7 +661,7 @@
             this.comboAlpha.Name = "comboAlpha";
             this.comboAlpha.Size = new System.Drawing.Size(76, 22);
             this.comboAlpha.TabIndex = 30;
-            this.comboAlpha.Text = "1";
+            this.comboAlpha.Text = "1.0";
             // 
             // label13
             // 
@@ -534,6 +700,7 @@
             this.comboRadius.Size = new System.Drawing.Size(76, 22);
             this.comboRadius.TabIndex = 28;
             this.comboRadius.Text = "3";
+            this.comboRadius.SelectedIndexChanged += new System.EventHandler(this.comboRadius_SelectedIndexChanged);
             // 
             // comboMult
             // 
@@ -549,7 +716,7 @@
             this.comboMult.Name = "comboMult";
             this.comboMult.Size = new System.Drawing.Size(76, 22);
             this.comboMult.TabIndex = 27;
-            this.comboMult.Text = "1";
+            this.comboMult.Text = "1.0";
             this.comboMult.SelectedIndexChanged += new System.EventHandler(this.comboMult_SelectedIndexChanged);
             // 
             // label12
@@ -587,7 +754,8 @@
             this.comboSigma2.Name = "comboSigma2";
             this.comboSigma2.Size = new System.Drawing.Size(76, 22);
             this.comboSigma2.TabIndex = 25;
-            this.comboSigma2.Text = "2";
+            this.comboSigma2.Text = "2.0";
+            this.comboSigma2.SelectedIndexChanged += new System.EventHandler(this.comboSigma2_SelectedIndexChanged);
             // 
             // comboSigma1
             // 
@@ -614,7 +782,8 @@
             this.comboSigma1.Name = "comboSigma1";
             this.comboSigma1.Size = new System.Drawing.Size(76, 22);
             this.comboSigma1.TabIndex = 24;
-            this.comboSigma1.Text = "10";
+            this.comboSigma1.Text = "10.0";
+            this.comboSigma1.SelectedIndexChanged += new System.EventHandler(this.comboSigma1_SelectedIndexChanged);
             // 
             // label11
             // 
@@ -671,6 +840,7 @@
             this.comboMaxGray.Name = "comboMaxGray";
             this.comboMaxGray.Size = new System.Drawing.Size(66, 22);
             this.comboMaxGray.TabIndex = 19;
+            this.comboMaxGray.SelectedIndexChanged += new System.EventHandler(this.comboMaxGray_SelectedIndexChanged);
             // 
             // comboMinGray
             // 
@@ -681,6 +851,7 @@
             this.comboMinGray.Name = "comboMinGray";
             this.comboMinGray.Size = new System.Drawing.Size(66, 22);
             this.comboMinGray.TabIndex = 18;
+            this.comboMinGray.SelectedIndexChanged += new System.EventHandler(this.comboMinGray_SelectedIndexChanged);
             // 
             // label9
             // 
@@ -761,7 +932,6 @@
             this.txtVisionImgFile.Name = "txtVisionImgFile";
             this.txtVisionImgFile.Size = new System.Drawing.Size(738, 22);
             this.txtVisionImgFile.TabIndex = 1;
-            this.txtVisionImgFile.TextChanged += new System.EventHandler(this.txtVisionImgFile_TextChanged);
             this.txtVisionImgFile.DoubleClick += new System.EventHandler(this.txtVisionImgFile_DoubleClick);
             // 
             // hSmartWindowControl1
@@ -866,166 +1036,6 @@
             this.chkTestOKSavePictures.Text = "Test OK Save Pictures";
             this.chkTestOKSavePictures.UseVisualStyleBackColor = true;
             this.chkTestOKSavePictures.CheckedChanged += new System.EventHandler(this.chkTestOKSavePictures_CheckedChanged);
-            // 
-            // label14
-            // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(814, 397);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(40, 14);
-            this.label14.TabIndex = 32;
-            this.label14.Text = "Top_L:";
-            // 
-            // txtTopL
-            // 
-            this.txtTopL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTopL.Location = new System.Drawing.Point(864, 393);
-            this.txtTopL.Name = "txtTopL";
-            this.txtTopL.Size = new System.Drawing.Size(77, 22);
-            this.txtTopL.TabIndex = 33;
-            this.txtTopL.Text = "10";
-            this.txtTopL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // txtTopR
-            // 
-            this.txtTopR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTopR.Location = new System.Drawing.Point(864, 420);
-            this.txtTopR.Name = "txtTopR";
-            this.txtTopR.Size = new System.Drawing.Size(77, 22);
-            this.txtTopR.TabIndex = 35;
-            this.txtTopR.Text = "10";
-            this.txtTopR.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label15
-            // 
-            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(813, 424);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(42, 14);
-            this.label15.TabIndex = 34;
-            this.label15.Text = "Top_R:";
-            // 
-            // txtMaxArea
-            // 
-            this.txtMaxArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMaxArea.Location = new System.Drawing.Point(864, 528);
-            this.txtMaxArea.Name = "txtMaxArea";
-            this.txtMaxArea.Size = new System.Drawing.Size(77, 22);
-            this.txtMaxArea.TabIndex = 39;
-            this.txtMaxArea.Text = "99999";
-            this.txtMaxArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label16
-            // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(809, 531);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(54, 14);
-            this.label16.TabIndex = 38;
-            this.label16.Text = "MaxArea";
-            // 
-            // txtMinArea
-            // 
-            this.txtMinArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMinArea.Location = new System.Drawing.Point(864, 501);
-            this.txtMinArea.Name = "txtMinArea";
-            this.txtMinArea.Size = new System.Drawing.Size(77, 22);
-            this.txtMinArea.TabIndex = 37;
-            this.txtMinArea.Text = "800";
-            this.txtMinArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label17
-            // 
-            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(810, 504);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(53, 14);
-            this.label17.TabIndex = 36;
-            this.label17.Text = "MinArea";
-            // 
-            // txtMinGray
-            // 
-            this.txtMinGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMinGray.Location = new System.Drawing.Point(864, 339);
-            this.txtMinGray.Name = "txtMinGray";
-            this.txtMinGray.Size = new System.Drawing.Size(77, 22);
-            this.txtMinGray.TabIndex = 41;
-            this.txtMinGray.Text = "-0.012866";
-            this.txtMinGray.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label18
-            // 
-            this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(810, 342);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(52, 14);
-            this.label18.TabIndex = 40;
-            this.label18.Text = "MinGray";
-            // 
-            // txtMaxGray
-            // 
-            this.txtMaxGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMaxGray.Location = new System.Drawing.Point(864, 366);
-            this.txtMaxGray.Name = "txtMaxGray";
-            this.txtMaxGray.Size = new System.Drawing.Size(77, 22);
-            this.txtMaxGray.TabIndex = 43;
-            this.txtMaxGray.Text = "-0.005549";
-            this.txtMaxGray.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label19
-            // 
-            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(810, 370);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(53, 14);
-            this.label19.TabIndex = 42;
-            this.label19.Text = "MaxGray";
-            // 
-            // txtBotR
-            // 
-            this.txtBotR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBotR.Location = new System.Drawing.Point(864, 474);
-            this.txtBotR.Name = "txtBotR";
-            this.txtBotR.Size = new System.Drawing.Size(77, 22);
-            this.txtBotR.TabIndex = 47;
-            this.txtBotR.Text = "10";
-            this.txtBotR.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label20
-            // 
-            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(813, 478);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(41, 14);
-            this.label20.TabIndex = 46;
-            this.label20.Text = "Bot_R:";
-            // 
-            // txtBotL
-            // 
-            this.txtBotL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBotL.Location = new System.Drawing.Point(864, 447);
-            this.txtBotL.Name = "txtBotL";
-            this.txtBotL.Size = new System.Drawing.Size(77, 22);
-            this.txtBotL.TabIndex = 45;
-            this.txtBotL.Text = "10";
-            this.txtBotL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label21
-            // 
-            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(814, 451);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(39, 14);
-            this.label21.TabIndex = 44;
-            this.label21.Text = "Bot_L:";
             // 
             // frmMain
             // 

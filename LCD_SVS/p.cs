@@ -82,6 +82,7 @@ namespace LCD_SVS
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Sigma2", Sigma2, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Mult",  Mult , inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Radius", Radius, inifilepath);
+            IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Alpha", Alpha, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MinGray2", MinGray2, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MaxGray2", MaxGray2, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Top_L", Top_L , inifilepath);
@@ -107,19 +108,28 @@ namespace LCD_SVS
             NGSaveImg = IniFile.IniReadValue(IniSection.Capture.ToString(), "NGSaveImg", inifilepath);
             NGImgFolder = IniFile.IniReadValue(IniSection.Capture.ToString(), "NGImgFolder", inifilepath);
 
-            MinGray =Convert.ToInt16 ( IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray", inifilepath));
-            MaxGray =Convert.ToInt16 ( IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray", inifilepath));
-            Mult = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Mult", inifilepath));
-            Radius = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Radius", inifilepath));
-            Alpha = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Alpha", inifilepath));
-            MinGray2 = Convert.ToDouble(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray2", inifilepath));
-            MaxGray2 = Convert.ToDouble(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray2", inifilepath));
-            Top_L = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Top_L", inifilepath));
-            Top_R = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Top_R", inifilepath));
-            Bot_L = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Bot_L", inifilepath));
-            Bot_R = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Bot_R", inifilepath));
-            MinArea = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinArea", inifilepath));
-            MaxArea  = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MaxArea", inifilepath));
+            try
+            {
+                MinGray = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray", inifilepath));
+                MaxGray = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MaxGray", inifilepath));
+                Mult = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Mult", inifilepath));
+                Radius = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Radius", inifilepath));
+                Alpha = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Alpha", inifilepath));
+                MinGray2 = Convert.ToDouble(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray2", inifilepath));
+                MaxGray2 = Convert.ToDouble(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray2", inifilepath));
+                Top_L = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Top_L", inifilepath));
+                Top_R = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Top_R", inifilepath));
+                Bot_L = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Bot_L", inifilepath));
+                Bot_R = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Bot_R", inifilepath));
+                MinArea = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinArea", inifilepath));
+                MaxArea = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MaxArea", inifilepath));
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
 
 
         }

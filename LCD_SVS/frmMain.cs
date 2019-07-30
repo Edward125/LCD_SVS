@@ -2213,12 +2213,77 @@ namespace LCD_SVS
 
         private void comboMult_SelectedIndexChanged(object sender, EventArgs e)
         {
+            p.Mult = Convert.ToInt16(comboMult.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Mult", p.Mult, p.IniFilePath);
 
         }
 
-        private void txtVisionImgFile_TextChanged(object sender, EventArgs e)
+        private void comboMinGray_SelectedIndexChanged(object sender, EventArgs e)
         {
+            p.MinGray = comboMinGray.SelectedIndex;
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "MinGray", p.MinGray, p.IniFilePath);
+        }
 
+        private void comboMaxGray_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            p.MaxGray = comboMaxGray.SelectedIndex;
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "MaxGray", p.MaxGray, p.IniFilePath);
+        }
+
+        private void comboSigma1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            p.Sigma1 = Convert.ToInt16(comboSigma1.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Sigma1",p.Sigma1,p.IniFilePath);
+        }
+
+        private void comboSigma2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            p.Sigma2 = Convert.ToInt16(comboSigma2.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Sigma2", p.Sigma2, p.IniFilePath);
+        }
+
+        private void comboRadius_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            p.Radius = Convert.ToInt16(comboRadius.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Radius", p.Radius, p.IniFilePath);
+        }
+
+        private void txtMinGray_TextChanged(object sender, EventArgs e)
+        {
+            p.MinGray2 = Convert.ToDouble(txtMinGray.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "MinGray2", p.MinGray2, p.IniFilePath);
+        }
+
+        private void txtMaxGray_TextChanged(object sender, EventArgs e)
+        {
+            p.MaxGray2 = Convert.ToDouble(txtMaxGray.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "MaxGray2", p.MaxGray2, p.IniFilePath);
+
+        }
+
+        private void txtTopL_TextChanged(object sender, EventArgs e)
+        {
+            p.Top_L = Convert.ToInt16(txtTopL.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Top_L", p.Top_L, p.IniFilePath);
+
+        }
+
+        private void txtTopR_TextChanged(object sender, EventArgs e)
+        {
+            p.Top_R = Convert.ToInt16(txtTopR.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Top_R", p.Top_R, p.IniFilePath);
+        }
+
+        private void txtBotL_TextChanged(object sender, EventArgs e)
+        {
+            p.Bot_L = Convert.ToInt16(txtBotL.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Bot_L", p.Bot_L, p.IniFilePath);
+        }
+
+        private void txtBotR_TextChanged(object sender, EventArgs e)
+        {
+            p.Bot_R = Convert.ToInt16(txtBotR.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Bot_R", p.Bot_R, p.IniFilePath);
         }
 
     }
