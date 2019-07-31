@@ -14,6 +14,7 @@ namespace LCD_SVS
         //
         public static string IniFilePath = @".\SysConfig.ini";
         public static string AppFolder = Application.StartupPath +@"\LCD_SVS";
+        public static string AppCapFolder = AppFolder + @"\Capture";
         public static string SystemVersion = Application.ProductVersion;
         public static string SystemName = Application.ProductName;
         // default value 

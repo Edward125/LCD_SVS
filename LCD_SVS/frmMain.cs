@@ -28,8 +28,10 @@ namespace LCD_SVS
         }
 
         public Thread acqThread;
+        public Thread anyThread; //analysis picture
         bool acqThreadIsRuning = false;
         bool acqIsCapturePicture = false;
+        bool anyThreadIsRuning = false;
 
         
         public string CurrentID = "";
@@ -48,18 +50,13 @@ namespace LCD_SVS
         //
         private static HWindow hwindow; //
         public HTuple hv_ExpDefaultHwinHandle;
-        HObject ho_Image, ho_ImageGray, ho_ImageMean;
-        HObject ho_Region, ho_ImageRotate1, ho_Rectangle, ho_ImageReduced;
-        HObject ho_ImagePart;
-        Boolean IsVisionDebug = false;
+        //HObject ho_Image, ho_ImageGray, ho_ImageMean;
+        //HObject ho_Region, ho_ImageRotate1, ho_Rectangle, ho_ImageReduced;
+        //HObject ho_ImagePart;
 
-        //
-        HObject ho_ConnectedRegions, ho_SelectedRegions, ho_RegionFillUp;
-        HObject ho_RegionClosing, ho_RegionTrans;
-
-
-
-
+        ////
+        //HObject ho_ConnectedRegions, ho_SelectedRegions, ho_RegionFillUp;
+        //HObject ho_RegionClosing, ho_RegionTrans;
 
         class Cameracontainer
         {
@@ -853,10 +850,7 @@ namespace LCD_SVS
                 sv_cam.bufferInfoDest.pImagePtr = IntPtr.Zero;
             }
 
-
             sv_cam.acquisitionStart(4);
-
-
 
             if (!acqThreadIsRuning)
                 startAcquisitionThread();
@@ -1366,11 +1360,11 @@ namespace LCD_SVS
 
         private void DisplayHalconImage(HTuple imagefile)
         {
-            //HObject ho_Image;
+            HObject ho_Image = new HObject ();
           
             HOperatorSet.GenEmptyObj(out ho_Image);
             ho_Image.Dispose();
-            HOperatorSet.ReadImage(out ho_Image, imagefile);
+            HOperatorSet.ReadImage(out ho_Image,imagefile);
 
             #region 縮放圖像
             HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
@@ -1509,21 +1503,7 @@ namespace LCD_SVS
 
         }
 
-        private void btnStartDebug_Click(object sender, EventArgs e)
-        {
 
-            IsVisionDebug = !IsVisionDebug;
-
-            if (IsVisionDebug)
-                btnStartDebug.Text = "Stop Debug";
-            else
-                btnStartDebug.Text = "Start Debug";
-            VisionUpdateButton(IsVisionDebug);
-
-
-
-
-        }
 
         /// <summary>
         /// 
@@ -1546,9 +1526,6 @@ namespace LCD_SVS
 
         private void btnReadImage_Click(object sender, EventArgs e)
         {
-            
-
-
             if (string.IsNullOrEmpty(txtVisionImgFile.Text.Trim()))
             {
                 ShowMsg show = new ShowMsg();
@@ -1566,19 +1543,24 @@ namespace LCD_SVS
                 return;
             }
 
+            int[] MaxThresh = new int[2];
+
+            GetSuggestionMaxValue(txtVisionImgFile.Text.Trim(), out MaxThresh);
+            comboMinGray.SelectedIndex = MaxThresh[0];
+            comboMaxGray.SelectedIndex = MaxThresh[1];
+
+        }
+
+
+        private void  GetSuggestionMaxValue(string file,out int[] maxthresh)
+        {
+            maxthresh = new int[2];
+            HObject ho_Image = new HObject(), ho_ImageMean = new HObject(), ho_ImageGray = new HObject(), ho_ImagePart = new HObject();
             HOperatorSet.GenEmptyObj(out ho_Image);
             ho_Image.Dispose();
-            HOperatorSet.ReadImage(out ho_Image, txtVisionImgFile.Text.Trim());
+            HOperatorSet.ReadImage(out ho_Image, file );
             //VisionResizeImage(ho_Image, false);
             HOperatorSet.DispObj(ho_Image, hwindow);
-
-            HTuple hv_Height = new HTuple(), hv_Weight = new HTuple();
-            hv_Height.Dispose();
-            hv_Weight.Dispose();
-            HOperatorSet.GetImageSize(ho_Image, out hv_Weight, out hv_Height);
-
-
-
 
 
             //  獲取建議value
@@ -1601,16 +1583,53 @@ namespace LCD_SVS
             HOperatorSet.GrayHisto(ho_ImageMean, ho_ImageMean, out hv_AbsoluteHisto, out hv_RelativeHisto);
             hv_MinThresh.Dispose(); hv_MaxThresh.Dispose();
             HOperatorSet.HistoToThresh(hv_RelativeHisto, 20, out hv_MinThresh, out hv_MaxThresh);
-
             ho_ImageMean.Dispose();
             ho_ImageGray.Dispose();
             ho_ImageEmphasize.Dispose();
-
-            comboMinGray.SelectedIndex = (int)hv_MaxThresh.TupleSelect(0);
-            comboMaxGray.SelectedIndex = (int) hv_MaxThresh.TupleSelect(1);
+            maxthresh[0] = (int)hv_MaxThresh.TupleSelect(0);
+            maxthresh[1] = (int)hv_MaxThresh.TupleSelect(1);
 
         }
 
+
+        private void GetSuggestionMinValue(string file, out int[] minthresh)
+        {
+            minthresh = new int[2];
+            HObject ho_Image = new HObject(), ho_ImageMean = new HObject(), ho_ImageGray = new HObject(), ho_ImagePart = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, file );
+            //VisionResizeImage(ho_Image, false);
+            HOperatorSet.DispObj(ho_Image, hwindow);
+
+
+            //  獲取建議value
+            HObject ho_ImageEmphasize = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_ImageMean);
+            HOperatorSet.GenEmptyObj(out ho_ImageGray);
+            HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
+            HOperatorSet.GenEmptyObj(out ho_ImagePart);
+            ho_ImagePart.Dispose();
+            ho_ImageGray.Dispose();
+            HOperatorSet.Emphasize(ho_Image, out ho_ImageEmphasize, 7, 7, 1);
+            HOperatorSet.Rgb3ToGray(ho_ImageEmphasize, ho_ImageEmphasize, ho_ImageEmphasize, out ho_ImageGray);
+            ho_ImageMean.Dispose();
+
+
+            HTuple hv_AbsoluteHisto = new HTuple(), hv_RelativeHisto = new HTuple();
+            HTuple hv_MinThresh = new HTuple(), hv_MaxThresh = new HTuple();
+            HOperatorSet.MeanImage(ho_ImageGray, out ho_ImageMean, 9, 9);
+            hv_AbsoluteHisto.Dispose(); hv_RelativeHisto.Dispose();
+            HOperatorSet.GrayHisto(ho_ImageMean, ho_ImageMean, out hv_AbsoluteHisto, out hv_RelativeHisto);
+            hv_MinThresh.Dispose(); hv_MaxThresh.Dispose();
+            HOperatorSet.HistoToThresh(hv_RelativeHisto, 20, out hv_MinThresh, out hv_MaxThresh);
+            ho_ImageMean.Dispose();
+            ho_ImageGray.Dispose();
+            ho_ImageEmphasize.Dispose();
+            minthresh[0] = (int)hv_MinThresh.TupleSelect(0);
+            minthresh[1] = (int)hv_MinThresh.TupleSelect(1);
+
+        }
 
 
         #region Auto Close Messagebox
@@ -1696,11 +1715,13 @@ namespace LCD_SVS
 
         private void btnMeanThreshold_Click(object sender, EventArgs e)
         {
+            HOperatorSet.ClearWindow(hwindow);
+            HObject ho_Image = new HObject(), ho_ImageGray = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, txtVisionImgFile.Text.Trim());
 
 
-
-
-            //  獲取建議value
             HObject ho_ImageEmphasize = new HObject();
 
             HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
@@ -1718,16 +1739,16 @@ namespace LCD_SVS
             HOperatorSet.SetDraw(hwindow, "margin");
             HOperatorSet.SetColor(hwindow, "red");
             HOperatorSet.SetLineWidth(hwindow, 1);
-           
 
+
+            HObject ho_Region = new HObject(), ho_ConnectedRegions = new HObject(), ho_SelectedRegions = new HObject();
+            HObject ho_RegionFillUp = new HObject(), ho_RegionClosing = new HObject(), ho_RegionTrans = new HObject();
             HOperatorSet.GenEmptyObj(out ho_Region);
             HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
             HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
             HOperatorSet.GenEmptyObj(out ho_RegionFillUp);
             HOperatorSet.GenEmptyObj(out ho_RegionClosing);
             HOperatorSet.GenEmptyObj(out ho_RegionTrans);
-
-            //HOperatorSet.ClearObj(ho_RegionTrans);
 
             HTuple hv_Area = new HTuple(), hv__ = new HTuple();
             HOperatorSet.Threshold(ho_ImageGray, out ho_Region, comboMinGray.SelectedIndex, comboMaxGray.SelectedIndex);
@@ -1755,10 +1776,77 @@ namespace LCD_SVS
 
         }
 
+
+        private void GetThreshholdRegion(string file, out HObject ho_region,HTuple mingray,HTuple maxgray)
+        {
+
+            //
+
+            HObject ho_Image = new HObject(), ho_ImageGray = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, file );
+            HObject ho_ImageEmphasize = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
+            ho_ImageEmphasize.Dispose();
+            HOperatorSet.Emphasize(ho_Image, out ho_ImageEmphasize, 7, 7, 1);
+            //
+            HOperatorSet.GenEmptyObj(out ho_ImageGray);
+            ho_ImageGray.Dispose();
+            HOperatorSet.Rgb3ToGray(ho_ImageEmphasize, ho_ImageEmphasize, ho_ImageEmphasize, out ho_ImageGray);
+            //VisionResizeImage(ho_ImageGray, false);
+            HOperatorSet.DispObj(ho_ImageGray, hwindow);
+            ho_Image.Dispose();
+
+
+            HOperatorSet.SetDraw(hwindow, "margin");
+            HOperatorSet.SetColor(hwindow, "red");
+            HOperatorSet.SetLineWidth(hwindow, 1);
+
+            HOperatorSet.GenEmptyObj(out ho_region);
+            ho_region.Dispose();
+            HOperatorSet.Threshold(ho_ImageGray, out ho_region, mingray , maxgray);
+            ho_ImageGray.Dispose();
+
+
+        }
+
+
         private void btnGetROI_Click(object sender, EventArgs e)
         {
 
             HOperatorSet.ClearWindow(hwindow);
+
+            HObject ho_Region = new HObject(), ho_ImageRotate1 = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_Region);
+            ho_Region.Dispose();
+            //GetThreshholdRegion(txtVisionImgFile.Text.Trim(), out ho_Region, p.MinGray, p.MaxGray);
+
+
+            HObject ho_Image = new HObject(), ho_ImageGray = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, txtVisionImgFile.Text.Trim());
+            HObject ho_ImageEmphasize = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
+            ho_ImageEmphasize.Dispose();
+            HOperatorSet.Emphasize(ho_Image, out ho_ImageEmphasize, 7, 7, 1);
+            //
+            HOperatorSet.GenEmptyObj(out ho_ImageGray);
+            ho_ImageGray.Dispose();
+            HOperatorSet.Rgb3ToGray(ho_ImageEmphasize, ho_ImageEmphasize, ho_ImageEmphasize, out ho_ImageGray);
+            //VisionResizeImage(ho_ImageGray, false);
+            HOperatorSet.DispObj(ho_ImageGray, hwindow);
+            ho_Image.Dispose();
+
+
+            HOperatorSet.SetDraw(hwindow, "margin");
+            HOperatorSet.SetColor(hwindow, "red");
+            HOperatorSet.SetLineWidth(hwindow, 1);
+
+            HOperatorSet.Threshold(ho_ImageGray, out ho_Region, p.MinGray , p.MaxGray );
+            ho_ImageGray.Dispose();
+
 
             HTuple hv_Row = new HTuple(), hv_Column = new HTuple(), hv_Area = new HTuple();
             HTuple hv_Phi = new HTuple();
@@ -1772,13 +1860,16 @@ namespace LCD_SVS
                 ho_ImageRotate1.Dispose();
                 HOperatorSet.RotateImage(ho_ImageGray, out ho_ImageRotate1, -(hv_Phi.TupleDeg()
                     ), "constant");
+                //HOperatorSet.RotateImage(ho_Region, out ho_ImageRotate1, -(hv_Phi.TupleDeg()
+                //    ), "constant");
             }
-           // HOperatorSet.DispObj(ho_ImageRotate1, hwindow);
-            //HOperatorSet.DispObj(ho_RegionTrans, hwindow);
 
 
-            //HOperatorSet
             //------------------------
+            HObject ho_ConnectedRegions = new HObject(), ho_SelectedRegions = new HObject();
+            HObject ho_RegionFillUp = new HObject(), ho_RegionClosing = new HObject();
+            HObject ho_RegionTrans = new HObject(), ho_Rectangle = new HObject();
+            HObject ho_ImageReduced = new HObject(), ho_ImagePart = new HObject();
             HOperatorSet.GenEmptyObj(out ho_Region);
             HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
             HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
@@ -1789,26 +1880,12 @@ namespace LCD_SVS
             HOperatorSet.GenEmptyObj(out ho_ImageReduced);
             HOperatorSet.GenEmptyObj(out ho_ImagePart);
 
-            //HOperatorSet.ClearObj(ho_RegionTrans);
-            HOperatorSet.Threshold(ho_ImageRotate1, out ho_Region, comboMinGray.SelectedIndex, comboMaxGray.SelectedIndex);
+            HOperatorSet.Threshold(ho_ImageRotate1, out ho_Region, p.MinGray , p.MaxGray );
             ho_ConnectedRegions.Dispose();
             HOperatorSet.Connection(ho_Region, out ho_ConnectedRegions);
             hv_Area.Dispose(); hv_Row.Dispose(); hv_Column.Dispose();
             HOperatorSet.AreaCenter(ho_ConnectedRegions, out hv_Area, out hv_Row, out hv_Column);
-            //using (HDevDisposeHelper dh = new HDevDisposeHelper())
-            //{
-            //    ho_SelectedRegions.Dispose();
-            //    HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions, "area",
-            //        "and", (hv_Area.TupleMax()) - 10, (hv_Area.TupleMax()) + 10);
-            //}
-            //ho_RegionFillUp.Dispose();
-            //HOperatorSet.FillUp(ho_SelectedRegions, out ho_RegionFillUp);
-            //ho_RegionClosing.Dispose();
-            //HOperatorSet.ClosingRectangle1(ho_RegionFillUp, out ho_RegionClosing, 10, 10);
-            //ho_RegionTrans.Dispose();
-            //HOperatorSet.ShapeTrans(ho_RegionClosing, out ho_RegionTrans, "convex");
-            //
-            //HOperatorSet.ClearObj(ho_RegionTrans);
+
 
             HTuple hv_Row1 = new HTuple(),hv_Column1 = new HTuple(),hv_Row2 = new HTuple (),hv_Column2 = new HTuple();
             HOperatorSet.InnerRectangle1(ho_ConnectedRegions, out hv_Row1, out hv_Column1, out hv_Row2, out hv_Column2);
@@ -1822,8 +1899,6 @@ namespace LCD_SVS
             HOperatorSet.WriteImage(ho_ImagePart, "bmp", 0, "C:/Users/Administrator/Desktop/test.bmp");
             //
             HOperatorSet.DispObj(ho_ImagePart, hwindow);
-            ho_Image.Dispose();
-            ho_ImageGray.Dispose();
             ho_ConnectedRegions.Dispose();
             ho_SelectedRegions.Dispose();
             ho_RegionFillUp.Dispose();
@@ -1838,6 +1913,8 @@ namespace LCD_SVS
 
         private void btnAnalyze_Click(object sender, EventArgs e)
         {
+            btnAnalyze.Cursor = Cursors.WaitCursor;
+            HOperatorSet.ClearWindow(hwindow);
             // Local iconic variables 
             HObject ho_Image, ho_GsFilter1, ho_GsFilter2;
             HObject ho_Filter, ho_GrayImage, ho_ImageInvert, ho_ImageFFT;
@@ -1954,7 +2031,8 @@ namespace LCD_SVS
             HOperatorSet.CountObj(ho_Contours, out hv_Number);
             HOperatorSet.DispObj(ho_Contours, hwindow);
 
-
+            ////hwindow.WriteString("HAHAHA");
+            //hwindow.
 
             if (hv_Number > 0)
             {
@@ -1991,6 +2069,7 @@ namespace LCD_SVS
             hv_Sigma1.Dispose();
             hv_Sigma2.Dispose();
             hv_Number.Dispose();
+            btnAnalyze.Cursor = Cursors.Default;
 
         }
 
@@ -2312,10 +2391,311 @@ namespace LCD_SVS
             IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Alpha", p.Alpha, p.IniFilePath);
         }
 
-        private void tabVision_Click(object sender, EventArgs e)
-        {
 
+        #region Vision
+
+        public void startAnalyzePictureThread()
+        {
+            anyThreadIsRuning = true;
+            anyThread = new Thread(new ThreadStart(anyTHread));
+            anyThread.Start();
         }
 
+        public void anyTHread()
+        {
+        //    while (anyThreadIsRuning)
+        //    {
+
+        //        HOperatorSet.ClearWindow(hwindow);
+        //        HOperatorSet.SetDraw(hwindow, "margin");
+        //        HOperatorSet.SetColor(hwindow, "red");
+        //        HOperatorSet.SetLineWidth(hwindow, 1);
+
+        //        HObject ho_ImageCapture = new HObject();
+        //        HObject ho_ImageEmphasize = new HObject();
+        //        HObject ho_RegionCapture = new HObject(), ho_ConnectedRegionsCapture = new HObject(), ho_SelectedRegions = new HObject();
+
+                
+
+        //        HTuple hv_Height = new HTuple(), hv_Weight = new HTuple();
+
+        //        HOperatorSet.GenEmptyObj(out ho_ImageCapture);
+        //        ho_ImageCapture.Dispose();
+        //        HOperatorSet.ReadImage(out ho_ImageCapture, txtVisionImgFile.Text.Trim());
+        //        HOperatorSet.DispObj(ho_ImageCapture, hwindow);
+
+        //        hv_Height.Dispose();
+        //        hv_Weight.Dispose();
+        //        HOperatorSet.GetImageSize(ho_ImageCapture, out hv_Weight, out hv_Height);
+        //        //
+        //        HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
+        //        ho_ImageEmphasize.Dispose();
+        //        HOperatorSet.Emphasize(ho_ImageCapture, out ho_ImageEmphasize, 7, 7, 1);
+        //        //
+        //        HOperatorSet.GenEmptyObj(out ho_ImageGray);
+        //        ho_ImageGray.Dispose();
+        //        HOperatorSet.Rgb3ToGray(ho_ImageEmphasize, ho_ImageEmphasize, ho_ImageEmphasize, out ho_ImageGray);
+        //        //VisionResizeImage(ho_ImageGray, false);
+        //        HOperatorSet.DispObj(ho_ImageGray, hwindow);
+        //        ho_ImageCapture.Dispose();
+
+
+
+
+        //        HOperatorSet.GenEmptyObj(out ho_RegionCapture);
+        //        HOperatorSet.GenEmptyObj(out ho_ConnectedRegionsCapture);
+        //        HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
+        //        HOperatorSet.GenEmptyObj(out ho_RegionFillUp);
+        //        HOperatorSet.GenEmptyObj(out ho_RegionClosing);
+        //        HOperatorSet.GenEmptyObj(out ho_RegionTrans);
+
+        //        //HOperatorSet.ClearObj(ho_RegionTrans);
+
+        //        HTuple hv_Area = new HTuple(), hv__ = new HTuple();
+        //        HOperatorSet.Threshold(ho_ImageGray, out ho_Region, comboMinGray.SelectedIndex, comboMaxGray.SelectedIndex);
+        //        ho_ConnectedRegions.Dispose();
+        //        HOperatorSet.Connection(ho_Region, out ho_ConnectedRegions);
+        //        hv_Area.Dispose(); hv__.Dispose(); hv__.Dispose();
+        //        HOperatorSet.AreaCenter(ho_ConnectedRegions, out hv_Area, out hv__, out hv__);
+        //        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        //        {
+        //            ho_SelectedRegions.Dispose();
+        //            HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions, "area",
+        //                "and", (hv_Area.TupleMax()) - 10, (hv_Area.TupleMax()) + 10);
+        //        }
+        //        ho_RegionFillUp.Dispose();
+        //        HOperatorSet.FillUp(ho_SelectedRegions, out ho_RegionFillUp);
+        //        ho_RegionClosing.Dispose();
+        //        HOperatorSet.ClosingRectangle1(ho_RegionFillUp, out ho_RegionClosing, 10, 10);
+        //        ho_RegionTrans.Dispose();
+        //        HOperatorSet.ShapeTrans(ho_RegionClosing, out ho_RegionTrans, "convex");
+        //        //
+        //        HOperatorSet.DispObj(ho_RegionTrans, hwindow);
+        //        HOperatorSet.ClearObj(ho_RegionTrans);
+        //        HOperatorSet.ClearObj(ho_SelectedRegions);
+        //        HOperatorSet.ClearObj(ho_RegionClosing);
+
+        //        HOperatorSet.ClearWindow(hwindow);
+        //        HTuple hv_Row = new HTuple(), hv_Column = new HTuple(), hv_Area = new HTuple();
+        //        HTuple hv_Phi = new HTuple();
+        //        HOperatorSet.GenEmptyObj(out ho_ImageRotate1);
+        //        hv_Area.Dispose(); hv_Row.Dispose(); hv_Column.Dispose();
+        //        HOperatorSet.AreaCenter(ho_Region, out hv_Area, out hv_Row, out hv_Column);
+        //        hv_Phi.Dispose();
+        //        HOperatorSet.OrientationRegion(ho_Region, out hv_Phi);
+        //        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        //        {
+        //            ho_ImageRotate1.Dispose();
+        //            HOperatorSet.RotateImage(ho_ImageGray, out ho_ImageRotate1, -(hv_Phi.TupleDeg()
+        //                ), "constant");
+        //        }
+        //        // HOperatorSet.DispObj(ho_ImageRotate1, hwindow);
+        //        //HOperatorSet.DispObj(ho_RegionTrans, hwindow);
+
+
+        //        //HOperatorSet
+        //        //------------------------
+        //        HOperatorSet.GenEmptyObj(out ho_Region);
+        //        HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
+        //        HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
+        //        HOperatorSet.GenEmptyObj(out ho_RegionFillUp);
+        //        HOperatorSet.GenEmptyObj(out ho_RegionClosing);
+        //        HOperatorSet.GenEmptyObj(out ho_RegionTrans);
+        //        HOperatorSet.GenEmptyObj(out ho_Rectangle);
+        //        HOperatorSet.GenEmptyObj(out ho_ImageReduced);
+        //        HOperatorSet.GenEmptyObj(out ho_ImagePart);
+
+        //        //HOperatorSet.ClearObj(ho_RegionTrans);
+        //        HOperatorSet.Threshold(ho_ImageRotate1, out ho_Region, comboMinGray.SelectedIndex, comboMaxGray.SelectedIndex);
+        //        ho_ConnectedRegions.Dispose();
+        //        HOperatorSet.Connection(ho_Region, out ho_ConnectedRegions);
+        //        hv_Area.Dispose(); hv_Row.Dispose(); hv_Column.Dispose();
+        //        HOperatorSet.AreaCenter(ho_ConnectedRegions, out hv_Area, out hv_Row, out hv_Column);
+
+        //        HTuple hv_Row1 = new HTuple(), hv_Column1 = new HTuple(), hv_Row2 = new HTuple(), hv_Column2 = new HTuple();
+        //        HOperatorSet.InnerRectangle1(ho_ConnectedRegions, out hv_Row1, out hv_Column1, out hv_Row2, out hv_Column2);
+        //        ho_Rectangle.Dispose();
+        //        HOperatorSet.GenRectangle1(out ho_Rectangle, hv_Row1, hv_Column1, hv_Row2, hv_Column2);
+        //        ho_ImageReduced.Dispose();
+        //        HOperatorSet.ReduceDomain(ho_ImageRotate1, ho_Rectangle, out ho_ImageReduced);
+        //        ho_ImagePart.Dispose();
+        //        HOperatorSet.CropDomain(ho_ImageReduced, out ho_ImagePart);
+        //        HOperatorSet.DispObj(ho_ImagePart, hwindow);
+        //        HOperatorSet.WriteImage(ho_ImagePart, "bmp", 0, "C:/Users/Administrator/Desktop/test.bmp");
+        //        //
+        //        HOperatorSet.DispObj(ho_ImagePart, hwindow);
+        //        ho_ImageCapture.Dispose();
+        //        ho_ImageGray.Dispose();
+        //        ho_ConnectedRegions.Dispose();
+        //        ho_SelectedRegions.Dispose();
+        //        ho_RegionFillUp.Dispose();
+        //        ho_RegionClosing.Dispose();
+        //        ho_RegionTrans.Dispose();
+        //        ho_Rectangle.Dispose();
+        //        ho_ImageReduced.Dispose();
+        //        HOperatorSet.GenEmptyObj(out ho_ImagePart);
+        //        ho_ImagePart.Dispose();
+
+
+        //        // Local iconic variables 
+        //        HObject ho_Image, ho_GsFilter1, ho_GsFilter2;
+        //        HObject ho_Filter, ho_GrayImage, ho_ImageInvert, ho_ImageFFT;
+        //        HObject ho_ImageConvol, ho_ImageFiltered, ho_Rectangle;
+        //        HObject ho_ROI, ho_ImageMedian, ho_ImageSmooth, ho_ConnectedRegions;
+        //        HObject ho_SelectedRegions, ho_Contours;
+
+        //        // Local control variables 
+        //        HTuple hv_WindowHandle = new HTuple(), hv_Width = new HTuple();
+        //        HTuple hv_Height = new HTuple(), hv_Sigma1 = new HTuple();
+        //        HTuple hv_Sigma2 = new HTuple(), hv_Number = new HTuple();
+
+        //        // Initialize local and output iconic variables 
+        //        HOperatorSet.GenEmptyObj(out ho_Image);
+        //        HOperatorSet.GenEmptyObj(out ho_GsFilter1);
+        //        HOperatorSet.GenEmptyObj(out ho_GsFilter2);
+        //        HOperatorSet.GenEmptyObj(out ho_Filter);
+        //        HOperatorSet.GenEmptyObj(out ho_GrayImage);
+        //        HOperatorSet.GenEmptyObj(out ho_ImageInvert);
+        //        HOperatorSet.GenEmptyObj(out ho_ImageFFT);
+        //        HOperatorSet.GenEmptyObj(out ho_ImageConvol);
+        //        HOperatorSet.GenEmptyObj(out ho_ImageFiltered);
+        //        HOperatorSet.GenEmptyObj(out ho_Rectangle);
+        //        HOperatorSet.GenEmptyObj(out ho_ROI);
+        //        HOperatorSet.GenEmptyObj(out ho_ImageMedian);
+        //        HOperatorSet.GenEmptyObj(out ho_ImageSmooth);
+        //        HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
+        //        HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
+        //        HOperatorSet.GenEmptyObj(out ho_Contours);
+        //        ho_Image.Dispose();
+        //        HOperatorSet.ReadImage(out ho_Image, "C:/Users/Administrator/Desktop/test.bmp");
+
+        //        HOperatorSet.DispObj(ho_Image, hwindow);
+        //        HOperatorSet.SetDraw(hwindow, "margin");
+        //        HOperatorSet.SetLineWidth(hwindow, 1);
+        //        HOperatorSet.SetColored(hwindow, 12);
+
+
+        //        hv_Width.Dispose(); hv_Height.Dispose();
+        //        HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
+
+
+        //        hv_Sigma1.Dispose();
+        //        hv_Sigma1 = Convert.ToDouble(comboSigma1.Text);// 10.0;
+        //        hv_Sigma2.Dispose();
+        //        hv_Sigma2 = Convert.ToDouble(comboSigma2.Text); ;//2.0;
+
+        //        ho_GsFilter1.Dispose();
+        //        HOperatorSet.GenGaussFilter(out ho_GsFilter1, hv_Sigma1, hv_Sigma1, 0.0, "none",
+        //            "rft", hv_Width, hv_Height);
+
+        //        ho_GsFilter2.Dispose();
+        //        HOperatorSet.GenGaussFilter(out ho_GsFilter2, hv_Sigma2, hv_Sigma2, 0.0, "none",
+        //            "rft", hv_Width, hv_Height);
+        //        ho_Filter.Dispose();
+        //        //HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, 1, 0);
+        //        HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, Convert.ToDouble(comboMult.Text), 0);
+
+        //        ho_GrayImage.Dispose();
+        //        HOperatorSet.Rgb1ToGray(ho_Image, out ho_GrayImage);
+        //        ho_ImageInvert.Dispose();
+        //        HOperatorSet.InvertImage(ho_GrayImage, out ho_ImageInvert);
+
+        //        ho_ImageFFT.Dispose();
+        //        HOperatorSet.RftGeneric(ho_ImageInvert, out ho_ImageFFT, "to_freq", "sqrt", "complex",
+        //            hv_Width);
+
+        //        ho_ImageConvol.Dispose();
+        //        HOperatorSet.ConvolFft(ho_ImageFFT, ho_Filter, out ho_ImageConvol);
+
+        //        ho_ImageFiltered.Dispose();
+        //        HOperatorSet.RftGeneric(ho_ImageConvol, out ho_ImageFiltered, "from_freq", "n",
+        //            "real", hv_Width);
+
+        //        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+        //        {
+        //            ho_Rectangle.Dispose();
+
+        //            Int32 Height = hv_Height.I - Convert.ToInt32(txtBotL.Text);
+        //            Int32 Width = hv_Width.I - Convert.ToInt32(txtBotR.Text);
+
+        //            HOperatorSet.GenRectangle1(out ho_Rectangle, Convert.ToInt16(txtTopL.Text), Convert.ToInt16(txtTopR.Text), Height, Width);
+        //            // HOperatorSet.GenRectangle1(out ho_Rectangle, 10,10, hv_Height-10, hv_Width-10);
+        //        }
+
+        //        ho_ROI.Dispose();
+        //        HOperatorSet.ReduceDomain(ho_ImageFiltered, ho_Rectangle, out ho_ROI);
+
+        //        ho_ImageMedian.Dispose();
+        //        HOperatorSet.MedianImage(ho_ROI, out ho_ImageMedian, "circle", Convert.ToInt16(comboRadius.Text), "mirrored");
+
+        //        ho_ImageSmooth.Dispose();
+        //        HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToDouble(comboAlpha.Text));
+
+        //        ho_ImageSmooth.Dispose();
+        //        // HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, -0.012866, -0.005549);
+        //        double MinGray = Convert.ToDouble(txtMinGray.Text);
+        //        double MaxGray = Convert.ToDouble(txtMaxGray.Text);
+
+        //        HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, MinGray, MaxGray);
+
+        //        ho_ConnectedRegions.Dispose();
+        //        HOperatorSet.Connection(ho_ImageSmooth, out ho_ConnectedRegions);
+
+
+        //        ho_SelectedRegions.Dispose();
+        //        HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions, "area",
+        //            "and", Convert.ToInt64(txtMinArea.Text), Convert.ToInt64(txtMaxArea.Text));
+
+        //        ho_Contours.Dispose();
+        //        HOperatorSet.GenContourRegionXld(ho_SelectedRegions, out ho_Contours, "border");
+
+        //        hv_Number.Dispose();
+        //        HOperatorSet.CountObj(ho_Contours, out hv_Number);
+        //        HOperatorSet.DispObj(ho_Contours, hwindow);
+
+        //        ////hwindow.WriteString("HAHAHA");
+        //        //hwindow.
+
+        //        if (hv_Number > 0)
+        //        {
+        //            string msg = "FAIL,There is " + hv_Number + " error(s)";
+        //            disp_message(hwindow, msg, "window", 12, 12, "red", "false");
+        //        }
+        //        else
+        //        {
+        //            string msg = "PASS,There is " + hv_Number + " error(s)";
+        //            disp_message(hwindow, msg, "window", 12, 12, "green", "false");
+        //        }
+
+
+        //        ho_Image.Dispose();
+        //        ho_GsFilter1.Dispose();
+        //        ho_GsFilter2.Dispose();
+        //        ho_Filter.Dispose();
+        //        ho_GrayImage.Dispose();
+        //        ho_ImageInvert.Dispose();
+        //        ho_ImageFFT.Dispose();
+        //        ho_ImageConvol.Dispose();
+        //        ho_ImageFiltered.Dispose();
+        //        ho_Rectangle.Dispose();
+        //        ho_ROI.Dispose();
+        //        ho_ImageMedian.Dispose();
+        //        ho_ImageSmooth.Dispose();
+        //        ho_ConnectedRegions.Dispose();
+        //        ho_SelectedRegions.Dispose();
+        //        ho_Contours.Dispose();
+
+        //        hv_WindowHandle.Dispose();
+        //        hv_Width.Dispose();
+        //        hv_Height.Dispose();
+        //        hv_Sigma1.Dispose();
+        //        hv_Sigma2.Dispose();
+        //        hv_Number.Dispose();
+
+        //    }
+
+        }
+        
+        #endregion
     }
 }
