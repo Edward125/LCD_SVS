@@ -462,6 +462,7 @@
             this.tabVision.TabIndex = 3;
             this.tabVision.Text = "Vision";
             this.tabVision.UseVisualStyleBackColor = true;
+            this.tabVision.Click += new System.EventHandler(this.tabVision_Click);
             // 
             // txtBotR
             // 
@@ -664,6 +665,7 @@
             this.comboAlpha.Size = new System.Drawing.Size(76, 22);
             this.comboAlpha.TabIndex = 30;
             this.comboAlpha.Text = "1.0";
+            this.comboAlpha.SelectedIndexChanged += new System.EventHandler(this.comboAlpha_SelectedIndexChanged);
             // 
             // label13
             // 
@@ -784,7 +786,6 @@
             this.comboSigma1.Name = "comboSigma1";
             this.comboSigma1.Size = new System.Drawing.Size(76, 22);
             this.comboSigma1.TabIndex = 24;
-            this.comboSigma1.Text = "10.0";
             this.comboSigma1.SelectedIndexChanged += new System.EventHandler(this.comboSigma1_SelectedIndexChanged);
             // 
             // label11

@@ -1258,14 +1258,12 @@ namespace LCD_SVS
                 p.createIniFile(p.IniFilePath);
             p.readIniValue(p.IniFilePath); //
             p.CheckFolder();
-            UpdateIniValueUI();
-
-
             for (int i = 0; i <= 255; i++)
             {
                 comboMinGray.Items.Add(i);
                 comboMaxGray.Items.Add(i);
             }
+            UpdateIniValueUI();
         }
 
 
@@ -1281,7 +1279,7 @@ namespace LCD_SVS
             txtOKImgFolder.SetWatermark ("Db-Click here to select folder.");
             txtVisionImgFile.SetWatermark("Double Click here to select image file.");
             txtImgFile.SetWatermark("Double Click here to select image file.");
-            
+
 
             //
             this.Text = p.SystemName;
@@ -1295,7 +1293,21 @@ namespace LCD_SVS
             else
                 chkTestNGSavePictures.Checked = false;
             txtNGImgFolder.Text = p.NGImgFolder;
-                
+
+            comboMinGray.SelectedIndex = p.MinGray;
+            comboMaxGray.SelectedIndex = p.MaxGray;
+            comboSigma1.Text = p.Sigma1.ToString("F1");
+            comboSigma2.Text = p.Sigma2.ToString("F1");
+            comboRadius.Text = p.Radius.ToString();
+            comboMult.Text = p.Mult.ToString("F1");
+            txtMinGray.Text = p.MinGray2.ToString("F6");
+            txtMaxGray.Text = p.MaxGray2.ToString("F6");
+            txtTopL.Text = p.Top_L.ToString();
+            txtTopR.Text = p.Top_R.ToString();
+            txtBotL.Text = p.Bot_L.ToString();
+            txtBotR.Text = p.Bot_R.ToString();
+            txtMinArea.Text = p.MinArea.ToString();
+            txtMaxArea.Text = p.MaxArea.ToString();
         }
 
         /// <summary>
@@ -2210,7 +2222,7 @@ namespace LCD_SVS
 
         private void comboMult_SelectedIndexChanged(object sender, EventArgs e)
         {
-            p.Mult = Convert.ToInt16(comboMult.Text);
+            p.Mult = Convert.ToDouble (comboMult.Text);
             IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Mult", p.Mult, p.IniFilePath);
 
         }
@@ -2229,13 +2241,13 @@ namespace LCD_SVS
 
         private void comboSigma1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            p.Sigma1 = Convert.ToInt16(comboSigma1.Text);
+            p.Sigma1 = Convert.ToDouble(comboSigma1.Text);
             IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Sigma1",p.Sigma1,p.IniFilePath);
         }
 
         private void comboSigma2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            p.Sigma2 = Convert.ToInt16(comboSigma2.Text);
+            p.Sigma2 = Convert.ToDouble (comboSigma2.Text);
             IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Sigma2", p.Sigma2, p.IniFilePath);
         }
 
@@ -2285,14 +2297,25 @@ namespace LCD_SVS
 
         private void txtMinArea_TextChanged(object sender, EventArgs e)
         {
-            p.MinArea = Convert.ToUInt16(txtMinArea.Text);
+            p.MinArea = Convert.ToInt16(txtMinArea.Text);
             IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "MinArea", p.MinArea, p.IniFilePath);
         }
 
         private void txtMaxArea_TextChanged(object sender, EventArgs e)
         {
-            p.MaxArea = Convert.ToUInt16(txtMaxArea.Text);
+            p.MaxArea = Convert.ToInt64 (txtMaxArea.Text);
             IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "MaxArea", p.MaxArea, p.IniFilePath);
+        }
+
+        private void comboAlpha_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            p.Alpha = Convert.ToDouble(comboAlpha.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Alpha", p.Alpha, p.IniFilePath);
+        }
+
+        private void tabVision_Click(object sender, EventArgs e)
+        {
+
         }
 
     }
