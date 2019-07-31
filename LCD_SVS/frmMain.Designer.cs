@@ -887,7 +887,6 @@
             this.btnReadImage.TabIndex = 15;
             this.btnReadImage.Text = "Read Image";
             this.btnReadImage.UseVisualStyleBackColor = false;
-            this.btnReadImage.Visible = false;
             this.btnReadImage.Click += new System.EventHandler(this.btnReadImage_Click);
             // 
             // btnStartDebug
@@ -914,7 +913,6 @@
             this.btnMeanThreshold.TabIndex = 13;
             this.btnMeanThreshold.Text = "Threshold";
             this.btnMeanThreshold.UseVisualStyleBackColor = false;
-            this.btnMeanThreshold.Visible = false;
             this.btnMeanThreshold.Click += new System.EventHandler(this.btnMeanThreshold_Click);
             // 
             // label7

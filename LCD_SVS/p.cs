@@ -89,8 +89,8 @@ namespace LCD_SVS
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Top_R", Top_R, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Bot_L", Bot_L, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Bot_R", Bot_R, inifilepath);
-            IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MinArea", MinGray, inifilepath);
-            IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MaxArea", MaxGray, inifilepath);
+            IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MinArea", MinArea, inifilepath);
+            IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MaxArea", MaxArea, inifilepath);
 
 
         }
@@ -118,7 +118,7 @@ namespace LCD_SVS
                 Radius = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Radius", inifilepath));
                 Alpha = Convert.ToDouble (IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Alpha", inifilepath));
                 MinGray2 = Convert.ToDouble(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray2", inifilepath));
-                MaxGray2 = Convert.ToDouble(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray2", inifilepath));
+                MaxGray2 = Convert.ToDouble(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MaxGray2", inifilepath));
                 Top_L = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Top_L", inifilepath));
                 Top_R = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Top_R", inifilepath));
                 Bot_L = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "Bot_L", inifilepath));

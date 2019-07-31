@@ -1933,8 +1933,7 @@ namespace LCD_SVS
             HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToDouble (comboAlpha.Text) );
 
             ho_ImageSmooth.Dispose();
-            //HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, -0.012866, -0.005549);
-
+           // HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, -0.012866, -0.005549);
             double MinGray = Convert.ToDouble(txtMinGray.Text);
             double MaxGray = Convert.ToDouble(txtMaxGray.Text);
             
