@@ -556,6 +556,7 @@
             this.txtMaxArea.TabIndex = 39;
             this.txtMaxArea.Text = "99999";
             this.txtMaxArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxArea.TextChanged += new System.EventHandler(this.txtMaxArea_TextChanged);
             // 
             // label16
             // 
@@ -576,6 +577,7 @@
             this.txtMinArea.TabIndex = 37;
             this.txtMinArea.Text = "800";
             this.txtMinArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMinArea.TextChanged += new System.EventHandler(this.txtMinArea_TextChanged);
             // 
             // label17
             // 

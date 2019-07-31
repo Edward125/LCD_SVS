@@ -1882,7 +1882,7 @@ namespace LCD_SVS
                 "rft", hv_Width, hv_Height);
             ho_Filter.Dispose();
             //HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, 1, 0);
-            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, Convert.ToInt16 (comboMult.Text )  , 0);
+            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, Convert.ToDouble (comboMult.Text), 0);
 
             ho_GrayImage.Dispose();
             HOperatorSet.Rgb1ToGray(ho_Image, out ho_GrayImage);
@@ -1915,10 +1915,10 @@ namespace LCD_SVS
             HOperatorSet.ReduceDomain(ho_ImageFiltered, ho_Rectangle, out ho_ROI);
 
             ho_ImageMedian.Dispose();
-            HOperatorSet.MedianImage(ho_ROI, out ho_ImageMedian, "circle", Convert.ToInt16 (comboRadius.Text ) , "mirrored");
+            HOperatorSet.MedianImage(ho_ROI, out ho_ImageMedian, "circle", Convert.ToInt16  (comboRadius.Text ) , "mirrored");
 
             ho_ImageSmooth.Dispose();
-            HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToInt16(comboAlpha.Text) );
+            HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToDouble (comboAlpha.Text) );
 
             ho_ImageSmooth.Dispose();
             //HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, -0.012866, -0.005549);
@@ -1956,10 +1956,7 @@ namespace LCD_SVS
                 disp_message(hwindow, msg , "window", 12, 12, "green", "false");
             }
 
-           
-           
-
-
+          
             ho_Image.Dispose();
             ho_GsFilter1.Dispose();
             ho_GsFilter2.Dispose();
@@ -2284,6 +2281,18 @@ namespace LCD_SVS
         {
             p.Bot_R = Convert.ToInt16(txtBotR.Text);
             IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "Bot_R", p.Bot_R, p.IniFilePath);
+        }
+
+        private void txtMinArea_TextChanged(object sender, EventArgs e)
+        {
+            p.MinArea = Convert.ToUInt16(txtMinArea.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "MinArea", p.MinArea, p.IniFilePath);
+        }
+
+        private void txtMaxArea_TextChanged(object sender, EventArgs e)
+        {
+            p.MaxArea = Convert.ToUInt16(txtMaxArea.Text);
+            IniFile.IniWriteValue(p.IniSection.PictureSet.ToString(), "MaxArea", p.MaxArea, p.IniFilePath);
         }
 
     }
