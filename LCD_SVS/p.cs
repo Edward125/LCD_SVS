@@ -58,6 +58,8 @@ namespace LCD_SVS
                 Directory.CreateDirectory(OKImgFolder);
             if (!Directory.Exists(NGImgFolder))
                 Directory.CreateDirectory(NGImgFolder);
+            if (!Directory.Exists(AppCapFolder))
+                Directory.CreateDirectory(AppCapFolder);
 
         }
 

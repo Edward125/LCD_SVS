@@ -1524,14 +1524,20 @@ namespace LCD_SVS
             }
         }
 
-        private void btnReadImage_Click(object sender, EventArgs e)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="txtimg"></param>
+        /// <returns></returns>
+        private bool CheckImgFile(TextBox txtimg)
         {
-            if (string.IsNullOrEmpty(txtVisionImgFile.Text.Trim()))
+            if (string.IsNullOrEmpty(txtimg.Text.Trim()))
             {
                 ShowMsg show = new ShowMsg();
-                show.ShowMessageBoxTimeout("Please select image file first.", "Not Find Image File", MessageBoxButtons.OK,MessageBoxIcon.Information, 1000); //单位毫秒
+                show.ShowMessageBoxTimeout("Please select image file first.", "Not Find Image File", MessageBoxButtons.OK, MessageBoxIcon.Information, 1000); //单位毫秒
                 txtVisionImgFile.Focus();
-                return;
+                return false;
             }
 
             if (!File.Exists(txtVisionImgFile.Text.Trim()))
@@ -1540,14 +1546,21 @@ namespace LCD_SVS
                 show.ShowMessageBoxTimeout("You select image file is not exists,retry it.", "Not Find Image File", MessageBoxButtons.OK, MessageBoxIcon.Information, 1000); //单位毫秒
                 txtVisionImgFile.SelectAll();
                 txtVisionImgFile.Focus();
-                return;
+                return false;
             }
+            return true;
+        }
 
+        private void btnReadImage_Click(object sender, EventArgs e)
+        {
+            if (!CheckImgFile(txtVisionImgFile))
+                return;
+            btnReadImage.Cursor = Cursors.WaitCursor;
             int[] MaxThresh = new int[2];
-
             GetSuggestionMaxValue(txtVisionImgFile.Text.Trim(), out MaxThresh);
             comboMinGray.SelectedIndex = MaxThresh[0];
             comboMaxGray.SelectedIndex = MaxThresh[1];
+            btnReadImage.Cursor = Cursors.Default;
 
         }
 
@@ -1715,6 +1728,11 @@ namespace LCD_SVS
 
         private void btnMeanThreshold_Click(object sender, EventArgs e)
         {
+            if (!CheckImgFile(txtVisionImgFile))
+                return;
+
+            btnMeanThreshold.Cursor = Cursors.WaitCursor;
+
             HOperatorSet.ClearWindow(hwindow);
             HObject ho_Image = new HObject(), ho_ImageGray = new HObject();
             HOperatorSet.GenEmptyObj(out ho_Image);
@@ -1774,6 +1792,8 @@ namespace LCD_SVS
             HOperatorSet.ClearObj(ho_SelectedRegions);
             HOperatorSet.ClearObj(ho_RegionClosing);
 
+            btnMeanThreshold.Cursor = Cursors.Default;
+
         }
 
 
@@ -1814,105 +1834,260 @@ namespace LCD_SVS
 
         private void btnGetROI_Click(object sender, EventArgs e)
         {
+            if (!CheckImgFile(txtVisionImgFile))
+                return;
+
+            btnGetROI.Cursor = Cursors.WaitCursor;
 
             HOperatorSet.ClearWindow(hwindow);
+            // Local iconic variables 
 
-            HObject ho_Region = new HObject(), ho_ImageRotate1 = new HObject();
-            HOperatorSet.GenEmptyObj(out ho_Region);
-            ho_Region.Dispose();
-            //GetThreshholdRegion(txtVisionImgFile.Text.Trim(), out ho_Region, p.MinGray, p.MaxGray);
+            HObject ho_Image, ho_ImageEmphasize, ho_GrayImage;
+            HObject ho_Region, ho_ImageRotate, ho_Region1, ho_Rectangle1;
+            HObject ho_ImageReduced2, ho_ImagePart1;
 
+            // Local control variables 
 
-            HObject ho_Image = new HObject(), ho_ImageGray = new HObject();
+            HTuple hv_WindowHandle = new HTuple(), hv_Phi = new HTuple();
+            HTuple hv_Row12 = new HTuple(), hv_Column12 = new HTuple();
+            HTuple hv_Row22 = new HTuple(), hv_Column22 = new HTuple();
+            // Initialize local and output iconic variables 
             HOperatorSet.GenEmptyObj(out ho_Image);
+            HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
+            HOperatorSet.GenEmptyObj(out ho_GrayImage);
+            HOperatorSet.GenEmptyObj(out ho_Region);
+            HOperatorSet.GenEmptyObj(out ho_ImageRotate);
+            HOperatorSet.GenEmptyObj(out ho_Region1);
+            HOperatorSet.GenEmptyObj(out ho_Rectangle1);
+            HOperatorSet.GenEmptyObj(out ho_ImageReduced2);
+            HOperatorSet.GenEmptyObj(out ho_ImagePart1);
             ho_Image.Dispose();
             HOperatorSet.ReadImage(out ho_Image, txtVisionImgFile.Text.Trim());
-            HObject ho_ImageEmphasize = new HObject();
-            HOperatorSet.GenEmptyObj(out ho_ImageEmphasize);
+            hv_WindowHandle.Dispose();
+            HOperatorSet.DispObj(ho_Image, hwindow);
+            HOperatorSet.SetDraw(hwindow, "margin");
+            HOperatorSet.SetColor(hwindow, "green");
             ho_ImageEmphasize.Dispose();
             HOperatorSet.Emphasize(ho_Image, out ho_ImageEmphasize, 7, 7, 1);
-            //
-            HOperatorSet.GenEmptyObj(out ho_ImageGray);
-            ho_ImageGray.Dispose();
-            HOperatorSet.Rgb3ToGray(ho_ImageEmphasize, ho_ImageEmphasize, ho_ImageEmphasize, out ho_ImageGray);
-            //VisionResizeImage(ho_ImageGray, false);
-            HOperatorSet.DispObj(ho_ImageGray, hwindow);
-            ho_Image.Dispose();
-
-
-            HOperatorSet.SetDraw(hwindow, "margin");
-            HOperatorSet.SetColor(hwindow, "red");
-            HOperatorSet.SetLineWidth(hwindow, 1);
-
-            HOperatorSet.Threshold(ho_ImageGray, out ho_Region, p.MinGray , p.MaxGray );
-            ho_ImageGray.Dispose();
-
-
-            HTuple hv_Row = new HTuple(), hv_Column = new HTuple(), hv_Area = new HTuple();
-            HTuple hv_Phi = new HTuple();
-            HOperatorSet.GenEmptyObj(out ho_ImageRotate1);
-            hv_Area.Dispose(); hv_Row.Dispose(); hv_Column.Dispose();
-            HOperatorSet.AreaCenter(ho_Region, out hv_Area, out hv_Row, out hv_Column);
+            ho_GrayImage.Dispose();
+            HOperatorSet.Rgb1ToGray(ho_ImageEmphasize, out ho_GrayImage);
+            HOperatorSet.DispObj(ho_GrayImage, hwindow);
+            ho_Region.Dispose();
+            HOperatorSet.Threshold(ho_GrayImage, out ho_Region, p.MinGray , p.MaxGray );
+            HOperatorSet.DispObj(ho_Region, hwindow);
             hv_Phi.Dispose();
             HOperatorSet.OrientationRegion(ho_Region, out hv_Phi);
             using (HDevDisposeHelper dh = new HDevDisposeHelper())
             {
-                ho_ImageRotate1.Dispose();
-                HOperatorSet.RotateImage(ho_ImageGray, out ho_ImageRotate1, -(hv_Phi.TupleDeg()
+                ho_ImageRotate.Dispose();
+                HOperatorSet.RotateImage(ho_GrayImage, out ho_ImageRotate, -(hv_Phi.TupleDeg()
                     ), "constant");
-                //HOperatorSet.RotateImage(ho_Region, out ho_ImageRotate1, -(hv_Phi.TupleDeg()
-                //    ), "constant");
+            }
+            HOperatorSet.SetColor(hwindow, "red");
+            ho_Region1.Dispose();
+            HOperatorSet.Threshold(ho_ImageRotate, out ho_Region1, 8, 255);
+            hv_Row12.Dispose(); hv_Column12.Dispose(); hv_Row22.Dispose(); hv_Column22.Dispose();
+            HOperatorSet.InnerRectangle1(ho_Region1, out hv_Row12, out hv_Column12, out hv_Row22,
+                out hv_Column22);
+            HOperatorSet.SetColor( hwindow, "blue");
+            ho_Rectangle1.Dispose();
+            HOperatorSet.GenRectangle1(out ho_Rectangle1, hv_Row12, hv_Column12, hv_Row22,
+                hv_Column22);
+            ho_ImageReduced2.Dispose();
+            HOperatorSet.ReduceDomain(ho_ImageRotate, ho_Rectangle1, out ho_ImageReduced2
+                );
+            ho_ImagePart1.Dispose();
+            HOperatorSet.CropDomain(ho_ImageReduced2, out ho_ImagePart1);
+
+            if (File.Exists(p.AppCapFolder + @"\TEMPROI.bmp"))
+                File.Delete(p.AppCapFolder + @"\TEMPROI.bmp");
+
+            HOperatorSet.WriteImage(ho_ImagePart1, "bmp", 0, p.AppCapFolder +@"\TEMPROI.bmp");
+            HOperatorSet.DispObj(ho_ImagePart1,hwindow);
+
+            btnGetROI.Cursor = Cursors.Default;
+        }
+
+        // Procedures 
+        // External procedures 
+        // Chapter: Develop
+        // Short Description: Open a new graphics window that preserves the aspect ratio of the given image. 
+        public void dev_open_window_fit_image(HObject ho_Image, HTuple hv_Row, HTuple hv_Column,
+            HTuple hv_WidthLimit, HTuple hv_HeightLimit, out HTuple hv_WindowHandle)
+        {
+
+
+
+
+            // Local iconic variables 
+
+            // Local control variables 
+
+            HTuple hv_MinWidth = new HTuple(), hv_MaxWidth = new HTuple();
+            HTuple hv_MinHeight = new HTuple(), hv_MaxHeight = new HTuple();
+            HTuple hv_ResizeFactor = new HTuple(), hv_ImageWidth = new HTuple();
+            HTuple hv_ImageHeight = new HTuple(), hv_TempWidth = new HTuple();
+            HTuple hv_TempHeight = new HTuple(), hv_WindowWidth = new HTuple();
+            HTuple hv_WindowHeight = new HTuple();
+            // Initialize local and output iconic variables 
+            hv_WindowHandle = new HTuple();
+            //This procedure opens a new graphics window and adjusts the size
+            //such that it fits into the limits specified by WidthLimit
+            //and HeightLimit, but also maintains the correct image aspect ratio.
+            //
+            //If it is impossible to match the minimum and maximum extent requirements
+            //at the same time (f.e. if the image is very long but narrow),
+            //the maximum value gets a higher priority,
+            //
+            //Parse input tuple WidthLimit
+            if ((int)((new HTuple((new HTuple(hv_WidthLimit.TupleLength())).TupleEqual(0))).TupleOr(
+                new HTuple(hv_WidthLimit.TupleLess(0)))) != 0)
+            {
+                hv_MinWidth.Dispose();
+                hv_MinWidth = 500;
+                hv_MaxWidth.Dispose();
+                hv_MaxWidth = 800;
+            }
+            else if ((int)(new HTuple((new HTuple(hv_WidthLimit.TupleLength())).TupleEqual(
+                1))) != 0)
+            {
+                hv_MinWidth.Dispose();
+                hv_MinWidth = 0;
+                hv_MaxWidth.Dispose();
+                hv_MaxWidth = new HTuple(hv_WidthLimit);
+            }
+            else
+            {
+                hv_MinWidth.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_MinWidth = hv_WidthLimit.TupleSelect(
+                        0);
+                }
+                hv_MaxWidth.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_MaxWidth = hv_WidthLimit.TupleSelect(
+                        1);
+                }
+            }
+            //Parse input tuple HeightLimit
+            if ((int)((new HTuple((new HTuple(hv_HeightLimit.TupleLength())).TupleEqual(0))).TupleOr(
+                new HTuple(hv_HeightLimit.TupleLess(0)))) != 0)
+            {
+                hv_MinHeight.Dispose();
+                hv_MinHeight = 400;
+                hv_MaxHeight.Dispose();
+                hv_MaxHeight = 600;
+            }
+            else if ((int)(new HTuple((new HTuple(hv_HeightLimit.TupleLength())).TupleEqual(
+                1))) != 0)
+            {
+                hv_MinHeight.Dispose();
+                hv_MinHeight = 0;
+                hv_MaxHeight.Dispose();
+                hv_MaxHeight = new HTuple(hv_HeightLimit);
+            }
+            else
+            {
+                hv_MinHeight.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_MinHeight = hv_HeightLimit.TupleSelect(
+                        0);
+                }
+                hv_MaxHeight.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_MaxHeight = hv_HeightLimit.TupleSelect(
+                        1);
+                }
+            }
+            //
+            //Test, if window size has to be changed.
+            hv_ResizeFactor.Dispose();
+            hv_ResizeFactor = 1;
+            hv_ImageWidth.Dispose(); hv_ImageHeight.Dispose();
+            HOperatorSet.GetImageSize(ho_Image, out hv_ImageWidth, out hv_ImageHeight);
+            //First, expand window to the minimum extents (if necessary).
+            if ((int)((new HTuple(hv_MinWidth.TupleGreater(hv_ImageWidth))).TupleOr(new HTuple(hv_MinHeight.TupleGreater(
+                hv_ImageHeight)))) != 0)
+            {
+                hv_ResizeFactor.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_ResizeFactor = (((((hv_MinWidth.TupleReal()
+                        ) / hv_ImageWidth)).TupleConcat((hv_MinHeight.TupleReal()) / hv_ImageHeight))).TupleMax()
+                        ;
+                }
+            }
+            hv_TempWidth.Dispose();
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                hv_TempWidth = hv_ImageWidth * hv_ResizeFactor;
+            }
+            hv_TempHeight.Dispose();
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                hv_TempHeight = hv_ImageHeight * hv_ResizeFactor;
+            }
+            //Then, shrink window to maximum extents (if necessary).
+            if ((int)((new HTuple(hv_MaxWidth.TupleLess(hv_TempWidth))).TupleOr(new HTuple(hv_MaxHeight.TupleLess(
+                hv_TempHeight)))) != 0)
+            {
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    {
+                        HTuple
+                          ExpTmpLocalVar_ResizeFactor = hv_ResizeFactor * ((((((hv_MaxWidth.TupleReal()
+                            ) / hv_TempWidth)).TupleConcat((hv_MaxHeight.TupleReal()) / hv_TempHeight))).TupleMin()
+                            );
+                        hv_ResizeFactor.Dispose();
+                        hv_ResizeFactor = ExpTmpLocalVar_ResizeFactor;
+                    }
+                }
+            }
+            hv_WindowWidth.Dispose();
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                hv_WindowWidth = hv_ImageWidth * hv_ResizeFactor;
+            }
+            hv_WindowHeight.Dispose();
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                hv_WindowHeight = hv_ImageHeight * hv_ResizeFactor;
+            }
+            //Resize window
+            //dev_open_window(...);
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                HOperatorSet.SetPart(hwindow, 0, 0, hv_ImageHeight - 1, hv_ImageWidth - 1);
             }
 
+            hv_MinWidth.Dispose();
+            hv_MaxWidth.Dispose();
+            hv_MinHeight.Dispose();
+            hv_MaxHeight.Dispose();
+            hv_ResizeFactor.Dispose();
+            hv_ImageWidth.Dispose();
+            hv_ImageHeight.Dispose();
+            hv_TempWidth.Dispose();
+            hv_TempHeight.Dispose();
+            hv_WindowWidth.Dispose();
+            hv_WindowHeight.Dispose();
 
-            //------------------------
-            HObject ho_ConnectedRegions = new HObject(), ho_SelectedRegions = new HObject();
-            HObject ho_RegionFillUp = new HObject(), ho_RegionClosing = new HObject();
-            HObject ho_RegionTrans = new HObject(), ho_Rectangle = new HObject();
-            HObject ho_ImageReduced = new HObject(), ho_ImagePart = new HObject();
-            HOperatorSet.GenEmptyObj(out ho_Region);
-            HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
-            HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
-            HOperatorSet.GenEmptyObj(out ho_RegionFillUp);
-            HOperatorSet.GenEmptyObj(out ho_RegionClosing);
-            HOperatorSet.GenEmptyObj(out ho_RegionTrans);
-            HOperatorSet.GenEmptyObj(out ho_Rectangle);
-            HOperatorSet.GenEmptyObj(out ho_ImageReduced);
-            HOperatorSet.GenEmptyObj(out ho_ImagePart);
-
-            HOperatorSet.Threshold(ho_ImageRotate1, out ho_Region, p.MinGray , p.MaxGray );
-            ho_ConnectedRegions.Dispose();
-            HOperatorSet.Connection(ho_Region, out ho_ConnectedRegions);
-            hv_Area.Dispose(); hv_Row.Dispose(); hv_Column.Dispose();
-            HOperatorSet.AreaCenter(ho_ConnectedRegions, out hv_Area, out hv_Row, out hv_Column);
-
-
-            HTuple hv_Row1 = new HTuple(),hv_Column1 = new HTuple(),hv_Row2 = new HTuple (),hv_Column2 = new HTuple();
-            HOperatorSet.InnerRectangle1(ho_ConnectedRegions, out hv_Row1, out hv_Column1, out hv_Row2, out hv_Column2);
-            ho_Rectangle.Dispose();
-            HOperatorSet.GenRectangle1(out ho_Rectangle, hv_Row1, hv_Column1, hv_Row2, hv_Column2);
-            ho_ImageReduced.Dispose();
-            HOperatorSet.ReduceDomain(ho_ImageRotate1, ho_Rectangle, out ho_ImageReduced);
-            ho_ImagePart.Dispose();
-            HOperatorSet.CropDomain(ho_ImageReduced, out ho_ImagePart);
-            HOperatorSet.DispObj(ho_ImagePart, hwindow);
-            HOperatorSet.WriteImage(ho_ImagePart, "bmp", 0, "C:/Users/Administrator/Desktop/test.bmp");
-            //
-            HOperatorSet.DispObj(ho_ImagePart, hwindow);
-            ho_ConnectedRegions.Dispose();
-            ho_SelectedRegions.Dispose();
-            ho_RegionFillUp.Dispose();
-            ho_RegionClosing.Dispose();
-            ho_RegionTrans.Dispose();
-            ho_Rectangle.Dispose();
-            ho_ImageReduced.Dispose();
-            HOperatorSet.GenEmptyObj(out ho_ImagePart);
-            ho_ImagePart.Dispose();
- 
+            return;
         }
 
         private void btnAnalyze_Click(object sender, EventArgs e)
         {
+
+            string roifile = p.AppCapFolder + @"\TEMPROI.bmp";
+            if (!File.Exists(roifile))
+                return;
+
+
+
             btnAnalyze.Cursor = Cursors.WaitCursor;
             HOperatorSet.ClearWindow(hwindow);
             // Local iconic variables 
@@ -1945,7 +2120,7 @@ namespace LCD_SVS
             HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
             HOperatorSet.GenEmptyObj(out ho_Contours);
             ho_Image.Dispose();
-            HOperatorSet.ReadImage(out ho_Image, "C:/Users/Administrator/Desktop/test.bmp");
+            HOperatorSet.ReadImage(out ho_Image, roifile);
 
             HOperatorSet.DispObj(ho_Image, hwindow);
             HOperatorSet.SetDraw(hwindow, "margin");
@@ -2036,12 +2211,13 @@ namespace LCD_SVS
 
             if (hv_Number > 0)
             {
-                string msg = "FAIL,There is " + hv_Number + " error(s)";
+                string msg = DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss") +"->" + "FAIL,Find " + hv_Number + " error(s).";
                 disp_message(hwindow, msg, "window", 12, 12, "red", "false");
+                
             }
             else
             {
-                string msg = "PASS,There is " + hv_Number + " error(s)";
+                string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "->" + "PASS.";
                 disp_message(hwindow, msg , "window", 12, 12, "green", "false");
             }
 
