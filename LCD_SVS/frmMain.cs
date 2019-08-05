@@ -2866,5 +2866,20 @@ namespace LCD_SVS
         }
         
         #endregion
+
+        //private void tlpInspection_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        //{
+        //    Pen p = new Pen(Color.Blue);
+        //    e.Graphics.DrawRectangle(p, e.CellBounds.X, e.CellBounds.Y, e.CellBounds.X + e.CellBounds.Width - 1, e.CellBounds.Y + e.CellBounds.Height - 1);
+        //}
+
+        //private void tlpInspection_Paint(object sender, PaintEventArgs e)
+        //{
+        //    Pen p = new Pen(Color.Blue);
+        //    e.Graphics.DrawRectangle(p, e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.X + e.ClipRectangle.Width - 0, e.ClipRectangle.Y + e.ClipRectangle.Height - 0);
+
+        //}
+
+
     }
 }

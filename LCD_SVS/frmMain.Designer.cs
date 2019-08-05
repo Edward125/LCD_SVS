@@ -90,6 +90,9 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txtVisionImgFile = new System.Windows.Forms.TextBox();
             this.hSmartWindowControl1 = new HalconDotNet.HSmartWindowControl();
+            this.tabInspection = new System.Windows.Forms.TabPage();
+            this.tlpInspection = new System.Windows.Forms.TableLayoutPanel();
+            this.panelInspection = new System.Windows.Forms.Panel();
             this.tabSetting = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -98,6 +101,11 @@
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
             this.chkTestNGSavePictures = new System.Windows.Forms.CheckBox();
             this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
+            this.lstInspectionMsg = new System.Windows.Forms.ListBox();
+            this.lstSN = new System.Windows.Forms.ListBox();
+            this.txtInspectionInfo = new System.Windows.Forms.TextBox();
+            this.txtSN = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -109,6 +117,9 @@
             this.panelCapture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCapturePicture)).BeginInit();
             this.tabVision.SuspendLayout();
+            this.tabInspection.SuspendLayout();
+            this.tlpInspection.SuspendLayout();
+            this.panelInspection.SuspendLayout();
             this.tabSetting.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -258,6 +269,7 @@
             this.tabMain.Controls.Add(this.tabCamera);
             this.tabMain.Controls.Add(this.tabCapturePicture);
             this.tabMain.Controls.Add(this.tabVision);
+            this.tabMain.Controls.Add(this.tabInspection);
             this.tabMain.Controls.Add(this.tabSetting);
             this.tabMain.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabMain.Location = new System.Drawing.Point(12, 12);
@@ -274,7 +286,7 @@
             this.tabCamera.Padding = new System.Windows.Forms.Padding(3);
             this.tabCamera.Size = new System.Drawing.Size(966, 624);
             this.tabCamera.TabIndex = 0;
-            this.tabCamera.Text = "Camera";
+            this.tabCamera.Text = "Camera Mode";
             this.tabCamera.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
@@ -312,7 +324,7 @@
             this.lstCapMsg.ItemHeight = 14;
             this.lstCapMsg.Location = new System.Drawing.Point(3, 161);
             this.lstCapMsg.Name = "lstCapMsg";
-            this.lstCapMsg.Size = new System.Drawing.Size(293, 438);
+            this.lstCapMsg.Size = new System.Drawing.Size(293, 452);
             this.lstCapMsg.TabIndex = 23;
             // 
             // btnCapture
@@ -336,7 +348,7 @@
             this.tabCapturePicture.Padding = new System.Windows.Forms.Padding(3);
             this.tabCapturePicture.Size = new System.Drawing.Size(966, 624);
             this.tabCapturePicture.TabIndex = 1;
-            this.tabCapturePicture.Text = "Capture";
+            this.tabCapturePicture.Text = "Capture Display";
             this.tabCapturePicture.UseVisualStyleBackColor = true;
             // 
             // panelCapture
@@ -418,6 +430,7 @@
             // 
             // tabVision
             // 
+            this.tabVision.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.tabVision.Controls.Add(this.txtBotR);
             this.tabVision.Controls.Add(this.label20);
             this.tabVision.Controls.Add(this.txtBotL);
@@ -459,8 +472,7 @@
             this.tabVision.Name = "tabVision";
             this.tabVision.Size = new System.Drawing.Size(966, 624);
             this.tabVision.TabIndex = 3;
-            this.tabVision.Text = "Vision";
-            this.tabVision.UseVisualStyleBackColor = true;
+            this.tabVision.Text = "Vision Debug Mode";
             // 
             // txtBotR
             // 
@@ -942,6 +954,46 @@
             this.hSmartWindowControl1.WindowSize = new System.Drawing.Size(798, 596);
             this.hSmartWindowControl1.Resize += new System.EventHandler(this.hSmartWindowControl1_Resize);
             // 
+            // tabInspection
+            // 
+            this.tabInspection.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.tabInspection.Controls.Add(this.tlpInspection);
+            this.tabInspection.Location = new System.Drawing.Point(4, 23);
+            this.tabInspection.Name = "tabInspection";
+            this.tabInspection.Size = new System.Drawing.Size(966, 624);
+            this.tabInspection.TabIndex = 4;
+            this.tabInspection.Text = "Inspection Test Mode";
+            // 
+            // tlpInspection
+            // 
+            this.tlpInspection.ColumnCount = 2;
+            this.tlpInspection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpInspection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 328F));
+            this.tlpInspection.Controls.Add(this.panelInspection, 2, 0);
+            this.tlpInspection.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpInspection.Location = new System.Drawing.Point(0, 0);
+            this.tlpInspection.Name = "tlpInspection";
+            this.tlpInspection.RowCount = 2;
+            this.tlpInspection.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpInspection.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpInspection.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpInspection.Size = new System.Drawing.Size(966, 624);
+            this.tlpInspection.TabIndex = 0;
+            // 
+            // panelInspection
+            // 
+            this.panelInspection.Controls.Add(this.label22);
+            this.panelInspection.Controls.Add(this.txtSN);
+            this.panelInspection.Controls.Add(this.txtInspectionInfo);
+            this.panelInspection.Controls.Add(this.lstSN);
+            this.panelInspection.Controls.Add(this.lstInspectionMsg);
+            this.panelInspection.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelInspection.Location = new System.Drawing.Point(641, 3);
+            this.panelInspection.Name = "panelInspection";
+            this.tlpInspection.SetRowSpan(this.panelInspection, 2);
+            this.panelInspection.Size = new System.Drawing.Size(322, 618);
+            this.panelInspection.TabIndex = 0;
+            // 
             // tabSetting
             // 
             this.tabSetting.BackColor = System.Drawing.SystemColors.InactiveCaption;
@@ -1023,6 +1075,68 @@
             this.chkTestOKSavePictures.UseVisualStyleBackColor = true;
             this.chkTestOKSavePictures.CheckedChanged += new System.EventHandler(this.chkTestOKSavePictures_CheckedChanged);
             // 
+            // lstInspectionMsg
+            // 
+            this.lstInspectionMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstInspectionMsg.FormattingEnabled = true;
+            this.lstInspectionMsg.ItemHeight = 14;
+            this.lstInspectionMsg.Location = new System.Drawing.Point(3, 0);
+            this.lstInspectionMsg.Name = "lstInspectionMsg";
+            this.lstInspectionMsg.Size = new System.Drawing.Size(319, 368);
+            this.lstInspectionMsg.TabIndex = 0;
+            // 
+            // lstSN
+            // 
+            this.lstSN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstSN.FormattingEnabled = true;
+            this.lstSN.ItemHeight = 14;
+            this.lstSN.Location = new System.Drawing.Point(3, 371);
+            this.lstSN.Name = "lstSN";
+            this.lstSN.Size = new System.Drawing.Size(317, 186);
+            this.lstSN.TabIndex = 1;
+            // 
+            // txtInspectionInfo
+            // 
+            this.txtInspectionInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInspectionInfo.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.txtInspectionInfo.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtInspectionInfo.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.txtInspectionInfo.Location = new System.Drawing.Point(3, 588);
+            this.txtInspectionInfo.Name = "txtInspectionInfo";
+            this.txtInspectionInfo.ReadOnly = true;
+            this.txtInspectionInfo.Size = new System.Drawing.Size(316, 27);
+            this.txtInspectionInfo.TabIndex = 14;
+            this.txtInspectionInfo.Text = " ";
+            // 
+            // txtSN
+            // 
+            this.txtSN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.txtSN.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.txtSN.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSN.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.txtSN.Location = new System.Drawing.Point(74, 560);
+            this.txtSN.Name = "txtSN";
+            this.txtSN.ReadOnly = true;
+            this.txtSN.Size = new System.Drawing.Size(245, 25);
+            this.txtSN.TabIndex = 15;
+            this.txtSN.Text = " ";
+            // 
+            // label22
+            // 
+            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(9, 565);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(60, 17);
+            this.label22.TabIndex = 16;
+            this.label22.Text = "Input SN:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1047,6 +1161,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.picCapturePicture)).EndInit();
             this.tabVision.ResumeLayout(false);
             this.tabVision.PerformLayout();
+            this.tabInspection.ResumeLayout(false);
+            this.tlpInspection.ResumeLayout(false);
+            this.panelInspection.ResumeLayout(false);
+            this.panelInspection.PerformLayout();
             this.tabSetting.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1125,6 +1243,14 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox txtMinGray;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TabPage tabInspection;
+        private System.Windows.Forms.TableLayoutPanel tlpInspection;
+        private System.Windows.Forms.Panel panelInspection;
+        private System.Windows.Forms.ListBox lstSN;
+        private System.Windows.Forms.ListBox lstInspectionMsg;
+        private System.Windows.Forms.TextBox txtSN;
+        private System.Windows.Forms.TextBox txtInspectionInfo;
+        private System.Windows.Forms.Label label22;
     }
 }
 
