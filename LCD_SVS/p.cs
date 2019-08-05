@@ -39,6 +39,10 @@ namespace LCD_SVS
         public static int MinArea = 800;
         public static Int64 MaxArea = 99999;
 
+        public static string UseCamera = "1";
+        public static string UseWebService = "1";
+        public static string STAGE = "TU";
+
         public enum IniSection
         {
             SysConfig,

@@ -775,6 +775,7 @@ namespace LCD_SVS
                 //  buttonDiscover.Enabled = false;
                 StringBuilder text = new StringBuilder();
                 SetListText("Find " + number + " camera(s),select camera.");
+                ShowMessageInternal ( MeaageType.Begin,"Find " + number + " camera(s),select camera.");
                 text.AppendFormat(" Select camera!");
                 this.textBox_Result.Text = text.ToString();
                 this.textBox_Result.ForeColor = Color.Green;
@@ -784,6 +785,7 @@ namespace LCD_SVS
             {
                 this.textBox_Result.Text = "No cameras found!";
                 SetListText("No cameras found!");
+                ShowMessageInternal(MeaageType.Error, "No cameras found!");
                 this.textBox_Result.ForeColor = Color.Red;
 
             }
@@ -816,6 +818,7 @@ namespace LCD_SVS
                 return;
             sv_cam = cam;
             SetListText("Select camera:" + cam.devInfo.displayName + ",SN:" + cam.devInfo.serialNumber + ".");
+            ShowMessageInternal(MeaageType.Begin, "Select camera:" + cam.devInfo.displayName + ",SN:" + cam.devInfo.serialNumber + ".");
 
             cam.openConnection();
            //SVCamControl camcontrol = new SVCamControl(cam);
@@ -831,6 +834,7 @@ namespace LCD_SVS
             if (sv_cam == null)
             {
                 SetListText("Select Camera first please.");
+                ShowMessageInternal(MeaageType.Warning, "Select Camera first please.");
                 return;
             }
             buttonStart.Cursor = Cursors.WaitCursor;
@@ -1302,6 +1306,9 @@ namespace LCD_SVS
             txtBotR.Text = p.Bot_R.ToString();
             txtMinArea.Text = p.MinArea.ToString();
             txtMaxArea.Text = p.MaxArea.ToString();
+
+            //this.textBox_Result.Text = "Searching for cameras...";
+            txtInspectionInfo.Text = "Waiting for test...";
         }
 
         /// <summary>
@@ -1608,7 +1615,7 @@ namespace LCD_SVS
 
         private void btnReadImage_Click(object sender, EventArgs e)
         {
-
+            ShowMessageInternal(MeaageType.Begin, "test");
 
             if (!anyThreadIsRuning)
                 startAnalyzePictureThread();
@@ -2880,6 +2887,68 @@ namespace LCD_SVS
 
         //}
 
+
+
+
+
+        #region Wsdl
+
+
+        public enum MeaageType
+        {
+            Begin,
+            Success,
+            Failure,
+            Warning,
+            Error
+        }
+
+
+
+        private void ShowMessageInternal( MeaageType status, string message)
+        {
+
+            if (message == null)
+                message = status.ToString();
+            this.Invoke((EventHandler)(delegate
+            {
+                switch (status)
+                {
+                    case MeaageType.Begin:
+                        this.richMessage.SelectionColor = Color.Blue;
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.Update();
+                        break;
+                    case MeaageType.Success:
+                        this.richMessage.SelectionColor = Color.Green;
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.Update();
+                        break;
+                    case MeaageType.Failure:
+                        this.richMessage.SelectionColor = Color.Red;
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.Update();
+                        break;
+                    case MeaageType.Warning:
+                        this.richMessage.SelectionColor = Color.DarkRed;
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.Update();
+                        break;
+                    case MeaageType.Error:
+                        this.richMessage.SelectionColor = Color.Red;
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.Update();
+                        break;
+                    default:
+                        break;
+                }
+            }));
+ 
+        }
+
+
+
+        #endregion
 
     }
 }

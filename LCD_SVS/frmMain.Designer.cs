@@ -101,11 +101,11 @@
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
             this.chkTestNGSavePictures = new System.Windows.Forms.CheckBox();
             this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
-            this.lstInspectionMsg = new System.Windows.Forms.ListBox();
             this.lstSN = new System.Windows.Forms.ListBox();
             this.txtInspectionInfo = new System.Windows.Forms.TextBox();
             this.txtSN = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
+            this.richMessage = new System.Windows.Forms.RichTextBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -220,7 +220,7 @@
             this.panelAcquisition.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelAcquisition.Location = new System.Drawing.Point(3, 6);
             this.panelAcquisition.Name = "panelAcquisition";
-            this.panelAcquisition.Size = new System.Drawing.Size(651, 612);
+            this.panelAcquisition.Size = new System.Drawing.Size(651, 609);
             this.panelAcquisition.TabIndex = 23;
             // 
             // display
@@ -235,7 +235,7 @@
             this.display.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.display.Location = new System.Drawing.Point(8, 34);
             this.display.Name = "display";
-            this.display.Size = new System.Drawing.Size(640, 575);
+            this.display.Size = new System.Drawing.Size(640, 572);
             this.display.TabIndex = 23;
             this.display.Resize += new System.EventHandler(this.display_Resize);
             // 
@@ -266,6 +266,7 @@
             this.tabMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.tabMain.Controls.Add(this.tabCamera);
             this.tabMain.Controls.Add(this.tabCapturePicture);
             this.tabMain.Controls.Add(this.tabVision);
@@ -281,10 +282,10 @@
             // tabCamera
             // 
             this.tabCamera.Controls.Add(this.splitContainer1);
-            this.tabCamera.Location = new System.Drawing.Point(4, 23);
+            this.tabCamera.Location = new System.Drawing.Point(4, 26);
             this.tabCamera.Name = "tabCamera";
             this.tabCamera.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCamera.Size = new System.Drawing.Size(966, 624);
+            this.tabCamera.Size = new System.Drawing.Size(966, 621);
             this.tabCamera.TabIndex = 0;
             this.tabCamera.Text = "Camera Mode";
             this.tabCamera.UseVisualStyleBackColor = true;
@@ -309,7 +310,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.textBox_Result);
             this.splitContainer1.Panel2.Controls.Add(this.CamSelectComboBox);
             this.splitContainer1.Panel2.Controls.Add(this.buttonStart);
-            this.splitContainer1.Size = new System.Drawing.Size(960, 618);
+            this.splitContainer1.Size = new System.Drawing.Size(960, 615);
             this.splitContainer1.SplitterDistance = 657;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -324,7 +325,7 @@
             this.lstCapMsg.ItemHeight = 14;
             this.lstCapMsg.Location = new System.Drawing.Point(3, 161);
             this.lstCapMsg.Name = "lstCapMsg";
-            this.lstCapMsg.Size = new System.Drawing.Size(293, 452);
+            this.lstCapMsg.Size = new System.Drawing.Size(293, 438);
             this.lstCapMsg.TabIndex = 23;
             // 
             // btnCapture
@@ -343,10 +344,10 @@
             // tabCapturePicture
             // 
             this.tabCapturePicture.Controls.Add(this.panelCapture);
-            this.tabCapturePicture.Location = new System.Drawing.Point(4, 23);
+            this.tabCapturePicture.Location = new System.Drawing.Point(4, 26);
             this.tabCapturePicture.Name = "tabCapturePicture";
             this.tabCapturePicture.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCapturePicture.Size = new System.Drawing.Size(966, 624);
+            this.tabCapturePicture.Size = new System.Drawing.Size(966, 621);
             this.tabCapturePicture.TabIndex = 1;
             this.tabCapturePicture.Text = "Capture Display";
             this.tabCapturePicture.UseVisualStyleBackColor = true;
@@ -366,7 +367,7 @@
             this.panelCapture.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelCapture.Location = new System.Drawing.Point(3, 3);
             this.panelCapture.Name = "panelCapture";
-            this.panelCapture.Size = new System.Drawing.Size(960, 618);
+            this.panelCapture.Size = new System.Drawing.Size(960, 615);
             this.panelCapture.TabIndex = 0;
             // 
             // label3
@@ -468,9 +469,9 @@
             this.tabVision.Controls.Add(this.label7);
             this.tabVision.Controls.Add(this.txtVisionImgFile);
             this.tabVision.Controls.Add(this.hSmartWindowControl1);
-            this.tabVision.Location = new System.Drawing.Point(4, 23);
+            this.tabVision.Location = new System.Drawing.Point(4, 26);
             this.tabVision.Name = "tabVision";
-            this.tabVision.Size = new System.Drawing.Size(966, 624);
+            this.tabVision.Size = new System.Drawing.Size(966, 621);
             this.tabVision.TabIndex = 3;
             this.tabVision.Text = "Vision Debug Mode";
             // 
@@ -949,18 +950,18 @@
             this.hSmartWindowControl1.Location = new System.Drawing.Point(0, 28);
             this.hSmartWindowControl1.Margin = new System.Windows.Forms.Padding(0);
             this.hSmartWindowControl1.Name = "hSmartWindowControl1";
-            this.hSmartWindowControl1.Size = new System.Drawing.Size(798, 596);
+            this.hSmartWindowControl1.Size = new System.Drawing.Size(798, 593);
             this.hSmartWindowControl1.TabIndex = 0;
-            this.hSmartWindowControl1.WindowSize = new System.Drawing.Size(798, 596);
+            this.hSmartWindowControl1.WindowSize = new System.Drawing.Size(798, 593);
             this.hSmartWindowControl1.Resize += new System.EventHandler(this.hSmartWindowControl1_Resize);
             // 
             // tabInspection
             // 
             this.tabInspection.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.tabInspection.Controls.Add(this.tlpInspection);
-            this.tabInspection.Location = new System.Drawing.Point(4, 23);
+            this.tabInspection.Location = new System.Drawing.Point(4, 26);
             this.tabInspection.Name = "tabInspection";
-            this.tabInspection.Size = new System.Drawing.Size(966, 624);
+            this.tabInspection.Size = new System.Drawing.Size(966, 621);
             this.tabInspection.TabIndex = 4;
             this.tabInspection.Text = "Inspection Test Mode";
             // 
@@ -977,30 +978,30 @@
             this.tlpInspection.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpInspection.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpInspection.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpInspection.Size = new System.Drawing.Size(966, 624);
+            this.tlpInspection.Size = new System.Drawing.Size(966, 621);
             this.tlpInspection.TabIndex = 0;
             // 
             // panelInspection
             // 
+            this.panelInspection.Controls.Add(this.richMessage);
             this.panelInspection.Controls.Add(this.label22);
             this.panelInspection.Controls.Add(this.txtSN);
             this.panelInspection.Controls.Add(this.txtInspectionInfo);
             this.panelInspection.Controls.Add(this.lstSN);
-            this.panelInspection.Controls.Add(this.lstInspectionMsg);
             this.panelInspection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelInspection.Location = new System.Drawing.Point(641, 3);
             this.panelInspection.Name = "panelInspection";
             this.tlpInspection.SetRowSpan(this.panelInspection, 2);
-            this.panelInspection.Size = new System.Drawing.Size(322, 618);
+            this.panelInspection.Size = new System.Drawing.Size(322, 615);
             this.panelInspection.TabIndex = 0;
             // 
             // tabSetting
             // 
             this.tabSetting.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.tabSetting.Controls.Add(this.groupBox1);
-            this.tabSetting.Location = new System.Drawing.Point(4, 23);
+            this.tabSetting.Location = new System.Drawing.Point(4, 26);
             this.tabSetting.Name = "tabSetting";
-            this.tabSetting.Size = new System.Drawing.Size(966, 624);
+            this.tabSetting.Size = new System.Drawing.Size(966, 621);
             this.tabSetting.TabIndex = 2;
             this.tabSetting.Text = "Setting";
             // 
@@ -1075,27 +1076,15 @@
             this.chkTestOKSavePictures.UseVisualStyleBackColor = true;
             this.chkTestOKSavePictures.CheckedChanged += new System.EventHandler(this.chkTestOKSavePictures_CheckedChanged);
             // 
-            // lstInspectionMsg
-            // 
-            this.lstInspectionMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstInspectionMsg.FormattingEnabled = true;
-            this.lstInspectionMsg.ItemHeight = 14;
-            this.lstInspectionMsg.Location = new System.Drawing.Point(3, 0);
-            this.lstInspectionMsg.Name = "lstInspectionMsg";
-            this.lstInspectionMsg.Size = new System.Drawing.Size(319, 368);
-            this.lstInspectionMsg.TabIndex = 0;
-            // 
             // lstSN
             // 
             this.lstSN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstSN.FormattingEnabled = true;
             this.lstSN.ItemHeight = 14;
-            this.lstSN.Location = new System.Drawing.Point(3, 371);
+            this.lstSN.Location = new System.Drawing.Point(3, 392);
             this.lstSN.Name = "lstSN";
-            this.lstSN.Size = new System.Drawing.Size(317, 186);
+            this.lstSN.Size = new System.Drawing.Size(317, 158);
             this.lstSN.TabIndex = 1;
             // 
             // txtInspectionInfo
@@ -1105,25 +1094,26 @@
             this.txtInspectionInfo.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.txtInspectionInfo.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtInspectionInfo.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.txtInspectionInfo.Location = new System.Drawing.Point(3, 588);
+            this.txtInspectionInfo.Location = new System.Drawing.Point(3, 583);
             this.txtInspectionInfo.Name = "txtInspectionInfo";
             this.txtInspectionInfo.ReadOnly = true;
             this.txtInspectionInfo.Size = new System.Drawing.Size(316, 27);
             this.txtInspectionInfo.TabIndex = 14;
             this.txtInspectionInfo.Text = " ";
+            this.txtInspectionInfo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtSN
             // 
             this.txtSN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.txtSN.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.txtSN.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSN.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.txtSN.Location = new System.Drawing.Point(74, 560);
+            this.txtSN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtSN.Location = new System.Drawing.Point(74, 555);
             this.txtSN.Name = "txtSN";
-            this.txtSN.ReadOnly = true;
             this.txtSN.Size = new System.Drawing.Size(245, 25);
             this.txtSN.TabIndex = 15;
             this.txtSN.Text = " ";
+            this.txtSN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label22
             // 
@@ -1131,11 +1121,23 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(9, 565);
+            this.label22.Location = new System.Drawing.Point(9, 560);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(60, 17);
             this.label22.TabIndex = 16;
             this.label22.Text = "Input SN:";
+            // 
+            // richMessage
+            // 
+            this.richMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richMessage.Location = new System.Drawing.Point(3, 3);
+            this.richMessage.Name = "richMessage";
+            this.richMessage.ReadOnly = true;
+            this.richMessage.Size = new System.Drawing.Size(316, 388);
+            this.richMessage.TabIndex = 17;
+            this.richMessage.Text = "";
             // 
             // frmMain
             // 
@@ -1247,10 +1249,10 @@
         private System.Windows.Forms.TableLayoutPanel tlpInspection;
         private System.Windows.Forms.Panel panelInspection;
         private System.Windows.Forms.ListBox lstSN;
-        private System.Windows.Forms.ListBox lstInspectionMsg;
         private System.Windows.Forms.TextBox txtSN;
         private System.Windows.Forms.TextBox txtInspectionInfo;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.RichTextBox richMessage;
     }
 }
 
