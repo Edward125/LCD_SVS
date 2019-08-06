@@ -41,13 +41,18 @@ namespace LCD_SVS
 
         public static string UseCamera = "1";
         public static string UseWebService = "1";
-        public static string STAGE = "TU";
+        public static string UseTestSN = "1"; //鏈接webservice時查詢數據，加快後續運行時的速度
+        public static string Stage = "TU";
+        public static string TestSN = "F3NZLT2";
+        public static string WebSite = "http://10.62.201.215/Tester.WebService/WebService.asmx";
 
         public enum IniSection
         {
             SysConfig,
             Capture,
-            PictureSet
+            PictureSet,
+            WebSet
+
         }
 
         /// <summary>
@@ -78,6 +83,7 @@ namespace LCD_SVS
             //File.SetAttributes(inifilepath, FileAttributes.Hidden);
             IniFile.IniWriteValue(IniSection.SysConfig.ToString(), "SystemVersion", SystemVersion, inifilepath);
             IniFile.IniWriteValue(IniSection.SysConfig.ToString(), "SystemName", SystemName , inifilepath);
+            IniFile.IniWriteValue(IniSection.Capture.ToString(), "UseCamera", UseCamera, inifilepath);
             IniFile.IniWriteValue(IniSection.Capture.ToString(), "OKSaveImg", OKSaveImg , inifilepath);
             IniFile.IniWriteValue(IniSection.Capture.ToString(), "OKImgFolder", OKImgFolder, inifilepath);
             IniFile.IniWriteValue(IniSection.Capture.ToString(), "NGSaveImg", NGSaveImg, inifilepath);
@@ -98,6 +104,12 @@ namespace LCD_SVS
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "Bot_R", Bot_R, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MinArea", MinArea, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MaxArea", MaxArea, inifilepath);
+            //
+            IniFile.IniWriteValue(IniSection.WebSet.ToString(), "UseWebService", UseWebService, inifilepath);
+            IniFile.IniWriteValue(IniSection.WebSet.ToString(), "UseTestSN", UseTestSN, inifilepath);
+            IniFile.IniWriteValue(IniSection.WebSet.ToString(), "WebSite", WebSite, inifilepath);
+            IniFile.IniWriteValue(IniSection.WebSet.ToString(), "Stage", Stage, inifilepath);
+            IniFile.IniWriteValue(IniSection.WebSet.ToString(), "TestSN", TestSN, inifilepath);
 
 
         }
@@ -110,6 +122,7 @@ namespace LCD_SVS
         {
             SystemVersion  = IniFile.IniReadValue(IniSection.SysConfig.ToString(), "SystemVersion", inifilepath);
             SystemName = IniFile.IniReadValue(IniSection.SysConfig.ToString(), "SystemName", inifilepath);
+            UseCamera = IniFile.IniReadValue(IniSection.Capture.ToString(), "UseCamera", inifilepath);
             OKSaveImg = IniFile.IniReadValue(IniSection.Capture.ToString(), "OKSaveImg", inifilepath);
             OKImgFolder = IniFile.IniReadValue(IniSection.Capture.ToString(), "OKImgFolder", inifilepath);
             NGSaveImg = IniFile.IniReadValue(IniSection.Capture.ToString(), "NGSaveImg", inifilepath);
@@ -138,6 +151,13 @@ namespace LCD_SVS
 
                 throw e;
             }
+
+            UseWebService = IniFile.IniReadValue(IniSection.WebSet.ToString(), "UseWebService", inifilepath);
+            UseTestSN = IniFile.IniReadValue(IniSection.WebSet.ToString(), "UseTestSN", inifilepath);
+            WebSite = IniFile.IniReadValue(IniSection.WebSet.ToString(), "WebSite", inifilepath);
+            Stage = IniFile.IniReadValue(IniSection.WebSet.ToString(), "Stage", inifilepath);
+            TestSN = IniFile.IniReadValue(IniSection.WebSet.ToString(), "TestSN", inifilepath);
+
 
 
 

@@ -12,6 +12,11 @@ using System.Threading;
 using System.IO;
 using Edward;
 using HalconDotNet;
+using System.Net;
+using System.Web.Services.Description;
+using Microsoft.CSharp;
+using System.CodeDom.Compiler;
+using System.CodeDom;
 
 
 namespace LCD_SVS
@@ -831,6 +836,44 @@ namespace LCD_SVS
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
+
+
+            WebReference.WebService ws = new WebReference.WebService();
+            ws.Url = "http://10.62.201.215/Tester.WebService/WebService.asmx";
+            ws.Discover();
+
+
+            string SN = "F3NZLT2";
+            string Stage = "TU";
+
+            WebReference.clsRequestData rd = new WebReference.clsRequestData();
+
+
+              rd     =  ws.GetUUTData(SN, Stage, rd, 0);
+  
+
+            if (rd != null)
+            {
+                SetListText(rd.ModelFamily);
+                SetListText(rd.Result );
+              
+            }
+            
+            //   return;
+            
+            //string url = "http://10.62.201.215/Tester.WebService/WebService.asmx";
+            
+            //string methodname = "GetUUTData";
+            //object[] args = new object[4];
+            //args[0] = "F3NZLT2";
+            //args[1] = "TU";
+            //args[2] = null;
+            //args[3] = -1;
+
+            //object result = InvokeWebService(url, methodname, args);
+            
+            return;
+            
             if (sv_cam == null)
             {
                 SetListText("Select Camera first please.");
@@ -1615,6 +1658,10 @@ namespace LCD_SVS
 
         private void btnReadImage_Click(object sender, EventArgs e)
         {
+
+
+
+            return;
             ShowMessageInternal(MeaageType.Begin, "test");
 
             if (!anyThreadIsRuning)
@@ -2950,5 +2997,126 @@ namespace LCD_SVS
 
         #endregion
 
+
+        #region WebService
+
+
+         /// <summary>
+        /// 实例化WebServices
+        /// </summary>
+        /// <param name="url">WebServices地址</param>
+        /// <param name="methodname">调用的方法</param>
+        /// <param name="args">把webservices里需要的参数按顺序放到这个object[]里</param>
+        public static object InvokeWebService(string url, string methodname, object[] args)
+        {
+ 
+            //这里的namespace是需引用的webservices的命名空间，我没有改过，也可以使用。也可以加一个参数从外面传进来。
+            string @namespace = "client";
+            try
+            {
+                //获取WSDL
+                WebClient wc = new WebClient();
+                Stream stream = wc.OpenRead(url + "?WSDL");
+                ServiceDescription sd = ServiceDescription.Read(stream);
+                string classname = sd.Services[0].Name;
+                ServiceDescriptionImporter sdi = new ServiceDescriptionImporter();
+                sdi.AddServiceDescription(sd, "", "");
+                CodeNamespace cn = new CodeNamespace(@namespace);
+ 
+                //生成客户端代理类代码
+                CodeCompileUnit ccu = new CodeCompileUnit();
+                ccu.Namespaces.Add(cn);
+                sdi.Import(cn, ccu);
+                CSharpCodeProvider csc = new CSharpCodeProvider();
+                //ICodeCompiler icc = csc.CreateCompiler();
+ 
+                //设定编译参数
+                CompilerParameters cplist = new CompilerParameters();
+                cplist.GenerateExecutable = false;
+                cplist.GenerateInMemory = true;
+                cplist.ReferencedAssemblies.Add("System.dll");
+                cplist.ReferencedAssemblies.Add("System.XML.dll");
+                cplist.ReferencedAssemblies.Add("System.Web.Services.dll");
+                cplist.ReferencedAssemblies.Add("System.Data.dll");
+ 
+                //编译代理类
+                CompilerResults cr = csc.CompileAssemblyFromDom(cplist, ccu);
+                if (true == cr.Errors.HasErrors)
+                {
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    foreach (System.CodeDom.Compiler.CompilerError ce in cr.Errors)
+                    {
+                        sb.Append(ce.ToString());
+                        sb.Append(System.Environment.NewLine);
+                    }
+                    throw new Exception(sb.ToString());
+                }
+ 
+                //生成代理实例，并调用方法
+                System.Reflection.Assembly assembly = cr.CompiledAssembly;
+                Type t = assembly.GetType(@namespace + "." + classname, true, true);
+                object obj = Activator.CreateInstance(t);
+                System.Reflection.MethodInfo mi = t.GetMethod(methodname);
+ 
+                return mi.Invoke(obj, args);
+            }
+            catch  (Exception e)
+            {
+                throw e;
+               // return null;
+    
+            }
+        }
+
+        private void txtTestSN_TextChanged(object sender, EventArgs e)
+        {
+            p.TestSN = txtTestSN.Text.ToUpper().Trim();
+            IniFile.IniWriteValue(p.IniSection.WebSet.ToString(), "TestSN", p.TestSN, p.IniFilePath);
+        }
+
+        private void txtStage_TextChanged(object sender, EventArgs e)
+        {
+            p.Stage = txtStage.Text.ToUpper().Trim();
+            IniFile.IniWriteValue(p.IniSection.WebSet.ToString(), "Stage",p.Stage , p.IniFilePath);
+        }
+
+        private void txtWebService_TextChanged(object sender, EventArgs e)
+        {
+            p.WebSite = txtWebService.Text.Trim();
+            IniFile.IniWriteValue(p.IniSection.WebSet.ToString(), "WebSite", p.WebSite, p.IniFilePath);
+        }
+
+        private void chkUseWebService_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkUseWebService.Checked)
+                p.UseWebService = "1";
+            else
+                p.UseWebService = "0";
+            IniFile.IniWriteValue(p.IniSection.WebSet.ToString(), "UseWebService", p.UseWebService , p.IniFilePath);
+
+        }
+
+        private void chkTestWebService_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkTestWebService.Checked)
+                p.UseTestSN = "1";
+            else
+                p.UseTestSN = "0";
+            IniFile.IniWriteValue(p.IniSection.WebSet.ToString(), "UseTestSN", p.UseTestSN , p.IniFilePath);
+        }
+
+        private void chkUseCamera_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkUseCamera.Checked)
+                p.UseCamera = "1";
+            else
+                p.UseCamera = "0";
+            IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "UseCamera", p.UseCamera, p.IniFilePath);
+        }
     }
+
+
+        #endregion
+
+   
 }
