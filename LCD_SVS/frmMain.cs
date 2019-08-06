@@ -18,6 +18,10 @@ using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.CodeDom;
 using System.Diagnostics;
+using System.Management;
+using System.Management.Instrumentation;
+using Microsoft.Win32;
+
 
 
 namespace LCD_SVS
@@ -58,7 +62,8 @@ namespace LCD_SVS
         WebReference.WebService ws = new WebReference.WebService();
         private static HWindow hwindow; //
         public HTuple hv_ExpDefaultHwinHandle;
-
+        Dictionary<string, string> ComList = new Dictionary<string, string>(); //comport list
+           
 
         class Cameracontainer
         {
@@ -834,6 +839,33 @@ namespace LCD_SVS
         private void buttonStart_Click(object sender, EventArgs e)
         {
 
+           
+            
+
+
+
+
+            
+
+
+
+            //foreach (string sp in System.IO.Ports.SerialPort.GetPortNames())
+            //{
+            //    comboPort.Items.Add(sp);
+            //}
+
+            //if (comboPort.Items.Count > 0)
+            //{
+            //    comboPort.SelectedIndex = 0;
+            //}
+
+
+
+            List<Usb> UsbDevices = new List<Usb>();
+            UsbDevices = GetUSBDevices ();
+
+
+            return;
 
             buttonStart.Cursor = Cursors.WaitCursor;
 
@@ -884,8 +916,6 @@ namespace LCD_SVS
             buttonStart.Cursor = Cursors.Default;
         }
 
-
-
         private void chkwebTHread()
         {
             bool connectWebService = false;
@@ -917,28 +947,35 @@ namespace LCD_SVS
                 if (p.UseTestSN == "1")
                 {
                     if (!string.IsNullOrEmpty(p.TestSN) && !string.IsNullOrEmpty(p.Stage))
+                        LoadInfoFromWebService(p.TestSN, p.Stage);
+                }
+            }
+        }
+
+        private void LoadInfoFromWebService(string sn, string stage)
+        {
+            ShowMessageInternal(MeaageType.Begin, "Load info from WebService,SN:" + sn + ",Stage:" + stage);
+            WebReference.clsRequestData rd = new WebReference.clsRequestData();
+            rd = ws.GetUUTData(sn, stage , rd, 0);
+            if (rd.Result == "OK")
+            {
+                if (!string.IsNullOrEmpty (rd.Model))
+                    ShowMessageInternal(MeaageType.Success, "Load info sucessful,SN:" + sn + ",Model:" + rd.Model + ",MO:" + rd.MO);
+                else
+                    ShowMessageInternal(MeaageType.Failure , "Load info fail,there is no record.SN:" + sn + ",Stage:" + stage);
+                if (rd.RequestItem != null)
+                {
+                    foreach (WebReference.clsRequestItem item in rd.RequestItem)
                     {
-                        ShowMessageInternal(MeaageType.Begin, "Test load info from WebService,SN:" + p.TestSN + ",Stage:" + p.Stage);
-                        WebReference.clsRequestData rd = new WebReference.clsRequestData();
-                        rd = ws.GetUUTData(p.TestSN, p.Stage, rd, 0);
-                        if (rd.Result == "OK")
-                        {
-                            ShowMessageInternal(MeaageType.Success, "Load info sucessful,SN:" + p.TestSN + ",Model:" + rd.Model + ",MO:" + rd.MO);
-                            foreach (WebReference.clsRequestItem item in rd.RequestItem)
-                            {
-                                if (item.Item == "LCD")
-                                    ShowMessageInternal(MeaageType.Success, "SN:" + p.TestSN + ",LCD:" + item.Value);
-                                if (item.Item == "MAINBOARD")
-                                    ShowMessageInternal(MeaageType.Success, "SN:" + p.TestSN + ",MAINBOARD:" + item.Value);
-
-                            }
-                        }
-                        else
-                            ShowMessageInternal(MeaageType.Failure, "Can't load info from WebService,SN:" + p.TestSN + ",Stage:" + p.Stage);
-
+                        if (item.Item == "LCD")
+                            ShowMessageInternal(MeaageType.Success, "SN:" + sn + ",LCD:" + item.Value);
+                        if (item.Item == "MAINBOARD")
+                            ShowMessageInternal(MeaageType.Success, "SN:" + sn + ",MAINBOARD:" + item.Value);
                     }
                 }
             }
+            else
+                ShowMessageInternal(MeaageType.Failure, "Can't load info from WebService,SN:" + sn + ",Stage:" + stage );
         }
 
         private void clearControl()
@@ -1286,7 +1323,7 @@ namespace LCD_SVS
 
         private void txtImgFile_DoubleClick(object sender, EventArgs e)
         {
-            OpenFileDialog openfile = new OpenFileDialog();
+            System.Windows.Forms.OpenFileDialog openfile = new System.Windows.Forms.OpenFileDialog();
             if (openfile.ShowDialog() == DialogResult.OK)
             {
                 txtImgFile.Text = openfile.FileName;
@@ -1336,10 +1373,9 @@ namespace LCD_SVS
                 comboMinGray.Items.Add(i);
                 comboMaxGray.Items.Add(i);
             }
+            GetSerialPort(comboPort);
             UpdateIniValueUI();
         }
-
-
 
 
         /// <summary>
@@ -1418,8 +1454,6 @@ namespace LCD_SVS
 
         }
 
-
-
         private void chkTestOKSavePictures_CheckedChanged(object sender, EventArgs e)
         {
             GetChkboxValue(chkTestOKSavePictures, p.OKSaveImg);
@@ -1446,7 +1480,7 @@ namespace LCD_SVS
 
         private void txtVisionImgFile_DoubleClick(object sender, EventArgs e)
         {
-            OpenFileDialog openfile = new OpenFileDialog();
+            System.Windows.Forms.OpenFileDialog openfile = new System.Windows.Forms.OpenFileDialog();
             if (openfile.ShowDialog() == DialogResult.OK)
             {
                 //txtImgFile.Text = openfile.FileName;
@@ -1514,7 +1548,6 @@ namespace LCD_SVS
             hv_Width.Dispose();
             hv_Height.Dispose();
         }
-
 
         private void DisplayHalconImage(HObject ho_image)
         {
@@ -1658,8 +1691,6 @@ namespace LCD_SVS
 
         }
 
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -1678,7 +1709,6 @@ namespace LCD_SVS
 
             }
         }
-
 
         /// <summary>
         /// 
@@ -1730,7 +1760,6 @@ namespace LCD_SVS
 
         }
 
-
         private void  GetSuggestionMaxValue(string file,out int[] maxthresh)
         {
             maxthresh = new int[2];
@@ -1770,7 +1799,6 @@ namespace LCD_SVS
 
         }
 
-
         private void GetSuggestionMinValue(string file, out int[] minthresh)
         {
             minthresh = new int[2];
@@ -1809,7 +1837,6 @@ namespace LCD_SVS
             minthresh[1] = (int)hv_MinThresh.TupleSelect(1);
 
         }
-
 
         #region Auto Close Messagebox
 
@@ -1962,7 +1989,6 @@ namespace LCD_SVS
 
         }
 
-
         private void GetThreshholdRegion(string file, out HObject ho_region,HTuple mingray,HTuple maxgray)
         {
 
@@ -1996,7 +2022,6 @@ namespace LCD_SVS
 
 
         }
-
 
         private void btnGetROI_Click(object sender, EventArgs e)
         {
@@ -2073,571 +2098,6 @@ namespace LCD_SVS
 
             btnGetROI.Cursor = Cursors.Default;
         }
-
-        // Procedures 
-        // External procedures 
-        // Chapter: Develop
-        // Short Description: Open a new graphics window that preserves the aspect ratio of the given image. 
-        public void dev_open_window_fit_image(HObject ho_Image, HTuple hv_Row, HTuple hv_Column,
-            HTuple hv_WidthLimit, HTuple hv_HeightLimit, out HTuple hv_WindowHandle)
-        {
-
-
-
-
-            // Local iconic variables 
-
-            // Local control variables 
-
-            HTuple hv_MinWidth = new HTuple(), hv_MaxWidth = new HTuple();
-            HTuple hv_MinHeight = new HTuple(), hv_MaxHeight = new HTuple();
-            HTuple hv_ResizeFactor = new HTuple(), hv_ImageWidth = new HTuple();
-            HTuple hv_ImageHeight = new HTuple(), hv_TempWidth = new HTuple();
-            HTuple hv_TempHeight = new HTuple(), hv_WindowWidth = new HTuple();
-            HTuple hv_WindowHeight = new HTuple();
-            // Initialize local and output iconic variables 
-            hv_WindowHandle = new HTuple();
-            //This procedure opens a new graphics window and adjusts the size
-            //such that it fits into the limits specified by WidthLimit
-            //and HeightLimit, but also maintains the correct image aspect ratio.
-            //
-            //If it is impossible to match the minimum and maximum extent requirements
-            //at the same time (f.e. if the image is very long but narrow),
-            //the maximum value gets a higher priority,
-            //
-            //Parse input tuple WidthLimit
-            if ((int)((new HTuple((new HTuple(hv_WidthLimit.TupleLength())).TupleEqual(0))).TupleOr(
-                new HTuple(hv_WidthLimit.TupleLess(0)))) != 0)
-            {
-                hv_MinWidth.Dispose();
-                hv_MinWidth = 500;
-                hv_MaxWidth.Dispose();
-                hv_MaxWidth = 800;
-            }
-            else if ((int)(new HTuple((new HTuple(hv_WidthLimit.TupleLength())).TupleEqual(
-                1))) != 0)
-            {
-                hv_MinWidth.Dispose();
-                hv_MinWidth = 0;
-                hv_MaxWidth.Dispose();
-                hv_MaxWidth = new HTuple(hv_WidthLimit);
-            }
-            else
-            {
-                hv_MinWidth.Dispose();
-                using (HDevDisposeHelper dh = new HDevDisposeHelper())
-                {
-                    hv_MinWidth = hv_WidthLimit.TupleSelect(
-                        0);
-                }
-                hv_MaxWidth.Dispose();
-                using (HDevDisposeHelper dh = new HDevDisposeHelper())
-                {
-                    hv_MaxWidth = hv_WidthLimit.TupleSelect(
-                        1);
-                }
-            }
-            //Parse input tuple HeightLimit
-            if ((int)((new HTuple((new HTuple(hv_HeightLimit.TupleLength())).TupleEqual(0))).TupleOr(
-                new HTuple(hv_HeightLimit.TupleLess(0)))) != 0)
-            {
-                hv_MinHeight.Dispose();
-                hv_MinHeight = 400;
-                hv_MaxHeight.Dispose();
-                hv_MaxHeight = 600;
-            }
-            else if ((int)(new HTuple((new HTuple(hv_HeightLimit.TupleLength())).TupleEqual(
-                1))) != 0)
-            {
-                hv_MinHeight.Dispose();
-                hv_MinHeight = 0;
-                hv_MaxHeight.Dispose();
-                hv_MaxHeight = new HTuple(hv_HeightLimit);
-            }
-            else
-            {
-                hv_MinHeight.Dispose();
-                using (HDevDisposeHelper dh = new HDevDisposeHelper())
-                {
-                    hv_MinHeight = hv_HeightLimit.TupleSelect(
-                        0);
-                }
-                hv_MaxHeight.Dispose();
-                using (HDevDisposeHelper dh = new HDevDisposeHelper())
-                {
-                    hv_MaxHeight = hv_HeightLimit.TupleSelect(
-                        1);
-                }
-            }
-            //
-            //Test, if window size has to be changed.
-            hv_ResizeFactor.Dispose();
-            hv_ResizeFactor = 1;
-            hv_ImageWidth.Dispose(); hv_ImageHeight.Dispose();
-            HOperatorSet.GetImageSize(ho_Image, out hv_ImageWidth, out hv_ImageHeight);
-            //First, expand window to the minimum extents (if necessary).
-            if ((int)((new HTuple(hv_MinWidth.TupleGreater(hv_ImageWidth))).TupleOr(new HTuple(hv_MinHeight.TupleGreater(
-                hv_ImageHeight)))) != 0)
-            {
-                hv_ResizeFactor.Dispose();
-                using (HDevDisposeHelper dh = new HDevDisposeHelper())
-                {
-                    hv_ResizeFactor = (((((hv_MinWidth.TupleReal()
-                        ) / hv_ImageWidth)).TupleConcat((hv_MinHeight.TupleReal()) / hv_ImageHeight))).TupleMax()
-                        ;
-                }
-            }
-            hv_TempWidth.Dispose();
-            using (HDevDisposeHelper dh = new HDevDisposeHelper())
-            {
-                hv_TempWidth = hv_ImageWidth * hv_ResizeFactor;
-            }
-            hv_TempHeight.Dispose();
-            using (HDevDisposeHelper dh = new HDevDisposeHelper())
-            {
-                hv_TempHeight = hv_ImageHeight * hv_ResizeFactor;
-            }
-            //Then, shrink window to maximum extents (if necessary).
-            if ((int)((new HTuple(hv_MaxWidth.TupleLess(hv_TempWidth))).TupleOr(new HTuple(hv_MaxHeight.TupleLess(
-                hv_TempHeight)))) != 0)
-            {
-                using (HDevDisposeHelper dh = new HDevDisposeHelper())
-                {
-                    {
-                        HTuple
-                          ExpTmpLocalVar_ResizeFactor = hv_ResizeFactor * ((((((hv_MaxWidth.TupleReal()
-                            ) / hv_TempWidth)).TupleConcat((hv_MaxHeight.TupleReal()) / hv_TempHeight))).TupleMin()
-                            );
-                        hv_ResizeFactor.Dispose();
-                        hv_ResizeFactor = ExpTmpLocalVar_ResizeFactor;
-                    }
-                }
-            }
-            hv_WindowWidth.Dispose();
-            using (HDevDisposeHelper dh = new HDevDisposeHelper())
-            {
-                hv_WindowWidth = hv_ImageWidth * hv_ResizeFactor;
-            }
-            hv_WindowHeight.Dispose();
-            using (HDevDisposeHelper dh = new HDevDisposeHelper())
-            {
-                hv_WindowHeight = hv_ImageHeight * hv_ResizeFactor;
-            }
-            //Resize window
-            //dev_open_window(...);
-            using (HDevDisposeHelper dh = new HDevDisposeHelper())
-            {
-                HOperatorSet.SetPart(hwindow, 0, 0, hv_ImageHeight - 1, hv_ImageWidth - 1);
-            }
-
-            hv_MinWidth.Dispose();
-            hv_MaxWidth.Dispose();
-            hv_MinHeight.Dispose();
-            hv_MaxHeight.Dispose();
-            hv_ResizeFactor.Dispose();
-            hv_ImageWidth.Dispose();
-            hv_ImageHeight.Dispose();
-            hv_TempWidth.Dispose();
-            hv_TempHeight.Dispose();
-            hv_WindowWidth.Dispose();
-            hv_WindowHeight.Dispose();
-
-            return;
-        }
-
-        private void btnAnalyze_Click(object sender, EventArgs e)
-        {
-
-            string roifile = p.AppFolder  + @"\TEMPROI.bmp";
-            if (!File.Exists(roifile))
-                return;
-            btnAnalyze.Cursor = Cursors.WaitCursor;
-            HOperatorSet.ClearWindow(hwindow);
-            // Local iconic variables 
-            HObject ho_Image, ho_GsFilter1, ho_GsFilter2;
-            HObject ho_Filter, ho_GrayImage, ho_ImageInvert, ho_ImageFFT;
-            HObject ho_ImageConvol, ho_ImageFiltered, ho_Rectangle;
-            HObject ho_ROI, ho_ImageMedian, ho_ImageSmooth, ho_ConnectedRegions;
-            HObject ho_SelectedRegions, ho_Contours;
-
-            // Local control variables 
-            HTuple hv_WindowHandle = new HTuple(), hv_Width = new HTuple();
-            HTuple hv_Height = new HTuple(), hv_Sigma1 = new HTuple();
-            HTuple hv_Sigma2 = new HTuple(), hv_Number = new HTuple();
-
-            // Initialize local and output iconic variables 
-            HOperatorSet.GenEmptyObj(out ho_Image);
-            HOperatorSet.GenEmptyObj(out ho_GsFilter1);
-            HOperatorSet.GenEmptyObj(out ho_GsFilter2);
-            HOperatorSet.GenEmptyObj(out ho_Filter);
-            HOperatorSet.GenEmptyObj(out ho_GrayImage);
-            HOperatorSet.GenEmptyObj(out ho_ImageInvert);
-            HOperatorSet.GenEmptyObj(out ho_ImageFFT);
-            HOperatorSet.GenEmptyObj(out ho_ImageConvol);
-            HOperatorSet.GenEmptyObj(out ho_ImageFiltered);
-            HOperatorSet.GenEmptyObj(out ho_Rectangle);
-            HOperatorSet.GenEmptyObj(out ho_ROI);
-            HOperatorSet.GenEmptyObj(out ho_ImageMedian);
-            HOperatorSet.GenEmptyObj(out ho_ImageSmooth);
-            HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
-            HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
-            HOperatorSet.GenEmptyObj(out ho_Contours);
-            ho_Image.Dispose();
-            HOperatorSet.ReadImage(out ho_Image, roifile);
-
-            HOperatorSet.DispObj(ho_Image, hwindow);
-            HOperatorSet.SetDraw(hwindow, "margin");
-            HOperatorSet.SetLineWidth(hwindow, 1);
-            HOperatorSet.SetColored(hwindow, 12);
-
-
-            hv_Width.Dispose(); hv_Height.Dispose();
-            HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
-
-            
-            hv_Sigma1.Dispose();
-            hv_Sigma1 = Convert.ToDouble ( comboSigma1.Text);// 10.0;
-            hv_Sigma2.Dispose();
-            hv_Sigma2 = Convert.ToDouble(comboSigma2.Text); ;//2.0;
-
-            ho_GsFilter1.Dispose();
-            HOperatorSet.GenGaussFilter(out ho_GsFilter1, hv_Sigma1, hv_Sigma1, 0.0, "none",
-                "rft", hv_Width, hv_Height);
-
-            ho_GsFilter2.Dispose();
-            HOperatorSet.GenGaussFilter(out ho_GsFilter2, hv_Sigma2, hv_Sigma2, 0.0, "none",
-                "rft", hv_Width, hv_Height);
-            ho_Filter.Dispose();
-            //HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, 1, 0);
-            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, Convert.ToDouble (comboMult.Text), 0);
-
-            ho_GrayImage.Dispose();
-            HOperatorSet.Rgb1ToGray(ho_Image, out ho_GrayImage);
-            ho_ImageInvert.Dispose();
-            HOperatorSet.InvertImage(ho_GrayImage, out ho_ImageInvert);
-
-            ho_ImageFFT.Dispose();
-            HOperatorSet.RftGeneric(ho_ImageInvert, out ho_ImageFFT, "to_freq", "sqrt", "complex",
-                hv_Width);
-
-            ho_ImageConvol.Dispose();
-            HOperatorSet.ConvolFft(ho_ImageFFT, ho_Filter, out ho_ImageConvol);
-
-            ho_ImageFiltered.Dispose();
-            HOperatorSet.RftGeneric(ho_ImageConvol, out ho_ImageFiltered, "from_freq", "n",
-                "real", hv_Width);
-
-            using (HDevDisposeHelper dh = new HDevDisposeHelper())
-            {
-                ho_Rectangle.Dispose();
-
-                Int32 Height = hv_Height.I - Convert.ToInt32(txtBotL.Text);
-                Int32 Width = hv_Width.I - Convert.ToInt32(txtBotR.Text);
-
-                HOperatorSet.GenRectangle1(out ho_Rectangle, Convert.ToInt16 ( txtTopL.Text)  , Convert.ToInt16 ( txtTopR.Text) ,Height , Width);
-               // HOperatorSet.GenRectangle1(out ho_Rectangle, 10,10, hv_Height-10, hv_Width-10);
-            }
-
-            ho_ROI.Dispose();
-            HOperatorSet.ReduceDomain(ho_ImageFiltered, ho_Rectangle, out ho_ROI);
-
-            ho_ImageMedian.Dispose();
-            HOperatorSet.MedianImage(ho_ROI, out ho_ImageMedian, "circle", Convert.ToInt16  (comboRadius.Text ) , "mirrored");
-
-            ho_ImageSmooth.Dispose();
-            HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToDouble (comboAlpha.Text) );
-
-            ho_ImageSmooth.Dispose();
-           // HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, -0.012866, -0.005549);
-            double MinGray = Convert.ToDouble(txtMinGray.Text);
-            double MaxGray = Convert.ToDouble(txtMaxGray.Text);
-            
-            HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, MinGray , MaxGray );
-
-            ho_ConnectedRegions.Dispose();
-            HOperatorSet.Connection(ho_ImageSmooth, out ho_ConnectedRegions);
-
-
-            ho_SelectedRegions.Dispose();
-            HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions, "area",
-                "and", Convert.ToInt64 (txtMinArea.Text), Convert.ToInt64 (txtMaxArea .Text));
-
-            ho_Contours.Dispose();
-            HOperatorSet.GenContourRegionXld(ho_SelectedRegions, out ho_Contours, "border");
-
-            hv_Number.Dispose();
-            HOperatorSet.CountObj(ho_Contours, out hv_Number);
-            HOperatorSet.DispObj(ho_Contours, hwindow);
-
-            ////hwindow.WriteString("HAHAHA");
-            //hwindow.
-
-            if (hv_Number > 0)
-            {
-                string msg = DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss") +"->" + "FAIL,Find " + hv_Number + " error(s).";
-                hwindow.WriteString(msg);
-                disp_message(hwindow, msg, "window", 12, 12, "red", "false");
-                
-            }
-            else
-            {
-                string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "->" + "PASS.";
-                hwindow.WriteString(msg);
-                disp_message(hwindow, msg , "window", 12, 12, "green", "false");
-            }
-
-          
-            ho_Image.Dispose();
-            ho_GsFilter1.Dispose();
-            ho_GsFilter2.Dispose();
-            ho_Filter.Dispose();
-            ho_GrayImage.Dispose();
-            ho_ImageInvert.Dispose();
-            ho_ImageFFT.Dispose();
-            ho_ImageConvol.Dispose();
-            ho_ImageFiltered.Dispose();
-            ho_Rectangle.Dispose();
-            ho_ROI.Dispose();
-            ho_ImageMedian.Dispose();
-            ho_ImageSmooth.Dispose();
-            ho_ConnectedRegions.Dispose();
-            ho_SelectedRegions.Dispose();
-            ho_Contours.Dispose();
-
-            hv_WindowHandle.Dispose();
-            hv_Width.Dispose();
-            hv_Height.Dispose();
-            hv_Sigma1.Dispose();
-            hv_Sigma2.Dispose();
-            hv_Number.Dispose();
-            btnAnalyze.Cursor = Cursors.Default;
-
-        }
-
-
-
-          public void disp_message (HTuple hv_WindowHandle, HTuple hv_String, HTuple hv_CoordSystem, 
-      HTuple hv_Row, HTuple hv_Column, HTuple hv_Color, HTuple hv_Box)
-  {
-
-
-
-    // Local iconic variables 
-
-    // Local control variables 
-
-    HTuple hv_GenParamName = new HTuple(), hv_GenParamValue = new HTuple();
-    HTuple   hv_Color_COPY_INP_TMP = new HTuple(hv_Color);
-    HTuple   hv_Column_COPY_INP_TMP = new HTuple(hv_Column);
-    HTuple   hv_CoordSystem_COPY_INP_TMP = new HTuple(hv_CoordSystem);
-    HTuple   hv_Row_COPY_INP_TMP = new HTuple(hv_Row);
-    // Initialize local and output iconic variables 
-    //This procedure displays text in a graphics window.
-    //
-    //Input parameters:
-    //WindowHandle: The WindowHandle of the graphics window, where
-    //   the message should be displayed
-    //String: A tuple of strings containing the text message to be displayed
-    //CoordSystem: If set to 'window', the text position is given
-    //   with respect to the window coordinate system.
-    //   If set to 'image', image coordinates are used.
-    //   (This may be useful in zoomed images.)
-    //Row: The row coordinate of the desired text position
-    //   A tuple of values is allowed to display text at different
-    //   positions.
-    //Column: The column coordinate of the desired text position
-    //   A tuple of values is allowed to display text at different
-    //   positions.
-    //Color: defines the color of the text as string.
-    //   If set to [], '' or 'auto' the currently set color is used.
-    //   If a tuple of strings is passed, the colors are used cyclically...
-    //   - if |Row| == |Column| == 1: for each new textline
-    //   = else for each text position.
-    //Box: If Box[0] is set to 'true', the text is written within an orange box.
-    //     If set to' false', no box is displayed.
-    //     If set to a color string (e.g. 'white', '#FF00CC', etc.),
-    //       the text is written in a box of that color.
-    //     An optional second value for Box (Box[1]) controls if a shadow is displayed:
-    //       'true' -> display a shadow in a default color
-    //       'false' -> display no shadow
-    //       otherwise -> use given string as color string for the shadow color
-    //
-    //It is possible to display multiple text strings in a single call.
-    //In this case, some restrictions apply:
-    //- Multiple text positions can be defined by specifying a tuple
-    //  with multiple Row and/or Column coordinates, i.e.:
-    //  - |Row| == n, |Column| == n
-    //  - |Row| == n, |Column| == 1
-    //  - |Row| == 1, |Column| == n
-    //- If |Row| == |Column| == 1,
-    //  each element of String is display in a new textline.
-    //- If multiple positions or specified, the number of Strings
-    //  must match the number of positions, i.e.:
-    //  - Either |String| == n (each string is displayed at the
-    //                          corresponding position),
-    //  - or     |String| == 1 (The string is displayed n times).
-    //
-    //
-    //Convert the parameters for disp_text.
-    if ((int)((new HTuple(hv_Row_COPY_INP_TMP.TupleEqual(new HTuple()))).TupleOr(
-        new HTuple(hv_Column_COPY_INP_TMP.TupleEqual(new HTuple())))) != 0)
-    {
-
-      hv_Color_COPY_INP_TMP.Dispose();
-      hv_Column_COPY_INP_TMP.Dispose();
-      hv_CoordSystem_COPY_INP_TMP.Dispose();
-      hv_Row_COPY_INP_TMP.Dispose();
-      hv_GenParamName.Dispose();
-      hv_GenParamValue.Dispose();
-
-      return;
-    }
-    if ((int)(new HTuple(hv_Row_COPY_INP_TMP.TupleEqual(-1))) != 0)
-    {
-      hv_Row_COPY_INP_TMP.Dispose();
-      hv_Row_COPY_INP_TMP = 12;
-    }
-    if ((int)(new HTuple(hv_Column_COPY_INP_TMP.TupleEqual(-1))) != 0)
-    {
-      hv_Column_COPY_INP_TMP.Dispose();
-      hv_Column_COPY_INP_TMP = 12;
-    }
-    //
-    //Convert the parameter Box to generic parameters.
-    hv_GenParamName.Dispose();
-    hv_GenParamName = new HTuple();
-    hv_GenParamValue.Dispose();
-    hv_GenParamValue = new HTuple();
-    if ((int)(new HTuple((new HTuple(hv_Box.TupleLength())).TupleGreater(0))) != 0)
-    {
-      if ((int)(new HTuple(((hv_Box.TupleSelect(0))).TupleEqual("false"))) != 0)
-      {
-        //Display no box
-        using (HDevDisposeHelper dh = new HDevDisposeHelper())
-        {
-        {
-        HTuple 
-          ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
-            "box");
-        hv_GenParamName.Dispose();
-        hv_GenParamName = ExpTmpLocalVar_GenParamName;
-        }
-        }
-        using (HDevDisposeHelper dh = new HDevDisposeHelper())
-        {
-        {
-        HTuple 
-          ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
-            "false");
-        hv_GenParamValue.Dispose();
-        hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
-        }
-        }
-      }
-      else if ((int)(new HTuple(((hv_Box.TupleSelect(0))).TupleNotEqual("true"))) != 0)
-      {
-        //Set a color other than the default.
-        using (HDevDisposeHelper dh = new HDevDisposeHelper())
-        {
-        {
-        HTuple 
-          ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
-            "box_color");
-        hv_GenParamName.Dispose();
-        hv_GenParamName = ExpTmpLocalVar_GenParamName;
-        }
-        }
-        using (HDevDisposeHelper dh = new HDevDisposeHelper())
-        {
-        {
-        HTuple 
-          ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
-            hv_Box.TupleSelect(0));
-        hv_GenParamValue.Dispose();
-        hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
-        }
-        }
-      }
-    }
-    if ((int)(new HTuple((new HTuple(hv_Box.TupleLength())).TupleGreater(1))) != 0)
-    {
-      if ((int)(new HTuple(((hv_Box.TupleSelect(1))).TupleEqual("false"))) != 0)
-      {
-        //Display no shadow.
-        using (HDevDisposeHelper dh = new HDevDisposeHelper())
-        {
-        {
-        HTuple 
-          ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
-            "shadow");
-        hv_GenParamName.Dispose();
-        hv_GenParamName = ExpTmpLocalVar_GenParamName;
-        }
-        }
-        using (HDevDisposeHelper dh = new HDevDisposeHelper())
-        {
-        {
-        HTuple 
-          ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
-            "false");
-        hv_GenParamValue.Dispose();
-        hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
-        }
-        }
-      }
-      else if ((int)(new HTuple(((hv_Box.TupleSelect(1))).TupleNotEqual("true"))) != 0)
-      {
-        //Set a shadow color other than the default.
-        using (HDevDisposeHelper dh = new HDevDisposeHelper())
-        {
-        {
-        HTuple 
-          ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
-            "shadow_color");
-        hv_GenParamName.Dispose();
-        hv_GenParamName = ExpTmpLocalVar_GenParamName;
-        }
-        }
-        using (HDevDisposeHelper dh = new HDevDisposeHelper())
-        {
-        {
-        HTuple 
-          ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
-            hv_Box.TupleSelect(1));
-        hv_GenParamValue.Dispose();
-        hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
-        }
-        }
-      }
-    }
-    //Restore default CoordSystem behavior.
-    if ((int)(new HTuple(hv_CoordSystem_COPY_INP_TMP.TupleNotEqual("window"))) != 0)
-    {
-      hv_CoordSystem_COPY_INP_TMP.Dispose();
-      hv_CoordSystem_COPY_INP_TMP = "image";
-    }
-    //
-    if ((int)(new HTuple(hv_Color_COPY_INP_TMP.TupleEqual(""))) != 0)
-    {
-      //disp_text does not accept an empty string for Color.
-      hv_Color_COPY_INP_TMP.Dispose();
-      hv_Color_COPY_INP_TMP = new HTuple();
-    }
-    //
-    HOperatorSet.DispText(hv_WindowHandle, hv_String, hv_CoordSystem_COPY_INP_TMP, 
-        hv_Row_COPY_INP_TMP, hv_Column_COPY_INP_TMP, hv_Color_COPY_INP_TMP, hv_GenParamName, 
-        hv_GenParamValue);
-
-    hv_Color_COPY_INP_TMP.Dispose();
-    hv_Column_COPY_INP_TMP.Dispose();
-    hv_CoordSystem_COPY_INP_TMP.Dispose();
-    hv_Row_COPY_INP_TMP.Dispose();
-    hv_GenParamName.Dispose();
-    hv_GenParamValue.Dispose();
-
-    return;
-  }
-
 
         private void comboMult_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2968,6 +2428,571 @@ namespace LCD_SVS
 
             }
         }
+
+
+        // Procedures 
+        // External procedures 
+        // Chapter: Develop
+        // Short Description: Open a new graphics window that preserves the aspect ratio of the given image. 
+        public void dev_open_window_fit_image(HObject ho_Image, HTuple hv_Row, HTuple hv_Column,
+            HTuple hv_WidthLimit, HTuple hv_HeightLimit, out HTuple hv_WindowHandle)
+        {
+
+
+
+
+            // Local iconic variables 
+
+            // Local control variables 
+
+            HTuple hv_MinWidth = new HTuple(), hv_MaxWidth = new HTuple();
+            HTuple hv_MinHeight = new HTuple(), hv_MaxHeight = new HTuple();
+            HTuple hv_ResizeFactor = new HTuple(), hv_ImageWidth = new HTuple();
+            HTuple hv_ImageHeight = new HTuple(), hv_TempWidth = new HTuple();
+            HTuple hv_TempHeight = new HTuple(), hv_WindowWidth = new HTuple();
+            HTuple hv_WindowHeight = new HTuple();
+            // Initialize local and output iconic variables 
+            hv_WindowHandle = new HTuple();
+            //This procedure opens a new graphics window and adjusts the size
+            //such that it fits into the limits specified by WidthLimit
+            //and HeightLimit, but also maintains the correct image aspect ratio.
+            //
+            //If it is impossible to match the minimum and maximum extent requirements
+            //at the same time (f.e. if the image is very long but narrow),
+            //the maximum value gets a higher priority,
+            //
+            //Parse input tuple WidthLimit
+            if ((int)((new HTuple((new HTuple(hv_WidthLimit.TupleLength())).TupleEqual(0))).TupleOr(
+                new HTuple(hv_WidthLimit.TupleLess(0)))) != 0)
+            {
+                hv_MinWidth.Dispose();
+                hv_MinWidth = 500;
+                hv_MaxWidth.Dispose();
+                hv_MaxWidth = 800;
+            }
+            else if ((int)(new HTuple((new HTuple(hv_WidthLimit.TupleLength())).TupleEqual(
+                1))) != 0)
+            {
+                hv_MinWidth.Dispose();
+                hv_MinWidth = 0;
+                hv_MaxWidth.Dispose();
+                hv_MaxWidth = new HTuple(hv_WidthLimit);
+            }
+            else
+            {
+                hv_MinWidth.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_MinWidth = hv_WidthLimit.TupleSelect(
+                        0);
+                }
+                hv_MaxWidth.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_MaxWidth = hv_WidthLimit.TupleSelect(
+                        1);
+                }
+            }
+            //Parse input tuple HeightLimit
+            if ((int)((new HTuple((new HTuple(hv_HeightLimit.TupleLength())).TupleEqual(0))).TupleOr(
+                new HTuple(hv_HeightLimit.TupleLess(0)))) != 0)
+            {
+                hv_MinHeight.Dispose();
+                hv_MinHeight = 400;
+                hv_MaxHeight.Dispose();
+                hv_MaxHeight = 600;
+            }
+            else if ((int)(new HTuple((new HTuple(hv_HeightLimit.TupleLength())).TupleEqual(
+                1))) != 0)
+            {
+                hv_MinHeight.Dispose();
+                hv_MinHeight = 0;
+                hv_MaxHeight.Dispose();
+                hv_MaxHeight = new HTuple(hv_HeightLimit);
+            }
+            else
+            {
+                hv_MinHeight.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_MinHeight = hv_HeightLimit.TupleSelect(
+                        0);
+                }
+                hv_MaxHeight.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_MaxHeight = hv_HeightLimit.TupleSelect(
+                        1);
+                }
+            }
+            //
+            //Test, if window size has to be changed.
+            hv_ResizeFactor.Dispose();
+            hv_ResizeFactor = 1;
+            hv_ImageWidth.Dispose(); hv_ImageHeight.Dispose();
+            HOperatorSet.GetImageSize(ho_Image, out hv_ImageWidth, out hv_ImageHeight);
+            //First, expand window to the minimum extents (if necessary).
+            if ((int)((new HTuple(hv_MinWidth.TupleGreater(hv_ImageWidth))).TupleOr(new HTuple(hv_MinHeight.TupleGreater(
+                hv_ImageHeight)))) != 0)
+            {
+                hv_ResizeFactor.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_ResizeFactor = (((((hv_MinWidth.TupleReal()
+                        ) / hv_ImageWidth)).TupleConcat((hv_MinHeight.TupleReal()) / hv_ImageHeight))).TupleMax()
+                        ;
+                }
+            }
+            hv_TempWidth.Dispose();
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                hv_TempWidth = hv_ImageWidth * hv_ResizeFactor;
+            }
+            hv_TempHeight.Dispose();
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                hv_TempHeight = hv_ImageHeight * hv_ResizeFactor;
+            }
+            //Then, shrink window to maximum extents (if necessary).
+            if ((int)((new HTuple(hv_MaxWidth.TupleLess(hv_TempWidth))).TupleOr(new HTuple(hv_MaxHeight.TupleLess(
+                hv_TempHeight)))) != 0)
+            {
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    {
+                        HTuple
+                          ExpTmpLocalVar_ResizeFactor = hv_ResizeFactor * ((((((hv_MaxWidth.TupleReal()
+                            ) / hv_TempWidth)).TupleConcat((hv_MaxHeight.TupleReal()) / hv_TempHeight))).TupleMin()
+                            );
+                        hv_ResizeFactor.Dispose();
+                        hv_ResizeFactor = ExpTmpLocalVar_ResizeFactor;
+                    }
+                }
+            }
+            hv_WindowWidth.Dispose();
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                hv_WindowWidth = hv_ImageWidth * hv_ResizeFactor;
+            }
+            hv_WindowHeight.Dispose();
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                hv_WindowHeight = hv_ImageHeight * hv_ResizeFactor;
+            }
+            //Resize window
+            //dev_open_window(...);
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                HOperatorSet.SetPart(hwindow, 0, 0, hv_ImageHeight - 1, hv_ImageWidth - 1);
+            }
+
+            hv_MinWidth.Dispose();
+            hv_MaxWidth.Dispose();
+            hv_MinHeight.Dispose();
+            hv_MaxHeight.Dispose();
+            hv_ResizeFactor.Dispose();
+            hv_ImageWidth.Dispose();
+            hv_ImageHeight.Dispose();
+            hv_TempWidth.Dispose();
+            hv_TempHeight.Dispose();
+            hv_WindowWidth.Dispose();
+            hv_WindowHeight.Dispose();
+
+            return;
+        }
+
+        private void btnAnalyze_Click(object sender, EventArgs e)
+        {
+
+            string roifile = p.AppFolder + @"\TEMPROI.bmp";
+            if (!File.Exists(roifile))
+                return;
+            btnAnalyze.Cursor = Cursors.WaitCursor;
+            HOperatorSet.ClearWindow(hwindow);
+            // Local iconic variables 
+            HObject ho_Image, ho_GsFilter1, ho_GsFilter2;
+            HObject ho_Filter, ho_GrayImage, ho_ImageInvert, ho_ImageFFT;
+            HObject ho_ImageConvol, ho_ImageFiltered, ho_Rectangle;
+            HObject ho_ROI, ho_ImageMedian, ho_ImageSmooth, ho_ConnectedRegions;
+            HObject ho_SelectedRegions, ho_Contours;
+
+            // Local control variables 
+            HTuple hv_WindowHandle = new HTuple(), hv_Width = new HTuple();
+            HTuple hv_Height = new HTuple(), hv_Sigma1 = new HTuple();
+            HTuple hv_Sigma2 = new HTuple(), hv_Number = new HTuple();
+
+            // Initialize local and output iconic variables 
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            HOperatorSet.GenEmptyObj(out ho_GsFilter1);
+            HOperatorSet.GenEmptyObj(out ho_GsFilter2);
+            HOperatorSet.GenEmptyObj(out ho_Filter);
+            HOperatorSet.GenEmptyObj(out ho_GrayImage);
+            HOperatorSet.GenEmptyObj(out ho_ImageInvert);
+            HOperatorSet.GenEmptyObj(out ho_ImageFFT);
+            HOperatorSet.GenEmptyObj(out ho_ImageConvol);
+            HOperatorSet.GenEmptyObj(out ho_ImageFiltered);
+            HOperatorSet.GenEmptyObj(out ho_Rectangle);
+            HOperatorSet.GenEmptyObj(out ho_ROI);
+            HOperatorSet.GenEmptyObj(out ho_ImageMedian);
+            HOperatorSet.GenEmptyObj(out ho_ImageSmooth);
+            HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
+            HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
+            HOperatorSet.GenEmptyObj(out ho_Contours);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, roifile);
+
+            HOperatorSet.DispObj(ho_Image, hwindow);
+            HOperatorSet.SetDraw(hwindow, "margin");
+            HOperatorSet.SetLineWidth(hwindow, 1);
+            HOperatorSet.SetColored(hwindow, 12);
+
+
+            hv_Width.Dispose(); hv_Height.Dispose();
+            HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
+
+
+            hv_Sigma1.Dispose();
+            hv_Sigma1 = Convert.ToDouble(comboSigma1.Text);// 10.0;
+            hv_Sigma2.Dispose();
+            hv_Sigma2 = Convert.ToDouble(comboSigma2.Text); ;//2.0;
+
+            ho_GsFilter1.Dispose();
+            HOperatorSet.GenGaussFilter(out ho_GsFilter1, hv_Sigma1, hv_Sigma1, 0.0, "none",
+                "rft", hv_Width, hv_Height);
+
+            ho_GsFilter2.Dispose();
+            HOperatorSet.GenGaussFilter(out ho_GsFilter2, hv_Sigma2, hv_Sigma2, 0.0, "none",
+                "rft", hv_Width, hv_Height);
+            ho_Filter.Dispose();
+            //HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, 1, 0);
+            HOperatorSet.SubImage(ho_GsFilter1, ho_GsFilter2, out ho_Filter, Convert.ToDouble(comboMult.Text), 0);
+
+            ho_GrayImage.Dispose();
+            HOperatorSet.Rgb1ToGray(ho_Image, out ho_GrayImage);
+            ho_ImageInvert.Dispose();
+            HOperatorSet.InvertImage(ho_GrayImage, out ho_ImageInvert);
+
+            ho_ImageFFT.Dispose();
+            HOperatorSet.RftGeneric(ho_ImageInvert, out ho_ImageFFT, "to_freq", "sqrt", "complex",
+                hv_Width);
+
+            ho_ImageConvol.Dispose();
+            HOperatorSet.ConvolFft(ho_ImageFFT, ho_Filter, out ho_ImageConvol);
+
+            ho_ImageFiltered.Dispose();
+            HOperatorSet.RftGeneric(ho_ImageConvol, out ho_ImageFiltered, "from_freq", "n",
+                "real", hv_Width);
+
+            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+            {
+                ho_Rectangle.Dispose();
+
+                Int32 Height = hv_Height.I - Convert.ToInt32(txtBotL.Text);
+                Int32 Width = hv_Width.I - Convert.ToInt32(txtBotR.Text);
+
+                HOperatorSet.GenRectangle1(out ho_Rectangle, Convert.ToInt16(txtTopL.Text), Convert.ToInt16(txtTopR.Text), Height, Width);
+                // HOperatorSet.GenRectangle1(out ho_Rectangle, 10,10, hv_Height-10, hv_Width-10);
+            }
+
+            ho_ROI.Dispose();
+            HOperatorSet.ReduceDomain(ho_ImageFiltered, ho_Rectangle, out ho_ROI);
+
+            ho_ImageMedian.Dispose();
+            HOperatorSet.MedianImage(ho_ROI, out ho_ImageMedian, "circle", Convert.ToInt16(comboRadius.Text), "mirrored");
+
+            ho_ImageSmooth.Dispose();
+            HOperatorSet.SmoothImage(ho_ROI, out ho_ImageSmooth, "gauss", Convert.ToDouble(comboAlpha.Text));
+
+            ho_ImageSmooth.Dispose();
+            // HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, -0.012866, -0.005549);
+            double MinGray = Convert.ToDouble(txtMinGray.Text);
+            double MaxGray = Convert.ToDouble(txtMaxGray.Text);
+
+            HOperatorSet.Threshold(ho_ROI, out ho_ImageSmooth, MinGray, MaxGray);
+
+            ho_ConnectedRegions.Dispose();
+            HOperatorSet.Connection(ho_ImageSmooth, out ho_ConnectedRegions);
+
+
+            ho_SelectedRegions.Dispose();
+            HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions, "area",
+                "and", Convert.ToInt64(txtMinArea.Text), Convert.ToInt64(txtMaxArea.Text));
+
+            ho_Contours.Dispose();
+            HOperatorSet.GenContourRegionXld(ho_SelectedRegions, out ho_Contours, "border");
+
+            hv_Number.Dispose();
+            HOperatorSet.CountObj(ho_Contours, out hv_Number);
+            HOperatorSet.DispObj(ho_Contours, hwindow);
+
+            ////hwindow.WriteString("HAHAHA");
+            //hwindow.
+
+            if (hv_Number > 0)
+            {
+                string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "->" + "FAIL,Find " + hv_Number + " error(s).";
+                hwindow.WriteString(msg);
+                disp_message(hwindow, msg, "window", 12, 12, "red", "false");
+
+            }
+            else
+            {
+                string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "->" + "PASS.";
+                hwindow.WriteString(msg);
+                disp_message(hwindow, msg, "window", 12, 12, "green", "false");
+            }
+
+
+            ho_Image.Dispose();
+            ho_GsFilter1.Dispose();
+            ho_GsFilter2.Dispose();
+            ho_Filter.Dispose();
+            ho_GrayImage.Dispose();
+            ho_ImageInvert.Dispose();
+            ho_ImageFFT.Dispose();
+            ho_ImageConvol.Dispose();
+            ho_ImageFiltered.Dispose();
+            ho_Rectangle.Dispose();
+            ho_ROI.Dispose();
+            ho_ImageMedian.Dispose();
+            ho_ImageSmooth.Dispose();
+            ho_ConnectedRegions.Dispose();
+            ho_SelectedRegions.Dispose();
+            ho_Contours.Dispose();
+
+            hv_WindowHandle.Dispose();
+            hv_Width.Dispose();
+            hv_Height.Dispose();
+            hv_Sigma1.Dispose();
+            hv_Sigma2.Dispose();
+            hv_Number.Dispose();
+            btnAnalyze.Cursor = Cursors.Default;
+
+        }
+
+
+        public void disp_message(HTuple hv_WindowHandle, HTuple hv_String, HTuple hv_CoordSystem,
+    HTuple hv_Row, HTuple hv_Column, HTuple hv_Color, HTuple hv_Box)
+        {
+
+
+
+            // Local iconic variables 
+
+            // Local control variables 
+
+            HTuple hv_GenParamName = new HTuple(), hv_GenParamValue = new HTuple();
+            HTuple hv_Color_COPY_INP_TMP = new HTuple(hv_Color);
+            HTuple hv_Column_COPY_INP_TMP = new HTuple(hv_Column);
+            HTuple hv_CoordSystem_COPY_INP_TMP = new HTuple(hv_CoordSystem);
+            HTuple hv_Row_COPY_INP_TMP = new HTuple(hv_Row);
+            // Initialize local and output iconic variables 
+            //This procedure displays text in a graphics window.
+            //
+            //Input parameters:
+            //WindowHandle: The WindowHandle of the graphics window, where
+            //   the message should be displayed
+            //String: A tuple of strings containing the text message to be displayed
+            //CoordSystem: If set to 'window', the text position is given
+            //   with respect to the window coordinate system.
+            //   If set to 'image', image coordinates are used.
+            //   (This may be useful in zoomed images.)
+            //Row: The row coordinate of the desired text position
+            //   A tuple of values is allowed to display text at different
+            //   positions.
+            //Column: The column coordinate of the desired text position
+            //   A tuple of values is allowed to display text at different
+            //   positions.
+            //Color: defines the color of the text as string.
+            //   If set to [], '' or 'auto' the currently set color is used.
+            //   If a tuple of strings is passed, the colors are used cyclically...
+            //   - if |Row| == |Column| == 1: for each new textline
+            //   = else for each text position.
+            //Box: If Box[0] is set to 'true', the text is written within an orange box.
+            //     If set to' false', no box is displayed.
+            //     If set to a color string (e.g. 'white', '#FF00CC', etc.),
+            //       the text is written in a box of that color.
+            //     An optional second value for Box (Box[1]) controls if a shadow is displayed:
+            //       'true' -> display a shadow in a default color
+            //       'false' -> display no shadow
+            //       otherwise -> use given string as color string for the shadow color
+            //
+            //It is possible to display multiple text strings in a single call.
+            //In this case, some restrictions apply:
+            //- Multiple text positions can be defined by specifying a tuple
+            //  with multiple Row and/or Column coordinates, i.e.:
+            //  - |Row| == n, |Column| == n
+            //  - |Row| == n, |Column| == 1
+            //  - |Row| == 1, |Column| == n
+            //- If |Row| == |Column| == 1,
+            //  each element of String is display in a new textline.
+            //- If multiple positions or specified, the number of Strings
+            //  must match the number of positions, i.e.:
+            //  - Either |String| == n (each string is displayed at the
+            //                          corresponding position),
+            //  - or     |String| == 1 (The string is displayed n times).
+            //
+            //
+            //Convert the parameters for disp_text.
+            if ((int)((new HTuple(hv_Row_COPY_INP_TMP.TupleEqual(new HTuple()))).TupleOr(
+                new HTuple(hv_Column_COPY_INP_TMP.TupleEqual(new HTuple())))) != 0)
+            {
+
+                hv_Color_COPY_INP_TMP.Dispose();
+                hv_Column_COPY_INP_TMP.Dispose();
+                hv_CoordSystem_COPY_INP_TMP.Dispose();
+                hv_Row_COPY_INP_TMP.Dispose();
+                hv_GenParamName.Dispose();
+                hv_GenParamValue.Dispose();
+
+                return;
+            }
+            if ((int)(new HTuple(hv_Row_COPY_INP_TMP.TupleEqual(-1))) != 0)
+            {
+                hv_Row_COPY_INP_TMP.Dispose();
+                hv_Row_COPY_INP_TMP = 12;
+            }
+            if ((int)(new HTuple(hv_Column_COPY_INP_TMP.TupleEqual(-1))) != 0)
+            {
+                hv_Column_COPY_INP_TMP.Dispose();
+                hv_Column_COPY_INP_TMP = 12;
+            }
+            //
+            //Convert the parameter Box to generic parameters.
+            hv_GenParamName.Dispose();
+            hv_GenParamName = new HTuple();
+            hv_GenParamValue.Dispose();
+            hv_GenParamValue = new HTuple();
+            if ((int)(new HTuple((new HTuple(hv_Box.TupleLength())).TupleGreater(0))) != 0)
+            {
+                if ((int)(new HTuple(((hv_Box.TupleSelect(0))).TupleEqual("false"))) != 0)
+                {
+                    //Display no box
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
+                                "box");
+                            hv_GenParamName.Dispose();
+                            hv_GenParamName = ExpTmpLocalVar_GenParamName;
+                        }
+                    }
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
+                                "false");
+                            hv_GenParamValue.Dispose();
+                            hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
+                        }
+                    }
+                }
+                else if ((int)(new HTuple(((hv_Box.TupleSelect(0))).TupleNotEqual("true"))) != 0)
+                {
+                    //Set a color other than the default.
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
+                                "box_color");
+                            hv_GenParamName.Dispose();
+                            hv_GenParamName = ExpTmpLocalVar_GenParamName;
+                        }
+                    }
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
+                                hv_Box.TupleSelect(0));
+                            hv_GenParamValue.Dispose();
+                            hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
+                        }
+                    }
+                }
+            }
+            if ((int)(new HTuple((new HTuple(hv_Box.TupleLength())).TupleGreater(1))) != 0)
+            {
+                if ((int)(new HTuple(((hv_Box.TupleSelect(1))).TupleEqual("false"))) != 0)
+                {
+                    //Display no shadow.
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
+                                "shadow");
+                            hv_GenParamName.Dispose();
+                            hv_GenParamName = ExpTmpLocalVar_GenParamName;
+                        }
+                    }
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
+                                "false");
+                            hv_GenParamValue.Dispose();
+                            hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
+                        }
+                    }
+                }
+                else if ((int)(new HTuple(((hv_Box.TupleSelect(1))).TupleNotEqual("true"))) != 0)
+                {
+                    //Set a shadow color other than the default.
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_GenParamName = hv_GenParamName.TupleConcat(
+                                "shadow_color");
+                            hv_GenParamName.Dispose();
+                            hv_GenParamName = ExpTmpLocalVar_GenParamName;
+                        }
+                    }
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_GenParamValue = hv_GenParamValue.TupleConcat(
+                                hv_Box.TupleSelect(1));
+                            hv_GenParamValue.Dispose();
+                            hv_GenParamValue = ExpTmpLocalVar_GenParamValue;
+                        }
+                    }
+                }
+            }
+            //Restore default CoordSystem behavior.
+            if ((int)(new HTuple(hv_CoordSystem_COPY_INP_TMP.TupleNotEqual("window"))) != 0)
+            {
+                hv_CoordSystem_COPY_INP_TMP.Dispose();
+                hv_CoordSystem_COPY_INP_TMP = "image";
+            }
+            //
+            if ((int)(new HTuple(hv_Color_COPY_INP_TMP.TupleEqual(""))) != 0)
+            {
+                //disp_text does not accept an empty string for Color.
+                hv_Color_COPY_INP_TMP.Dispose();
+                hv_Color_COPY_INP_TMP = new HTuple();
+            }
+            //
+            HOperatorSet.DispText(hv_WindowHandle, hv_String, hv_CoordSystem_COPY_INP_TMP,
+                hv_Row_COPY_INP_TMP, hv_Column_COPY_INP_TMP, hv_Color_COPY_INP_TMP, hv_GenParamName,
+                hv_GenParamValue);
+
+            hv_Color_COPY_INP_TMP.Dispose();
+            hv_Column_COPY_INP_TMP.Dispose();
+            hv_CoordSystem_COPY_INP_TMP.Dispose();
+            hv_Row_COPY_INP_TMP.Dispose();
+            hv_GenParamName.Dispose();
+            hv_GenParamValue.Dispose();
+
+            return;
+        }
+
         
         #endregion
 
@@ -2983,10 +3008,6 @@ namespace LCD_SVS
         //    e.Graphics.DrawRectangle(p, e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.X + e.ClipRectangle.Width - 0, e.ClipRectangle.Y + e.ClipRectangle.Height - 0);
 
         //}
-
-
-
-
 
         #region Wsdl
 
@@ -3039,6 +3060,10 @@ namespace LCD_SVS
                     default:
                         break;
                 }
+                if (richMessage.TextLength > richMessage.MaxLength - 1000)
+                    richMessage.Clear();
+                richMessage.SelectionStart = richMessage.TextLength;
+                richMessage.ScrollToCaret();
             }));
  
         }
@@ -3163,10 +3188,104 @@ namespace LCD_SVS
                 p.UseCamera = "0";
             IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "UseCamera", p.UseCamera, p.IniFilePath);
         }
-    }
+
+        private void txtSN_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+            {
+                string sn = txtSN.Text.ToUpper().Trim();
+                if (!string.IsNullOrEmpty(sn) && !string.IsNullOrEmpty(p.Stage))
+                    LoadInfoFromWebService(sn,p.Stage );
+            }
+        }
+
+        #endregion
+
+        #region USB
+
+
+        public struct  Usb
+        {
+            public string DeviceID;
+            public String PNPDeviceID;      // 设备ID
+            public String Name;             // 设备名称
+            public String Description;      // 设备描述
+           // public String Service;          // 服务
+           // public String Status;           // 设备状态
+            //public UInt16 VendorID;         // 供应商标识
+            //public UInt16 ProductID;        // 产品编号 
+            //public Guid ClassGuid;          // 设备安装类GUID
+        }    
+
+
+        public static List<Usb> GetUSBDevices()
+        {
+            List<Usb> devices = new List<Usb>();
+
+            ManagementObjectCollection collection;
+            string sql = "Select * From Win32_USBHub";
+            sql = @"SELECT * FROM Win32_SerialPort";
+            //sql = @"SELECT * FROM Win32_USBControllerDevice";
+           // sql = @"SELECT * FROM Win32_PnPEntity WHERE name LIKE 'USB Serial Converter'"; //串口
+            using (var searcher = new ManagementObjectSearcher(@sql))
+
+            {
+                collection = searcher.Get();
+            }
+            
+            foreach (var device in collection)
+            {
+                Usb _usb = new Usb();
+                _usb.DeviceID  = (string)device.GetPropertyValue("DeviceID");
+                _usb.PNPDeviceID = (string)device.GetPropertyValue("PNPDeviceID");
+                _usb.Description = (string) device.GetPropertyValue("Description");
+                _usb.Name = (string)device.GetPropertyValue("Name");
+                //devices.Add(((string) device.GetPropertyValue("DeviceID"),
+                //    (string) device.GetPropertyValue("PNPDeviceID"),
+                //    (string) device.GetPropertyValue("Description")));
+                devices.Add(_usb);
+            }
+
+            collection.Dispose();
+            return devices;
+
+        }
+
+
+        private void GetSerialPort(ComboBox cbx)
+        {
+            ComList = new Dictionary<string, string>();
+            RegistryKey hklm = Registry.LocalMachine;
+            RegistryKey software = hklm.OpenSubKey("HARDWARE");
+            RegistryKey no1 = software.OpenSubKey("DEVICEMAP");
+            RegistryKey no2 = no1.OpenSubKey("SERIALCOMM");
+            string[] linesplit = no2.GetValueNames();
+            if (linesplit.Length > 0)
+            {
+                for (int i = 0; i < linesplit.Length; i++)
+                {
+                    ComList.Add(no2.GetValue(linesplit[i]).ToString(), linesplit[i]);
+                    cbx.Items.Add(no2.GetValue(linesplit[i]));
+                }
+                if (cbx.Items.Count > 0)
+                    cbx.SelectedIndex = 0;
+            }
+        }
 
 
         #endregion
 
-   
+        private void comboPort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string com = comboPort.Text;
+            string cominfo = string.Empty;
+            if (!string.IsNullOrEmpty(com))
+            {
+                if (ComList.TryGetValue(com, out cominfo))
+                    txtComDeviceInfo.Text = cominfo;
+            }
+
+        }
+           
+    }
 }

@@ -93,29 +93,41 @@
             this.tabInspection = new System.Windows.Forms.TabPage();
             this.tlpInspection = new System.Windows.Forms.TableLayoutPanel();
             this.panelInspection = new System.Windows.Forms.Panel();
+            this.richMessage = new System.Windows.Forms.RichTextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txtSN = new System.Windows.Forms.TextBox();
+            this.txtInspectionInfo = new System.Windows.Forms.TextBox();
+            this.lstSN = new System.Windows.Forms.ListBox();
             this.tabSetting = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.txtComDeviceInfo = new System.Windows.Forms.TextBox();
+            this.txtCapture2Signal = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.chkCapture2 = new System.Windows.Forms.CheckBox();
+            this.chkCapture1 = new System.Windows.Forms.CheckBox();
+            this.chkUseCom = new System.Windows.Forms.CheckBox();
+            this.txtCapture1Signal = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.comboPort = new System.Windows.Forms.ComboBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtStage = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.txtTestSN = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.chkTestWebService = new System.Windows.Forms.CheckBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.txtWebService = new System.Windows.Forms.TextBox();
+            this.chkUseWebService = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkUseCamera = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.chkTestNGSavePictures = new System.Windows.Forms.CheckBox();
+            this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
             this.txtNGImgFolder = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
-            this.chkTestNGSavePictures = new System.Windows.Forms.CheckBox();
-            this.chkTestOKSavePictures = new System.Windows.Forms.CheckBox();
-            this.lstSN = new System.Windows.Forms.ListBox();
-            this.txtInspectionInfo = new System.Windows.Forms.TextBox();
-            this.txtSN = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.richMessage = new System.Windows.Forms.RichTextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.chkUseWebService = new System.Windows.Forms.CheckBox();
-            this.txtWebService = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.chkTestWebService = new System.Windows.Forms.CheckBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.txtTestSN = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.txtStage = new System.Windows.Forms.TextBox();
-            this.chkUseCamera = new System.Windows.Forms.CheckBox();
+            this.btnRefreshCom = new System.Windows.Forms.Button();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -131,8 +143,9 @@
             this.tlpInspection.SuspendLayout();
             this.panelInspection.SuspendLayout();
             this.tabSetting.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonDiscover
@@ -335,9 +348,9 @@
             this.lstCapMsg.FormattingEnabled = true;
             this.lstCapMsg.HorizontalScrollbar = true;
             this.lstCapMsg.ItemHeight = 14;
-            this.lstCapMsg.Location = new System.Drawing.Point(3, 161);
+            this.lstCapMsg.Location = new System.Drawing.Point(3, 189);
             this.lstCapMsg.Name = "lstCapMsg";
-            this.lstCapMsg.Size = new System.Drawing.Size(293, 438);
+            this.lstCapMsg.Size = new System.Drawing.Size(293, 410);
             this.lstCapMsg.TabIndex = 23;
             // 
             // btnCapture
@@ -1007,9 +1020,75 @@
             this.panelInspection.Size = new System.Drawing.Size(322, 615);
             this.panelInspection.TabIndex = 0;
             // 
+            // richMessage
+            // 
+            this.richMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richMessage.Location = new System.Drawing.Point(3, 3);
+            this.richMessage.Name = "richMessage";
+            this.richMessage.ReadOnly = true;
+            this.richMessage.Size = new System.Drawing.Size(316, 388);
+            this.richMessage.TabIndex = 17;
+            this.richMessage.Text = "";
+            this.richMessage.WordWrap = false;
+            // 
+            // label22
+            // 
+            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(9, 560);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(60, 17);
+            this.label22.TabIndex = 16;
+            this.label22.Text = "Input SN:";
+            // 
+            // txtSN
+            // 
+            this.txtSN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.txtSN.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.txtSN.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtSN.Location = new System.Drawing.Point(74, 555);
+            this.txtSN.Name = "txtSN";
+            this.txtSN.Size = new System.Drawing.Size(245, 25);
+            this.txtSN.TabIndex = 15;
+            this.txtSN.Text = " ";
+            this.txtSN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtSN.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSN_KeyPress);
+            // 
+            // txtInspectionInfo
+            // 
+            this.txtInspectionInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInspectionInfo.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.txtInspectionInfo.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtInspectionInfo.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.txtInspectionInfo.Location = new System.Drawing.Point(3, 583);
+            this.txtInspectionInfo.Name = "txtInspectionInfo";
+            this.txtInspectionInfo.ReadOnly = true;
+            this.txtInspectionInfo.Size = new System.Drawing.Size(316, 27);
+            this.txtInspectionInfo.TabIndex = 14;
+            this.txtInspectionInfo.Text = " ";
+            this.txtInspectionInfo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lstSN
+            // 
+            this.lstSN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstSN.FormattingEnabled = true;
+            this.lstSN.ItemHeight = 14;
+            this.lstSN.Location = new System.Drawing.Point(3, 392);
+            this.lstSN.Name = "lstSN";
+            this.lstSN.Size = new System.Drawing.Size(317, 158);
+            this.lstSN.TabIndex = 1;
+            // 
             // tabSetting
             // 
             this.tabSetting.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.tabSetting.Controls.Add(this.groupBox3);
             this.tabSetting.Controls.Add(this.groupBox2);
             this.tabSetting.Controls.Add(this.groupBox1);
             this.tabSetting.Location = new System.Drawing.Point(4, 26);
@@ -1017,6 +1096,214 @@
             this.tabSetting.Size = new System.Drawing.Size(966, 621);
             this.tabSetting.TabIndex = 2;
             this.tabSetting.Text = "Setting";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnRefreshCom);
+            this.groupBox3.Controls.Add(this.txtComDeviceInfo);
+            this.groupBox3.Controls.Add(this.txtCapture2Signal);
+            this.groupBox3.Controls.Add(this.label28);
+            this.groupBox3.Controls.Add(this.chkCapture2);
+            this.groupBox3.Controls.Add(this.chkCapture1);
+            this.groupBox3.Controls.Add(this.chkUseCom);
+            this.groupBox3.Controls.Add(this.txtCapture1Signal);
+            this.groupBox3.Controls.Add(this.label27);
+            this.groupBox3.Controls.Add(this.label26);
+            this.groupBox3.Controls.Add(this.comboPort);
+            this.groupBox3.Location = new System.Drawing.Point(3, 242);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(543, 123);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Capture Signal Setting";
+            // 
+            // txtComDeviceInfo
+            // 
+            this.txtComDeviceInfo.Location = new System.Drawing.Point(158, 40);
+            this.txtComDeviceInfo.Name = "txtComDeviceInfo";
+            this.txtComDeviceInfo.ReadOnly = true;
+            this.txtComDeviceInfo.Size = new System.Drawing.Size(246, 22);
+            this.txtComDeviceInfo.TabIndex = 7;
+            this.txtComDeviceInfo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtCapture2Signal
+            // 
+            this.txtCapture2Signal.Location = new System.Drawing.Point(278, 95);
+            this.txtCapture2Signal.Name = "txtCapture2Signal";
+            this.txtCapture2Signal.Size = new System.Drawing.Size(76, 22);
+            this.txtCapture2Signal.TabIndex = 15;
+            this.txtCapture2Signal.Text = "B";
+            this.txtCapture2Signal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(164, 100);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(112, 14);
+            this.label28.TabIndex = 16;
+            this.label28.Text = "2nd Capture Signal:";
+            // 
+            // chkCapture2
+            // 
+            this.chkCapture2.AutoSize = true;
+            this.chkCapture2.Location = new System.Drawing.Point(10, 100);
+            this.chkCapture2.Name = "chkCapture2";
+            this.chkCapture2.Size = new System.Drawing.Size(128, 18);
+            this.chkCapture2.TabIndex = 14;
+            this.chkCapture2.Text = "Capture 2nd Image";
+            this.chkCapture2.UseVisualStyleBackColor = true;
+            // 
+            // chkCapture1
+            // 
+            this.chkCapture1.AutoSize = true;
+            this.chkCapture1.Location = new System.Drawing.Point(11, 72);
+            this.chkCapture1.Name = "chkCapture1";
+            this.chkCapture1.Size = new System.Drawing.Size(124, 18);
+            this.chkCapture1.TabIndex = 13;
+            this.chkCapture1.Text = "Capture 1st Image";
+            this.chkCapture1.UseVisualStyleBackColor = true;
+            // 
+            // chkUseCom
+            // 
+            this.chkUseCom.AutoSize = true;
+            this.chkUseCom.Location = new System.Drawing.Point(11, 21);
+            this.chkUseCom.Name = "chkUseCom";
+            this.chkUseCom.Size = new System.Drawing.Size(206, 18);
+            this.chkUseCom.TabIndex = 12;
+            this.chkUseCom.Text = "Use Com Signal to Capture Image";
+            this.chkUseCom.UseVisualStyleBackColor = true;
+            // 
+            // txtCapture1Signal
+            // 
+            this.txtCapture1Signal.Location = new System.Drawing.Point(278, 68);
+            this.txtCapture1Signal.Name = "txtCapture1Signal";
+            this.txtCapture1Signal.Size = new System.Drawing.Size(76, 22);
+            this.txtCapture1Signal.TabIndex = 12;
+            this.txtCapture1Signal.Text = "A";
+            this.txtCapture1Signal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(164, 72);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(108, 14);
+            this.label27.TabIndex = 12;
+            this.label27.Text = "1st Capture Signal:";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(13, 44);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(57, 14);
+            this.label26.TabIndex = 12;
+            this.label26.Text = "Com Port:";
+            // 
+            // comboPort
+            // 
+            this.comboPort.FormattingEnabled = true;
+            this.comboPort.Location = new System.Drawing.Point(76, 40);
+            this.comboPort.Name = "comboPort";
+            this.comboPort.Size = new System.Drawing.Size(76, 22);
+            this.comboPort.TabIndex = 0;
+            this.comboPort.SelectedIndexChanged += new System.EventHandler(this.comboPort_SelectedIndexChanged);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.txtStage);
+            this.groupBox2.Controls.Add(this.label25);
+            this.groupBox2.Controls.Add(this.txtTestSN);
+            this.groupBox2.Controls.Add(this.label24);
+            this.groupBox2.Controls.Add(this.chkTestWebService);
+            this.groupBox2.Controls.Add(this.label23);
+            this.groupBox2.Controls.Add(this.txtWebService);
+            this.groupBox2.Controls.Add(this.chkUseWebService);
+            this.groupBox2.Location = new System.Drawing.Point(3, 131);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(543, 105);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "WebService Setting";
+            // 
+            // txtStage
+            // 
+            this.txtStage.Location = new System.Drawing.Point(477, 69);
+            this.txtStage.Name = "txtStage";
+            this.txtStage.Size = new System.Drawing.Size(60, 22);
+            this.txtStage.TabIndex = 11;
+            this.txtStage.Text = "TU";
+            this.txtStage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtStage.TextChanged += new System.EventHandler(this.txtStage_TextChanged);
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(436, 74);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(40, 14);
+            this.label25.TabIndex = 10;
+            this.label25.Text = "Stage:";
+            // 
+            // txtTestSN
+            // 
+            this.txtTestSN.Location = new System.Drawing.Point(320, 70);
+            this.txtTestSN.Name = "txtTestSN";
+            this.txtTestSN.Size = new System.Drawing.Size(110, 22);
+            this.txtTestSN.TabIndex = 9;
+            this.txtTestSN.Text = "F3NZLT2";
+            this.txtTestSN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTestSN.TextChanged += new System.EventHandler(this.txtTestSN_TextChanged);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(265, 74);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(49, 14);
+            this.label24.TabIndex = 8;
+            this.label24.Text = "Test SN:";
+            // 
+            // chkTestWebService
+            // 
+            this.chkTestWebService.AutoSize = true;
+            this.chkTestWebService.Location = new System.Drawing.Point(11, 73);
+            this.chkTestWebService.Name = "chkTestWebService";
+            this.chkTestWebService.Size = new System.Drawing.Size(239, 18);
+            this.chkTestWebService.TabIndex = 7;
+            this.chkTestWebService.Text = "Connect WebService Test Query Method";
+            this.chkTestWebService.UseVisualStyleBackColor = true;
+            this.chkTestWebService.CheckedChanged += new System.EventHandler(this.chkTestWebService_CheckedChanged);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(14, 48);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(73, 14);
+            this.label23.TabIndex = 6;
+            this.label23.Text = "WebService:";
+            // 
+            // txtWebService
+            // 
+            this.txtWebService.Location = new System.Drawing.Point(99, 44);
+            this.txtWebService.Name = "txtWebService";
+            this.txtWebService.Size = new System.Drawing.Size(438, 22);
+            this.txtWebService.TabIndex = 6;
+            this.txtWebService.Text = "http://10.62.201.215/Tester.WebService/WebService.asmx";
+            this.txtWebService.TextChanged += new System.EventHandler(this.txtWebService_TextChanged);
+            // 
+            // chkUseWebService
+            // 
+            this.chkUseWebService.AutoSize = true;
+            this.chkUseWebService.Location = new System.Drawing.Point(11, 21);
+            this.chkUseWebService.Name = "chkUseWebService";
+            this.chkUseWebService.Size = new System.Drawing.Size(113, 18);
+            this.chkUseWebService.TabIndex = 6;
+            this.chkUseWebService.Text = "Use WebService";
+            this.chkUseWebService.UseVisualStyleBackColor = true;
+            this.chkUseWebService.CheckedChanged += new System.EventHandler(this.chkUseWebService_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -1034,6 +1321,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Capture Setting";
             // 
+            // chkUseCamera
+            // 
+            this.chkUseCamera.AutoSize = true;
+            this.chkUseCamera.Location = new System.Drawing.Point(11, 21);
+            this.chkUseCamera.Name = "chkUseCamera";
+            this.chkUseCamera.Size = new System.Drawing.Size(91, 18);
+            this.chkUseCamera.TabIndex = 6;
+            this.chkUseCamera.Text = "Use Camera";
+            this.chkUseCamera.UseVisualStyleBackColor = true;
+            this.chkUseCamera.CheckedChanged += new System.EventHandler(this.chkUseCamera_CheckedChanged);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -1042,6 +1340,28 @@
             this.label5.Size = new System.Drawing.Size(87, 14);
             this.label5.TabIndex = 5;
             this.label5.Text = "NG Img Folder:";
+            // 
+            // chkTestNGSavePictures
+            // 
+            this.chkTestNGSavePictures.AutoSize = true;
+            this.chkTestNGSavePictures.Location = new System.Drawing.Point(280, 21);
+            this.chkTestNGSavePictures.Name = "chkTestNGSavePictures";
+            this.chkTestNGSavePictures.Size = new System.Drawing.Size(141, 18);
+            this.chkTestNGSavePictures.TabIndex = 1;
+            this.chkTestNGSavePictures.Text = "Test NG Save Pictures";
+            this.chkTestNGSavePictures.UseVisualStyleBackColor = true;
+            this.chkTestNGSavePictures.CheckedChanged += new System.EventHandler(this.chkTestNGSavePictures_CheckedChanged);
+            // 
+            // chkTestOKSavePictures
+            // 
+            this.chkTestOKSavePictures.AutoSize = true;
+            this.chkTestOKSavePictures.Location = new System.Drawing.Point(119, 21);
+            this.chkTestOKSavePictures.Name = "chkTestOKSavePictures";
+            this.chkTestOKSavePictures.Size = new System.Drawing.Size(139, 18);
+            this.chkTestOKSavePictures.TabIndex = 0;
+            this.chkTestOKSavePictures.Text = "Test OK Save Pictures";
+            this.chkTestOKSavePictures.UseVisualStyleBackColor = true;
+            this.chkTestOKSavePictures.CheckedChanged += new System.EventHandler(this.chkTestOKSavePictures_CheckedChanged);
             // 
             // txtNGImgFolder
             // 
@@ -1068,196 +1388,16 @@
             this.txtOKImgFolder.TabIndex = 2;
             this.txtOKImgFolder.TextChanged += new System.EventHandler(this.txtOKImgFolder_TextChanged);
             // 
-            // chkTestNGSavePictures
+            // btnRefreshCom
             // 
-            this.chkTestNGSavePictures.AutoSize = true;
-            this.chkTestNGSavePictures.Location = new System.Drawing.Point(280, 21);
-            this.chkTestNGSavePictures.Name = "chkTestNGSavePictures";
-            this.chkTestNGSavePictures.Size = new System.Drawing.Size(141, 18);
-            this.chkTestNGSavePictures.TabIndex = 1;
-            this.chkTestNGSavePictures.Text = "Test NG Save Pictures";
-            this.chkTestNGSavePictures.UseVisualStyleBackColor = true;
-            this.chkTestNGSavePictures.CheckedChanged += new System.EventHandler(this.chkTestNGSavePictures_CheckedChanged);
-            // 
-            // chkTestOKSavePictures
-            // 
-            this.chkTestOKSavePictures.AutoSize = true;
-            this.chkTestOKSavePictures.Location = new System.Drawing.Point(119, 21);
-            this.chkTestOKSavePictures.Name = "chkTestOKSavePictures";
-            this.chkTestOKSavePictures.Size = new System.Drawing.Size(139, 18);
-            this.chkTestOKSavePictures.TabIndex = 0;
-            this.chkTestOKSavePictures.Text = "Test OK Save Pictures";
-            this.chkTestOKSavePictures.UseVisualStyleBackColor = true;
-            this.chkTestOKSavePictures.CheckedChanged += new System.EventHandler(this.chkTestOKSavePictures_CheckedChanged);
-            // 
-            // lstSN
-            // 
-            this.lstSN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstSN.FormattingEnabled = true;
-            this.lstSN.ItemHeight = 14;
-            this.lstSN.Location = new System.Drawing.Point(3, 392);
-            this.lstSN.Name = "lstSN";
-            this.lstSN.Size = new System.Drawing.Size(317, 158);
-            this.lstSN.TabIndex = 1;
-            // 
-            // txtInspectionInfo
-            // 
-            this.txtInspectionInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtInspectionInfo.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.txtInspectionInfo.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtInspectionInfo.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.txtInspectionInfo.Location = new System.Drawing.Point(3, 583);
-            this.txtInspectionInfo.Name = "txtInspectionInfo";
-            this.txtInspectionInfo.ReadOnly = true;
-            this.txtInspectionInfo.Size = new System.Drawing.Size(316, 27);
-            this.txtInspectionInfo.TabIndex = 14;
-            this.txtInspectionInfo.Text = " ";
-            this.txtInspectionInfo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // txtSN
-            // 
-            this.txtSN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.txtSN.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.txtSN.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtSN.Location = new System.Drawing.Point(74, 555);
-            this.txtSN.Name = "txtSN";
-            this.txtSN.Size = new System.Drawing.Size(245, 25);
-            this.txtSN.TabIndex = 15;
-            this.txtSN.Text = " ";
-            this.txtSN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label22
-            // 
-            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(9, 560);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(60, 17);
-            this.label22.TabIndex = 16;
-            this.label22.Text = "Input SN:";
-            // 
-            // richMessage
-            // 
-            this.richMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richMessage.Location = new System.Drawing.Point(3, 3);
-            this.richMessage.Name = "richMessage";
-            this.richMessage.ReadOnly = true;
-            this.richMessage.Size = new System.Drawing.Size(316, 388);
-            this.richMessage.TabIndex = 17;
-            this.richMessage.Text = "";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.txtStage);
-            this.groupBox2.Controls.Add(this.label25);
-            this.groupBox2.Controls.Add(this.txtTestSN);
-            this.groupBox2.Controls.Add(this.label24);
-            this.groupBox2.Controls.Add(this.chkTestWebService);
-            this.groupBox2.Controls.Add(this.label23);
-            this.groupBox2.Controls.Add(this.txtWebService);
-            this.groupBox2.Controls.Add(this.chkUseWebService);
-            this.groupBox2.Location = new System.Drawing.Point(3, 131);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(543, 105);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "WebService Setting";
-            // 
-            // chkUseWebService
-            // 
-            this.chkUseWebService.AutoSize = true;
-            this.chkUseWebService.Location = new System.Drawing.Point(11, 21);
-            this.chkUseWebService.Name = "chkUseWebService";
-            this.chkUseWebService.Size = new System.Drawing.Size(113, 18);
-            this.chkUseWebService.TabIndex = 6;
-            this.chkUseWebService.Text = "Use WebService";
-            this.chkUseWebService.UseVisualStyleBackColor = true;
-            this.chkUseWebService.CheckedChanged += new System.EventHandler(this.chkUseWebService_CheckedChanged);
-            // 
-            // txtWebService
-            // 
-            this.txtWebService.Location = new System.Drawing.Point(99, 44);
-            this.txtWebService.Name = "txtWebService";
-            this.txtWebService.Size = new System.Drawing.Size(438, 22);
-            this.txtWebService.TabIndex = 6;
-            this.txtWebService.Text = "http://10.62.201.215/Tester.WebService/WebService.asmx";
-            this.txtWebService.TextChanged += new System.EventHandler(this.txtWebService_TextChanged);
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(14, 48);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(73, 14);
-            this.label23.TabIndex = 6;
-            this.label23.Text = "WebService:";
-            // 
-            // chkTestWebService
-            // 
-            this.chkTestWebService.AutoSize = true;
-            this.chkTestWebService.Location = new System.Drawing.Point(11, 73);
-            this.chkTestWebService.Name = "chkTestWebService";
-            this.chkTestWebService.Size = new System.Drawing.Size(239, 18);
-            this.chkTestWebService.TabIndex = 7;
-            this.chkTestWebService.Text = "Connect WebService Test Query Method";
-            this.chkTestWebService.UseVisualStyleBackColor = true;
-            this.chkTestWebService.CheckedChanged += new System.EventHandler(this.chkTestWebService_CheckedChanged);
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(265, 74);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(49, 14);
-            this.label24.TabIndex = 8;
-            this.label24.Text = "Test SN:";
-            // 
-            // txtTestSN
-            // 
-            this.txtTestSN.Location = new System.Drawing.Point(320, 70);
-            this.txtTestSN.Name = "txtTestSN";
-            this.txtTestSN.Size = new System.Drawing.Size(110, 22);
-            this.txtTestSN.TabIndex = 9;
-            this.txtTestSN.Text = "F3NZLT2";
-            this.txtTestSN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtTestSN.TextChanged += new System.EventHandler(this.txtTestSN_TextChanged);
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(436, 74);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(40, 14);
-            this.label25.TabIndex = 10;
-            this.label25.Text = "Stage:";
-            // 
-            // txtStage
-            // 
-            this.txtStage.Location = new System.Drawing.Point(477, 69);
-            this.txtStage.Name = "txtStage";
-            this.txtStage.Size = new System.Drawing.Size(60, 22);
-            this.txtStage.TabIndex = 11;
-            this.txtStage.Text = "TU";
-            this.txtStage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtStage.TextChanged += new System.EventHandler(this.txtStage_TextChanged);
-            // 
-            // chkUseCamera
-            // 
-            this.chkUseCamera.AutoSize = true;
-            this.chkUseCamera.Location = new System.Drawing.Point(11, 21);
-            this.chkUseCamera.Name = "chkUseCamera";
-            this.chkUseCamera.Size = new System.Drawing.Size(91, 18);
-            this.chkUseCamera.TabIndex = 6;
-            this.chkUseCamera.Text = "Use Camera";
-            this.chkUseCamera.UseVisualStyleBackColor = true;
-            this.chkUseCamera.CheckedChanged += new System.EventHandler(this.chkUseCamera_CheckedChanged);
+            this.btnRefreshCom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnRefreshCom.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnRefreshCom.Location = new System.Drawing.Point(410, 40);
+            this.btnRefreshCom.Name = "btnRefreshCom";
+            this.btnRefreshCom.Size = new System.Drawing.Size(75, 23);
+            this.btnRefreshCom.TabIndex = 17;
+            this.btnRefreshCom.Text = "Refresh";
+            this.btnRefreshCom.UseVisualStyleBackColor = false;
             // 
             // frmMain
             // 
@@ -1288,10 +1428,12 @@
             this.panelInspection.ResumeLayout(false);
             this.panelInspection.PerformLayout();
             this.tabSetting.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1385,6 +1527,18 @@
         private System.Windows.Forms.TextBox txtStage;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.CheckBox chkUseCamera;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.ComboBox comboPort;
+        private System.Windows.Forms.TextBox txtCapture2Signal;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.CheckBox chkCapture2;
+        private System.Windows.Forms.CheckBox chkCapture1;
+        private System.Windows.Forms.CheckBox chkUseCom;
+        private System.Windows.Forms.TextBox txtCapture1Signal;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox txtComDeviceInfo;
+        private System.Windows.Forms.Button btnRefreshCom;
     }
 }
 
