@@ -835,7 +835,7 @@ namespace LCD_SVS
         {
 
 
-
+            buttonStart.Cursor = Cursors.WaitCursor;
 
             if (p.UseCamera == "1")
             {
@@ -845,7 +845,7 @@ namespace LCD_SVS
                     ShowMessageInternal(MeaageType.Warning, "Select Camera first please.");
                     return;
                 }
-                buttonStart.Cursor = Cursors.WaitCursor;
+
 
                 sv_cam.openConnection();
                 clearControl();
@@ -867,9 +867,6 @@ namespace LCD_SVS
                 if (!acqThreadIsRuning)
                     startAcquisitionThread();
 
-                buttonStop.Visible = true;
-                buttonStart.Visible = false;
-                buttonStart.Cursor = Cursors.Default;
                 // updateViewTree();
                 btnCapture.Visible = true;
             }
@@ -880,15 +877,17 @@ namespace LCD_SVS
                 chkwebThread = new Thread(new ThreadStart(chkwebTHread));
                 chkwebThread.IsBackground = true;
                 chkwebThread.Start();
-
             }
+
+            buttonStop.Visible = true;
+            buttonStart.Visible = false;
+            buttonStart.Cursor = Cursors.Default;
         }
 
 
 
         private void chkwebTHread()
         {
-
             bool connectWebService = false;
             Stopwatch sw = new Stopwatch();
             TimeSpan ts = new TimeSpan();
@@ -1194,24 +1193,26 @@ namespace LCD_SVS
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
-            if (sv_cam == null)
-                return;
-
-            if (!acqThreadIsRuning)
-                return;
 
             buttonStop.Cursor = Cursors.WaitCursor;
-            clearControl();
-            sv_cam.threadIsRuning = false;
-            acqThreadIsRuning = false;
-            acqThread.Join();
-            sv_cam.acquisitionStop();
+            if (sv_cam != null)
+            {
+                if (acqThreadIsRuning)
+                {
+                    clearControl();
+                    sv_cam.threadIsRuning = false;
+                    acqThreadIsRuning = false;
+                    acqThread.Join();
+                    sv_cam.acquisitionStop();
+                    acqThread.Abort();
+                    Array.Clear(sv_cam.imagebufferMono, 0, 4);
+                    Array.Clear(sv_cam.imagebufferRGB, 0, 4);
+                    btnCapture.Visible = false;
+                }
+            }
+            buttonStop.Cursor = Cursors.Default;
             buttonStop.Visible = false;
             buttonStart.Visible = true;
-            buttonStop.Cursor = Cursors.Default;
-            acqThread.Abort();
-            Array.Clear(sv_cam.imagebufferMono, 0, 4);
-            Array.Clear(sv_cam.imagebufferRGB, 0, 4);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -1228,7 +1229,6 @@ namespace LCD_SVS
         private void buttonQuit_Click(object sender, EventArgs e)
         {
             buttonQuit.Cursor = Cursors.WaitCursor;
-
             if (sv_cam != null)
             {
                 buttonStop_Click(this, null);
