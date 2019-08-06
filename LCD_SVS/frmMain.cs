@@ -17,6 +17,7 @@ using System.Web.Services.Description;
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.CodeDom;
+using System.Diagnostics;
 
 
 namespace LCD_SVS
@@ -34,6 +35,7 @@ namespace LCD_SVS
 
         public Thread acqThread;
         public Thread anyThread; //analysis picture
+        public Thread chkwebThread;
         bool acqThreadIsRuning = false;
         bool acqIsCapturePicture = false;
         bool anyThreadIsRuning = false;
@@ -53,15 +55,10 @@ namespace LCD_SVS
         private bool newsize = false;
 
         //
+        WebReference.WebService ws = new WebReference.WebService();
         private static HWindow hwindow; //
         public HTuple hv_ExpDefaultHwinHandle;
-        //HObject ho_Image, ho_ImageGray, ho_ImageMean;
-        //HObject ho_Region, ho_ImageRotate1, ho_Rectangle, ho_ImageReduced;
-        //HObject ho_ImagePart;
 
-        ////
-        //HObject ho_ConnectedRegions, ho_SelectedRegions, ho_RegionFillUp;
-        //HObject ho_RegionClosing, ho_RegionTrans;
 
         class Cameracontainer
         {
@@ -838,76 +835,111 @@ namespace LCD_SVS
         {
 
 
-            WebReference.WebService ws = new WebReference.WebService();
-            ws.Url = "http://10.62.201.215/Tester.WebService/WebService.asmx";
-            ws.Discover();
 
 
-            string SN = "F3NZLT2";
-            string Stage = "TU";
-
-            WebReference.clsRequestData rd = new WebReference.clsRequestData();
-
-
-              rd     =  ws.GetUUTData(SN, Stage, rd, 0);
-  
-
-            if (rd != null)
+            if (p.UseCamera == "1")
             {
-                SetListText(rd.ModelFamily);
-                SetListText(rd.Result );
-              
-            }
-            
-            //   return;
-            
-            //string url = "http://10.62.201.215/Tester.WebService/WebService.asmx";
-            
-            //string methodname = "GetUUTData";
-            //object[] args = new object[4];
-            //args[0] = "F3NZLT2";
-            //args[1] = "TU";
-            //args[2] = null;
-            //args[3] = -1;
+                if (sv_cam == null)
+                {
+                    SetListText("Select Camera first please.");
+                    ShowMessageInternal(MeaageType.Warning, "Select Camera first please.");
+                    return;
+                }
+                buttonStart.Cursor = Cursors.WaitCursor;
 
-            //object result = InvokeWebService(url, methodname, args);
-            
-            return;
-            
-            if (sv_cam == null)
-            {
-                SetListText("Select Camera first please.");
-                ShowMessageInternal(MeaageType.Warning, "Select Camera first please.");
-                return;
-            }
-            buttonStart.Cursor = Cursors.WaitCursor;
+                sv_cam.openConnection();
+                clearControl();
+                gpanel.Clear(Color.Black);
 
-            sv_cam.openConnection();
-           clearControl();
-            gpanel.Clear(Color.Black);
+                if (sv_cam.bufferInfoDest.pImagePtr != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(sv_cam.bufferInfoDest.pImagePtr);
+                    sv_cam.bufferInfoDest.pImagePtr = IntPtr.Zero;
+                }
+                if (sv_cam.bufferInfoDest.pImagePtr != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(sv_cam.bufferInfoDest.pImagePtr);
+                    sv_cam.bufferInfoDest.pImagePtr = IntPtr.Zero;
+                }
 
-            if (sv_cam.bufferInfoDest.pImagePtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(sv_cam.bufferInfoDest.pImagePtr);
-                sv_cam.bufferInfoDest.pImagePtr = IntPtr.Zero;
-            }
-            if (sv_cam.bufferInfoDest.pImagePtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(sv_cam.bufferInfoDest.pImagePtr);
-                sv_cam.bufferInfoDest.pImagePtr = IntPtr.Zero;
+                sv_cam.acquisitionStart(4);
+
+                if (!acqThreadIsRuning)
+                    startAcquisitionThread();
+
+                buttonStop.Visible = true;
+                buttonStart.Visible = false;
+                buttonStart.Cursor = Cursors.Default;
+                // updateViewTree();
+                btnCapture.Visible = true;
             }
 
-            sv_cam.acquisitionStart(4);
+            if (p.UseWebService == "1")
+            {
+                this.tabMain.SelectedTab = tabInspection;
+                chkwebThread = new Thread(new ThreadStart(chkwebTHread));
+                chkwebThread.IsBackground = true;
+                chkwebThread.Start();
 
-            if (!acqThreadIsRuning)
-                startAcquisitionThread();
+            }
+        }
 
-            buttonStop.Visible = true;
-            buttonStart.Visible = false;
-            buttonStart.Cursor = Cursors.Default;
-           // updateViewTree();
-            buttonStart.Cursor = Cursors.Default;
-            btnCapture.Visible = true;
+
+
+        private void chkwebTHread()
+        {
+
+            bool connectWebService = false;
+            Stopwatch sw = new Stopwatch();
+            TimeSpan ts = new TimeSpan();
+            sw.Start();
+
+            ShowMessageInternal(MeaageType.Begin, "Initializing...");
+            ws.Url = p.WebSite;
+            ShowMessageInternal(MeaageType.Begin, "Loading Assembly...");
+            try
+            {
+                ws.Discover();
+                sw.Stop();
+                ts = sw.Elapsed;
+                ShowMessageInternal(MeaageType.Success, "Load assembly sucessful,Used time(ms):" + ts.Milliseconds);
+                connectWebService = true;
+            }
+            catch (Exception e)
+            {
+                sw.Stop();
+                ts = sw.Elapsed;
+                ShowMessageInternal(MeaageType.Failure , "Fail to load assembly,Used time(ms):" + ts.Milliseconds);
+                ShowMessageInternal(MeaageType.Error, e.Message);
+            }
+ 
+            if (connectWebService)
+            {
+                if (p.UseTestSN == "1")
+                {
+                    if (!string.IsNullOrEmpty(p.TestSN) && !string.IsNullOrEmpty(p.Stage))
+                    {
+                        ShowMessageInternal(MeaageType.Begin, "Test load info from WebService,SN:" + p.TestSN + ",Stage:" + p.Stage);
+                        WebReference.clsRequestData rd = new WebReference.clsRequestData();
+                        rd = ws.GetUUTData(p.TestSN, p.Stage, rd, 0);
+                        if (rd.Result == "OK")
+                        {
+                            ShowMessageInternal(MeaageType.Success, "Load info sucessful,SN:" + p.TestSN + ",Model:" + rd.Model + ",MO:" + rd.MO);
+                            foreach (WebReference.clsRequestItem item in rd.RequestItem)
+                            {
+                                if (item.Item == "LCD")
+                                    ShowMessageInternal(MeaageType.Success, "SN:" + p.TestSN + ",LCD:" + item.Value);
+                                if (item.Item == "MAINBOARD")
+                                    ShowMessageInternal(MeaageType.Success, "SN:" + p.TestSN + ",MAINBOARD:" + item.Value);
+
+                            }
+                        }
+                        else
+                            ShowMessageInternal(MeaageType.Failure, "Can't load info from WebService,SN:" + p.TestSN + ",Stage:" + p.Stage);
+
+                    }
+                }
+            }
         }
 
         private void clearControl()
@@ -1226,7 +1258,7 @@ namespace LCD_SVS
             {
                 this.lstCapMsg.BeginInvoke(new Action<String>((msg) =>
                 {
-                    this.lstCapMsg.Items.Add( DateTime.Now.ToString ("HH:mm:ss") +"->" + msg);
+                    this.lstCapMsg.Items.Add( DateTime.Now.ToString ("HH:mm:ss") +" " + msg);
                     if (lstCapMsg.Items.Count > 0)
                         lstCapMsg.SelectedIndex = lstCapMsg.Items.Count - 1;
                     if (lstCapMsg.Items.Count > 600)
@@ -1241,7 +1273,7 @@ namespace LCD_SVS
             }
             else
             {
-                this.lstCapMsg.Items.Add(DateTime.Now.ToString("HH:mm:ss") + "->" + text);
+                this.lstCapMsg.Items.Add(DateTime.Now.ToString("HH:mm:ss") + " " + text);
                 if (lstCapMsg.Items.Count > 0)
                     lstCapMsg.SelectedIndex = lstCapMsg.Items.Count - 1;
                 if (lstCapMsg.Items.Count > 600)
@@ -1349,6 +1381,24 @@ namespace LCD_SVS
             txtBotR.Text = p.Bot_R.ToString();
             txtMinArea.Text = p.MinArea.ToString();
             txtMaxArea.Text = p.MaxArea.ToString();
+
+            //
+            if (p.UseCamera == "1")
+                chkUseCamera.Checked = true;
+            if (p.UseCamera == "0")
+                chkUseCamera.Checked = false;
+            if (p.UseTestSN == "1")
+                chkTestWebService.Checked = true;
+            if (p.UseTestSN == "0")
+                chkTestWebService.Checked = false;
+            if (p.UseWebService == "1")
+                chkUseWebService.Checked = true;
+            if (p.UseWebService == "0")
+                chkUseWebService.Checked = false;
+            txtWebService.Text = p.WebSite;
+            txtTestSN.Text = p.TestSN.ToUpper().Trim();
+            txtStage.Text = p.Stage.ToUpper().Trim();
+
 
             //this.textBox_Result.Text = "Searching for cameras...";
             txtInspectionInfo.Text = "Waiting for test...";
@@ -2963,27 +3013,27 @@ namespace LCD_SVS
                 {
                     case MeaageType.Begin:
                         this.richMessage.SelectionColor = Color.Blue;
-                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + " " + message + "\n");
                         this.richMessage.Update();
                         break;
                     case MeaageType.Success:
                         this.richMessage.SelectionColor = Color.Green;
-                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + " " + message + "\n");
                         this.richMessage.Update();
                         break;
                     case MeaageType.Failure:
                         this.richMessage.SelectionColor = Color.Red;
-                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + " " + message + "\n");
                         this.richMessage.Update();
                         break;
                     case MeaageType.Warning:
                         this.richMessage.SelectionColor = Color.DarkRed;
-                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + " " + message + "\n");
                         this.richMessage.Update();
                         break;
                     case MeaageType.Error:
                         this.richMessage.SelectionColor = Color.Red;
-                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + "->" + message + "\n");
+                        this.richMessage.AppendText(DateTime.Now.ToString("HH:mm:ss") + " " + message + "\n");
                         this.richMessage.Update();
                         break;
                     default:

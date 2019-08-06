@@ -68,11 +68,6 @@
     <Compile Include="p.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\FA_Web\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="SVCamApi.cs" />
     <Compile Include="WaterTextBox.cs" />
     <Compile Include="Web References\WebReference\Reference.cs">
@@ -103,94 +98,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.cls2SLabelInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsAutoStickLabelPN.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsBomPnDescription.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsCA210OffsetResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsDcsChassisInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsEngravingInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsGetTestSuiteInfoResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsGetUSNInfoResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsInfoNameValue.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsJDMD3FileJobInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsKeyValue.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsKtlOutEvent.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsMessage.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsMO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsMOAndBoardInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsMOIDValue.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsMOItem.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsPreparedMO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsRaiseMTDLRequest.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsRequestData.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsSINumberInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsSkuBomData.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsSPCConfig.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsSWCPN.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsTvDacData.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsTVKeyData.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsUnitCfiData.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsWSConfig.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\LCD_SVS.FA_Web.clsWSInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FA_Web\WebService.wsdl" />
     <None Include="Web References\WebReference\cls2SLabelInfo.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
@@ -283,27 +190,6 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Web References\WebReference\WebService.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\FA_Web\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\FA_Web\WebService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\FA_Web\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\FA_Web\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\FA_Web\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
