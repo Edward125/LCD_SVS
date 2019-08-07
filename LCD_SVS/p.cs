@@ -39,19 +39,32 @@ namespace LCD_SVS
         public static int MinArea = 800;
         public static Int64 MaxArea = 99999;
 
+        //
         public static string UseCamera = "1";
         public static string UseWebService = "1";
         public static string UseTestSN = "1"; //鏈接webservice時查詢數據，加快後續運行時的速度
         public static string Stage = "TU";
         public static string TestSN = "F3NZLT2";
         public static string WebSite = "http://10.62.201.215/Tester.WebService/WebService.asmx";
+        //
+        public static string UseComPort = "1";
+        public static string UseCapture1 = "1";
+        public static string UseCapture2 = "1";
+        public static string Capture1Signal = "A";
+        public static string Capture2Signal = "B";
+        public static string ComPort = "";
+        //
+
+
 
         public enum IniSection
         {
             SysConfig,
             Capture,
             PictureSet,
-            WebSet
+            WebSet,
+            ComSet
+
 
         }
 
@@ -109,7 +122,16 @@ namespace LCD_SVS
             IniFile.IniWriteValue(IniSection.WebSet.ToString(), "UseTestSN", UseTestSN, inifilepath);
             IniFile.IniWriteValue(IniSection.WebSet.ToString(), "WebSite", WebSite, inifilepath);
             IniFile.IniWriteValue(IniSection.WebSet.ToString(), "Stage", Stage, inifilepath);
-            IniFile.IniWriteValue(IniSection.WebSet.ToString(), "TestSN", TestSN, inifilepath);
+            IniFile.IniWriteValue(IniSection.WebSet.ToString(), "TestSN", TestSN, inifilepath);//
+            //
+            IniFile.IniWriteValue(IniSection.ComSet.ToString(), "UseComPort", UseComPort, inifilepath);
+            IniFile.IniWriteValue(IniSection.ComSet.ToString(), "UseCapture1", UseCapture1, inifilepath);
+            IniFile.IniWriteValue(IniSection.ComSet.ToString(), "UseCapture2", UseCapture2, inifilepath);
+            IniFile.IniWriteValue(IniSection.ComSet.ToString(), "Capture1Signal", Capture1Signal, inifilepath);
+            IniFile.IniWriteValue(IniSection.ComSet.ToString(), "Capture2Signal", Capture2Signal, inifilepath);
+            IniFile.IniWriteValue(IniSection.ComSet.ToString(), "ComPort", ComPort, inifilepath);
+
+
 
 
         }
@@ -151,15 +173,19 @@ namespace LCD_SVS
 
                 throw e;
             }
-
+            //
             UseWebService = IniFile.IniReadValue(IniSection.WebSet.ToString(), "UseWebService", inifilepath);
             UseTestSN = IniFile.IniReadValue(IniSection.WebSet.ToString(), "UseTestSN", inifilepath);
             WebSite = IniFile.IniReadValue(IniSection.WebSet.ToString(), "WebSite", inifilepath);
             Stage = IniFile.IniReadValue(IniSection.WebSet.ToString(), "Stage", inifilepath);
             TestSN = IniFile.IniReadValue(IniSection.WebSet.ToString(), "TestSN", inifilepath);
-
-
-
+            //
+            UseComPort = IniFile.IniReadValue(IniSection.ComSet.ToString(), "UseComPort", inifilepath);
+            UseCapture1 = IniFile.IniReadValue(IniSection.ComSet.ToString(), "UseCapture1", inifilepath);
+            UseCapture2 = IniFile.IniReadValue(IniSection.ComSet.ToString(), "UseCapture2", inifilepath);
+            Capture1Signal = IniFile.IniReadValue(IniSection.ComSet.ToString(), "Capture1Signal", inifilepath);
+            Capture2Signal = IniFile.IniReadValue(IniSection.ComSet.ToString(), "Capture2Signal", inifilepath);
+            ComPort = IniFile.IniReadValue(IniSection.ComSet.ToString(), "ComPort", inifilepath);
 
         }
 

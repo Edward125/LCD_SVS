@@ -1363,7 +1363,7 @@ namespace LCD_SVS
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-
+            
             if (!File.Exists(p.IniFilePath))
                 p.createIniFile(p.IniFilePath);
             p.readIniValue(p.IniFilePath); //
@@ -1435,7 +1435,23 @@ namespace LCD_SVS
             txtTestSN.Text = p.TestSN.ToUpper().Trim();
             txtStage.Text = p.Stage.ToUpper().Trim();
 
-
+            //
+            if (p.UseComPort == "1")
+                chkUseCom.Checked = true;
+            if (p.UseComPort == "0")
+                chkUseCom.Checked =false;
+            if (p.UseCapture1 == "1")
+                chkCapture1.Checked = true;
+            if (p.UseCapture1 == "0")
+                chkCapture1.Checked = false;
+            if (p.UseCapture2 == "1")
+                chkCapture2.Checked = true;
+            if (p.UseCapture2 == "0")
+                chkCapture2.Checked = false;
+            comboPort.Text = p.ComPort;
+            txtCapture1Signal.Text = p.Capture1Signal;
+            txtCapture2Signal.Text = p.Capture2Signal;
+           
             //this.textBox_Result.Text = "Searching for cameras...";
             txtInspectionInfo.Text = "Waiting for test...";
         }
@@ -3255,6 +3271,7 @@ namespace LCD_SVS
         private void GetSerialPort(ComboBox cbx)
         {
             ComList = new Dictionary<string, string>();
+            cbx.Items.Clear();
             RegistryKey hklm = Registry.LocalMachine;
             RegistryKey software = hklm.OpenSubKey("HARDWARE");
             RegistryKey no1 = software.OpenSubKey("DEVICEMAP");
@@ -3268,7 +3285,14 @@ namespace LCD_SVS
                     cbx.Items.Add(no2.GetValue(linesplit[i]));
                 }
                 if (cbx.Items.Count > 0)
-                    cbx.SelectedIndex = 0;
+                {
+                    if (string.IsNullOrEmpty(p.ComPort))
+                        cbx.SelectedIndex = 0;
+                    else
+                        cbx.Text = p.ComPort;
+                }
+                else
+                    cbx.Text = p.ComPort;
             }
         }
 
@@ -3285,6 +3309,53 @@ namespace LCD_SVS
                     txtComDeviceInfo.Text = cominfo;
             }
 
+            p.ComPort = com;
+            IniFile.IniWriteValue(p.IniSection.ComSet.ToString(), "ComPort", p.ComPort, p.IniFilePath);
+
+        }
+
+        private void btnRefreshCom_Click(object sender, EventArgs e)
+        {
+            GetSerialPort(comboPort);
+        }
+
+        private void chkUseCom_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkUseCom.Checked)
+                p.UseComPort = "1";
+            else
+                p.UseComPort = "0";
+            IniFile.IniWriteValue(p.IniSection.ComSet.ToString(), "UseComPort", p.UseComPort, p.IniFilePath);
+        }
+
+        private void chkCapture1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkCapture1.Checked)
+                p.UseCapture1  = "1";
+            else
+                p.UseCapture1  = "0";
+            IniFile.IniWriteValue(p.IniSection.ComSet.ToString(), "UseCapture1", p.UseComPort, p.IniFilePath);
+        }
+
+        private void chkCapture2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkCapture2.Checked)
+                p.UseCapture2 = "1";
+            else
+                p.UseCapture2 = "0";
+            IniFile.IniWriteValue(p.IniSection.ComSet.ToString(), "UseCapture1", p.UseComPort, p.IniFilePath);
+        }
+
+        private void txtCapture1Signal_TextChanged(object sender, EventArgs e)
+        {
+            p.Capture1Signal = txtCapture1Signal.Text;
+            IniFile.IniWriteValue(p.IniSection.ComSet.ToString(), "Capture1Signal", p.Capture1Signal, p.IniFilePath);
+        }
+
+        private void txtCapture2Signal_TextChanged(object sender, EventArgs e)
+        {
+            p.Capture2Signal = txtCapture2Signal.Text;
+            IniFile.IniWriteValue(p.IniSection.ComSet.ToString(), "Capture2Signal", p.Capture2Signal, p.IniFilePath);
         }
            
     }

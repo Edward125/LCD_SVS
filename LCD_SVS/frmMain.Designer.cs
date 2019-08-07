@@ -1134,6 +1134,7 @@
             this.txtCapture2Signal.TabIndex = 15;
             this.txtCapture2Signal.Text = "B";
             this.txtCapture2Signal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtCapture2Signal.TextChanged += new System.EventHandler(this.txtCapture2Signal_TextChanged);
             // 
             // label28
             // 
@@ -1153,6 +1154,7 @@
             this.chkCapture2.TabIndex = 14;
             this.chkCapture2.Text = "Capture 2nd Image";
             this.chkCapture2.UseVisualStyleBackColor = true;
+            this.chkCapture2.CheckedChanged += new System.EventHandler(this.chkCapture2_CheckedChanged);
             // 
             // chkCapture1
             // 
@@ -1163,6 +1165,7 @@
             this.chkCapture1.TabIndex = 13;
             this.chkCapture1.Text = "Capture 1st Image";
             this.chkCapture1.UseVisualStyleBackColor = true;
+            this.chkCapture1.CheckedChanged += new System.EventHandler(this.chkCapture1_CheckedChanged);
             // 
             // chkUseCom
             // 
@@ -1173,6 +1176,7 @@
             this.chkUseCom.TabIndex = 12;
             this.chkUseCom.Text = "Use Com Signal to Capture Image";
             this.chkUseCom.UseVisualStyleBackColor = true;
+            this.chkUseCom.CheckedChanged += new System.EventHandler(this.chkUseCom_CheckedChanged);
             // 
             // txtCapture1Signal
             // 
@@ -1182,6 +1186,7 @@
             this.txtCapture1Signal.TabIndex = 12;
             this.txtCapture1Signal.Text = "A";
             this.txtCapture1Signal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtCapture1Signal.TextChanged += new System.EventHandler(this.txtCapture1Signal_TextChanged);
             // 
             // label27
             // 
@@ -1398,6 +1403,7 @@
             this.btnRefreshCom.TabIndex = 17;
             this.btnRefreshCom.Text = "Refresh";
             this.btnRefreshCom.UseVisualStyleBackColor = false;
+            this.btnRefreshCom.Click += new System.EventHandler(this.btnRefreshCom_Click);
             // 
             // frmMain
             // 
