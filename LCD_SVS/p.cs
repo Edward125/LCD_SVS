@@ -54,6 +54,9 @@ namespace LCD_SVS
         public static string Capture2Signal = "B";
         public static string ComPort = "";
         //
+        public static string UseNet = "1";
+        public static string IP = "127.0.0.1";
+        public static string Port = "10086";
 
 
 
@@ -63,7 +66,8 @@ namespace LCD_SVS
             Capture,
             PictureSet,
             WebSet,
-            ComSet
+            ComSet,
+            NetSet
 
 
         }
@@ -130,7 +134,10 @@ namespace LCD_SVS
             IniFile.IniWriteValue(IniSection.ComSet.ToString(), "Capture1Signal", Capture1Signal, inifilepath);
             IniFile.IniWriteValue(IniSection.ComSet.ToString(), "Capture2Signal", Capture2Signal, inifilepath);
             IniFile.IniWriteValue(IniSection.ComSet.ToString(), "ComPort", ComPort, inifilepath);
-
+            //
+            IniFile.IniWriteValue(IniSection.NetSet.ToString(), "UseNet", UseNet, inifilepath);
+            IniFile.IniWriteValue(IniSection.NetSet.ToString(), "IP", IP, inifilepath);
+            IniFile.IniWriteValue(IniSection.NetSet.ToString(), "Port",Port, inifilepath);
 
 
 
@@ -186,6 +193,10 @@ namespace LCD_SVS
             Capture1Signal = IniFile.IniReadValue(IniSection.ComSet.ToString(), "Capture1Signal", inifilepath);
             Capture2Signal = IniFile.IniReadValue(IniSection.ComSet.ToString(), "Capture2Signal", inifilepath);
             ComPort = IniFile.IniReadValue(IniSection.ComSet.ToString(), "ComPort", inifilepath);
+            //
+            UseNet = IniFile.IniReadValue(IniSection.NetSet.ToString(), "UseNet", inifilepath);
+            IP = IniFile.IniReadValue(IniSection.NetSet.ToString(), "IP", inifilepath);
+            Port = IniFile.IniReadValue(IniSection.NetSet.ToString(), "Port", inifilepath);
 
         }
 

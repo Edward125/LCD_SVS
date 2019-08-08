@@ -21,7 +21,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Management.Instrumentation;
 using Microsoft.Win32;
-
+using System.Net.Sockets;
 
 
 namespace LCD_SVS
@@ -40,9 +40,13 @@ namespace LCD_SVS
         public Thread acqThread;
         public Thread anyThread; //analysis picture
         public Thread chkwebThread;
+        public Thread listenThread;
+        public Socket listenSocket;
         bool acqThreadIsRuning = false;
         bool acqIsCapturePicture = false;
         bool anyThreadIsRuning = false;
+        bool listenThreadIsRuning = false;
+
 
         
         public string CurrentID = "";
@@ -63,7 +67,7 @@ namespace LCD_SVS
         private static HWindow hwindow; //
         public HTuple hv_ExpDefaultHwinHandle;
         Dictionary<string, string> ComList = new Dictionary<string, string>(); //comport list
-           
+        Socket _Socket;
 
         class Cameracontainer
         {
@@ -838,37 +842,7 @@ namespace LCD_SVS
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-
-           
-            
-
-
-
-
-            
-
-
-
-            //foreach (string sp in System.IO.Ports.SerialPort.GetPortNames())
-            //{
-            //    comboPort.Items.Add(sp);
-            //}
-
-            //if (comboPort.Items.Count > 0)
-            //{
-            //    comboPort.SelectedIndex = 0;
-            //}
-
-
-
-            List<Usb> UsbDevices = new List<Usb>();
-            UsbDevices = GetUSBDevices ();
-
-
-            return;
-
             buttonStart.Cursor = Cursors.WaitCursor;
-
             if (p.UseCamera == "1")
             {
                 if (sv_cam == null)
@@ -901,6 +875,17 @@ namespace LCD_SVS
 
                 // updateViewTree();
                 btnCapture.Visible = true;
+            }
+
+            if (p.UseNet == "1")
+            {
+                this.tabMain.SelectedTab = tabInspection;
+                listenThreadIsRuning = true;
+                listenThread = new Thread(new ThreadStart(ReceiveData));
+                //listenThread.IsBackground = true;
+                listenThread.Start();
+                ShowMessageInternal(MeaageType.Begin, "Start Listen IP:" + p.IP + ",Port:" + p.Port);
+
             }
 
             if (p.UseWebService == "1")
@@ -1232,6 +1217,17 @@ namespace LCD_SVS
         {
 
             buttonStop.Cursor = Cursors.WaitCursor;
+
+            if (p.UseNet == "1")
+            {
+                listenThreadIsRuning = false;
+                listenSocket.Close();
+                listenThread.Join();
+                listenThread.Abort();
+
+
+            }
+
             if (sv_cam != null)
             {
                 if (acqThreadIsRuning)
@@ -1289,7 +1285,7 @@ namespace LCD_SVS
         }
 
         // 对 Windows 窗体控件进行线程安全调用
-        private void SetListText(String text)
+        private void SetListText( String text)
         {
             if (this.lstCapMsg .InvokeRequired)
             {
@@ -1318,6 +1314,38 @@ namespace LCD_SVS
                 Graphics g = lstCapMsg.CreateGraphics();
                 int hzSize = (int)g.MeasureString(lstCapMsg.Items[lstCapMsg.Items.Count - 1].ToString(), lstCapMsg.Font).Width;
                 lstCapMsg.HorizontalExtent = hzSize;
+            }
+        }
+
+        private void SetListText(ListBox  listbox,String text)
+        {
+            if (listbox.InvokeRequired)
+            {
+                listbox.BeginInvoke(new Action<String>((msg) =>
+                {
+                    listbox.Items.Add(DateTime.Now.ToString("HH:mm:ss") + " " + msg);
+                    if (listbox.Items.Count > 0)
+                        listbox.SelectedIndex = listbox.Items.Count - 1;
+                    if (listbox.Items.Count > 600)
+                        listbox.Items.RemoveAt(0);
+                    listbox.HorizontalScrollbar = true;
+                    Graphics g = listbox.CreateGraphics();
+                    int hzSize = (int)g.MeasureString(listbox.Items[listbox.Items.Count - 1].ToString(), listbox.Font).Width;
+                    listbox.HorizontalExtent = hzSize;
+
+
+                }), text);
+            }
+            else
+            {
+                listbox.Items.Add(DateTime.Now.ToString("HH:mm:ss") + " " + text);
+                if (listbox.Items.Count > 0)
+                    listbox.SelectedIndex = listbox.Items.Count - 1;
+                if (listbox.Items.Count > 600)
+                    listbox.Items.RemoveAt(0);
+                Graphics g = listbox.CreateGraphics();
+                int hzSize = (int)g.MeasureString(listbox.Items[listbox.Items.Count - 1].ToString(), listbox.Font).Width;
+                listbox.HorizontalExtent = hzSize;
             }
         }
 
@@ -1451,7 +1479,14 @@ namespace LCD_SVS
             comboPort.Text = p.ComPort;
             txtCapture1Signal.Text = p.Capture1Signal;
             txtCapture2Signal.Text = p.Capture2Signal;
-           
+            //
+            if (p.UseNet == "1")
+                chkUseNet.Checked = true;
+            if (p.UseNet == "0")
+                chkUseNet.Checked = false;
+            txtIP.Text = p.IP;
+            txtPort.Text  = p.Port;
+            
             //this.textBox_Result.Text = "Searching for cameras...";
             txtInspectionInfo.Text = "Waiting for test...";
         }
@@ -3207,11 +3242,18 @@ namespace LCD_SVS
 
         private void txtSN_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == 13)
+            if (e.KeyChar ==13)
             {
-                string sn = txtSN.Text.ToUpper().Trim();
-                if (!string.IsNullOrEmpty(sn) && !string.IsNullOrEmpty(p.Stage))
-                    LoadInfoFromWebService(sn,p.Stage );
+                SetListText(lstSN, txtSN.Text.Trim ().ToUpper ());
+                ShowMessageInternal(MeaageType.Success, "SN:" + txtSN.Text.Trim().ToUpper());
+                txtSN.Text = "";
+
+                if (p.UseWebService == "1")
+                {
+                    string sn = txtSN.Text.ToUpper().Trim();
+                    if (!string.IsNullOrEmpty(sn) && !string.IsNullOrEmpty(p.Stage))
+                        LoadInfoFromWebService(sn, p.Stage);
+                }
             }
         }
 
@@ -3357,6 +3399,193 @@ namespace LCD_SVS
             p.Capture2Signal = txtCapture2Signal.Text;
             IniFile.IniWriteValue(p.IniSection.ComSet.ToString(), "Capture2Signal", p.Capture2Signal, p.IniFilePath);
         }
-           
+
+        private void chkUseNet_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkUseNet.Checked)
+                p.UseNet = "1";
+            else
+                p.UseNet = "0";
+            IniFile.IniWriteValue(p.IniSection.NetSet.ToString(), "UseNet", p.UseNet, p.IniFilePath);
+        }
+
+        private void txtIP_TextChanged(object sender, EventArgs e)
+        {
+            p.IP = txtIP.Text.Trim();
+            IniFile.IniWriteValue(p.IniSection.NetSet.ToString(), "IP", p.IP, p.IniFilePath);
+        }
+
+        private void txtPort_TextChanged(object sender, EventArgs e)
+        {
+            p.Port = txtPort.Text.Trim();
+            IniFile.IniWriteValue(p.IniSection.NetSet.ToString(), "Port", p.Port, p.IniFilePath);
+        }
+
+
+        #region  Socket
+
+        private void ReceiveData()
+        {
+            listenSocket  = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint ipEP = new IPEndPoint(IPAddress.Parse(p.IP), Convert.ToInt16(p.Port));
+            listenSocket.Bind(ipEP);
+            listenSocket.Listen(100);
+            while (listenThreadIsRuning)
+            {
+                if (listenSocket.Available <= 0) continue;
+
+                byte[] buffer = new byte[1024];
+                listenSocket.Accept().Receive(buffer);
+                string str  = Encoding.UTF8.GetString(buffer).Trim().Replace("\0", "");
+               // SetListText(str);
+                SetListText(lstSN, str );
+                ShowMessageInternal(MeaageType.Success, "SN:" + str );
+                this.Invoke((EventHandler)(delegate
+                {
+                    txtSN.Text = str;
+                }));
+
+                
+            }
+        }
+
+        public class StateObject
+        {
+            public Socket workSocket = null;
+            public const int BufferSize = 1024;
+            public byte[] buffer = new byte[BufferSize];
+            public StringBuilder sb = new StringBuilder();
+        }
+
+        public class AsynchronousSocketListener
+        {
+            // Thread signal.     
+            public static ManualResetEvent allDone = new ManualResetEvent(false);
+            
+            public AsynchronousSocketListener()
+            {
+            }
+
+            public static void StartListening()
+            {
+                // Data buffer for incoming data.     
+                byte[] bytes = new Byte[1024];
+                // Establish the local endpoint for the socket.     
+                // The DNS name of the computer     
+                // running the listener is "host.contoso.com".     
+                //IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+                //IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+                IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+                // Create a TCP/IP socket.     
+                Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                // Bind the socket to the local     
+                //endpoint and listen for incoming connections.     
+                try
+                {
+                    listener.Bind(localEndPoint);
+                    listener.Listen(100);
+                    while (true)
+                    {
+                        // Set the event to nonsignaled state.     
+                        allDone.Reset();
+                        // Start an asynchronous socket to listen for connections.     
+                        Console.WriteLine("Waiting for a connection...");
+                        
+                        listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
+                        // Wait until a connection is made before continuing.     
+                        allDone.WaitOne();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+                Console.WriteLine("\nPress ENTER to continue...");
+                Console.Read();
+            }
+
+            public static void AcceptCallback(IAsyncResult ar)
+            {
+                // Signal the main thread to continue.     
+                allDone.Set();
+                // Get the socket that handles the client request.     
+                Socket listener = (Socket)ar.AsyncState;
+                Socket handler = listener.EndAccept(ar);
+                // Create the state object.     
+                StateObject state = new StateObject();
+                state.workSocket = handler;
+                handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
+            }
+
+            public static void ReadCallback(IAsyncResult ar)
+            {
+                String content = String.Empty;
+                // Retrieve the state object and the handler socket     
+                // from the asynchronous state object.     
+                StateObject state = (StateObject)ar.AsyncState;
+                Socket handler = state.workSocket;
+                // Read data from the client socket.     
+                int bytesRead = handler.EndReceive(ar);
+                if (bytesRead > 0)
+                {
+                    // There might be more data, so store the data received so far.     
+                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+                    // Check for end-of-file tag. If it is not there, read     
+                    // more data.     
+                    content = state.sb.ToString();
+                    if (content.IndexOf("<EOF>") > -1)
+                    {
+                        // All the data has been read from the     
+                        // client. Display it on the console.     
+                        Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
+                        // Echo the data back to the client.     
+                        Send(handler, content);
+                    }
+                    else
+                    {
+                        // Not all data received. Get more.     
+                        handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
+                    }
+                }
+            }
+
+            private static void Send(Socket handler, String data)
+            {
+                // Convert the string data to byte data using ASCII encoding.     
+                byte[] byteData = Encoding.ASCII.GetBytes(data);
+                // Begin sending the data to the remote device.     
+                handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
+            }
+
+            private static void SendCallback(IAsyncResult ar)
+            {
+                try
+                {
+                    // Retrieve the socket from the state object.     
+                    Socket handler = (Socket)ar.AsyncState;
+                    // Complete sending the data to the remote device.     
+                    int bytesSent = handler.EndSend(ar);
+                    Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+                    handler.Shutdown(SocketShutdown.Both);
+                    handler.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+
+            //public static int Main(String[] args)
+            //{
+            //    StartListening();
+            //    return 0;
+            //}
+        }
+
+     
+        #endregion
+
+
     }
 }
