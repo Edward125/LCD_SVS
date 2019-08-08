@@ -96,7 +96,6 @@ namespace Edward
         {
             if (!string.IsNullOrEmpty(iniFilePathValue))
             {
-
                 WritePrivateProfileString(section, key, iValue, iniFilePathValue);
             }
             else
