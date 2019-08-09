@@ -1171,55 +1171,59 @@ namespace LCD_SVS
 
                         gpanel.DrawImage(display_img_rgb[currentIndex], outRectangle);
 
-                        if (acqIsCapturePicture)
+                        if (sv_cam != null)
                         {
-                            display_img_rgb[currentIndex].Save(DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
-                            SetListText("Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
-                            acqIsCapturePicture = false;
-                            if (btnCapture.InvokeRequired)
+
+                            if (acqIsCapturePicture)
                             {
-                                btnCapture.BeginInvoke((EventHandler)delegate
+                                display_img_rgb[currentIndex].Save(DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                                SetListText("Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
+                                acqIsCapturePicture = false;
+                                if (btnCapture.InvokeRequired)
                                 {
-                                    btnCapture.Enabled = true;
+                                    btnCapture.BeginInvoke((EventHandler)delegate
+                                    {
+                                        btnCapture.Enabled = true;
+                                    });
+                                }
+                                this.Invoke((EventHandler)delegate
+                                {
+                                    picCapturePicture.ImageLocation = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
+                                    txtImgFile.Text = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
                                 });
                             }
-                            this.Invoke((EventHandler)delegate
+
+
+                            if (isCapture1stPicture)
                             {
-                                picCapturePicture.ImageLocation = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
-                                txtImgFile.Text = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
-                            });
-                        }
+                                string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_1st.bmp";
+                                string filepath = p.AppCapFolder + @"\" + filename;
 
+                                if (CheckFileExistDeleteFile(filepath, filename))
+                                {
+                                    display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Begin, "Capture 1st picture,File:" + filename);
+                                }
+                                else
+                                    ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
+                                isCapture1stPicture = false;
 
-                        if (isCapture1stPicture)
-                        {
-                            string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_1st.bmp";
-                            string filepath = p.AppCapFolder + @"\" + filename;
-
-                          if(CheckFileExistDeleteFile (filepath ,filename))
-                          {
-                              display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-                              ShowMessageInternal(MeaageType.Begin, "Capture 1st picture,File:" + filename);
-                          }
-                          else
-                              ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
-                          isCapture1stPicture = false;
-                            
-                        }
-
-                        if (isCapture2ndPicture)
-                        {
-                            string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_2nd.bmp";
-                            string filepath = p.AppCapFolder + @"\" + filename;
-
-                            if (CheckFileExistDeleteFile(filepath, filename))
-                            {
-                                display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-                                ShowMessageInternal(MeaageType.Begin, "Capture 2nd picture,File:" + filename);
                             }
-                            else
-                                ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
-                            isCapture2ndPicture = false;
+
+                            if (isCapture2ndPicture)
+                            {
+                                string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_2nd.bmp";
+                                string filepath = p.AppCapFolder + @"\" + filename;
+
+                                if (CheckFileExistDeleteFile(filepath, filename))
+                                {
+                                    display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Begin, "Capture 2nd picture,File:" + filename);
+                                }
+                                else
+                                    ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
+                                isCapture2ndPicture = false;
+                            }
                         }
                     }
                 }
@@ -1260,57 +1264,60 @@ namespace LCD_SVS
                         }
 
                         gpanel.DrawImage(display_img_mono[currentIndex], outRectangle);
-                        if (acqIsCapturePicture)
+                        if (sv_cam != null)
                         {
-                            display_img_rgb[currentIndex].Save(DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
-                            SetListText("Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
-                            acqIsCapturePicture = false;
-
-                            if (btnCapture.InvokeRequired)
+                            if (acqIsCapturePicture)
                             {
-                                btnCapture.BeginInvoke((EventHandler)delegate
+                                display_img_rgb[currentIndex].Save(DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                                SetListText("Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
+                                acqIsCapturePicture = false;
+
+                                if (btnCapture.InvokeRequired)
                                 {
-                                    btnCapture.Enabled = true;
+                                    btnCapture.BeginInvoke((EventHandler)delegate
+                                    {
+                                        btnCapture.Enabled = true;
+                                    });
+                                }
+
+                                this.Invoke((EventHandler)delegate
+                                {
+                                    picCapturePicture.ImageLocation = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
+                                    txtImgFile.Text = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
                                 });
                             }
 
-                            this.Invoke((EventHandler)delegate
+
+                            if (isCapture1stPicture)
                             {
-                                picCapturePicture.ImageLocation = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
-                                txtImgFile.Text = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
-                            });
-                        }
+                                string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_1st.bmp";
+                                string filepath = p.AppCapFolder + @"\" + filename;
 
+                                if (CheckFileExistDeleteFile(filepath, filename))
+                                {
+                                    display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Begin, "Capture 1st picture,File:" + filename);
+                                }
+                                else
+                                    ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
+                                isCapture1stPicture = false;
 
-                        if (isCapture1stPicture)
-                        {
-                            string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_1st.bmp";
-                            string filepath = p.AppCapFolder + @"\" + filename;
-
-                            if (CheckFileExistDeleteFile(filepath, filename))
-                            {
-                                display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-                                ShowMessageInternal(MeaageType.Begin, "Capture 1st picture,File:" + filename);
                             }
-                            else
-                                ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
-                            isCapture1stPicture = false;
 
-                        }
-
-                        if (isCapture2ndPicture)
-                        {
-                            string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_2nd.bmp";
-                            string filepath = p.AppCapFolder + @"\" + filename;
-
-                            if (CheckFileExistDeleteFile(filepath, filename))
+                            if (isCapture2ndPicture)
                             {
-                                display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-                                ShowMessageInternal(MeaageType.Begin, "Capture 2nd picture,File:" + filename);
+                                string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_2nd.bmp";
+                                string filepath = p.AppCapFolder + @"\" + filename;
+
+                                if (CheckFileExistDeleteFile(filepath, filename))
+                                {
+                                    display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Begin, "Capture 2nd picture,File:" + filename);
+                                }
+                                else
+                                    ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
+                                isCapture2ndPicture = false;
                             }
-                            else
-                                ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
-                            isCapture2ndPicture = false;
                         }
 
                     }
@@ -1336,8 +1343,12 @@ namespace LCD_SVS
                 //listenSocket.Shutdown(SocketShutdown.Receive);
                 listenThread.Join();
                 listenThread.Abort();
+            }
 
-
+            if (p.UseComPort == "1")
+            {
+                if (serialPort1.IsOpen)
+                    serialPort1.Close();
             }
 
             if (sv_cam != null)
@@ -3595,12 +3606,13 @@ namespace LCD_SVS
                 this.Invoke((EventHandler)(delegate {
 
                     ShowMessageInternal(MeaageType.Begin, "MCU->PC:" + str);
-                    if (str == p.Capture1Signal)
+                    
+                    if (str == p.Capture1Signal && p.UseCapture1 == "1")
                     {
                         ShowMessageInternal(MeaageType.Begin, "Capture 1st picture...");
                         isCapture1stPicture = true;
                     }
-                    if (str == p.Capture2Signal)
+                    if (str == p.Capture2Signal && p.UseCapture2 == "1")
                     {
                         ShowMessageInternal(MeaageType.Begin, "Capture 1st picture...");
                         isCapture2ndPicture = true;
