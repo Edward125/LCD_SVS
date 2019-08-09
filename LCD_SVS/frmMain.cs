@@ -715,6 +715,10 @@ namespace LCD_SVS
                 if (ImageInfo.pImagePtr == IntPtr.Zero)
                     return;
 
+                if (destdataIndex > Int32.MaxValue)
+                    destdataIndex = 0;
+
+
                 int currentIdex = destdataIndex;
                 {
                     // 8 bit Format
@@ -1197,13 +1201,17 @@ namespace LCD_SVS
 
                             if (isCapture1stPicture)
                             {
-                                string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_1st.bmp";
+                                string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + "_1st.bmp";
                                 string filepath = p.AppCapFolder + @"\" + filename;
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
                                 {
-                                    display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-                                    ShowMessageInternal(MeaageType.Begin, "Capture 1st picture,File:" + filename);
+                                    display_img_rgb[currentIndex].Save(filepath , System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Success , "Capture 1st picture,File:" + filename);
+                                    this.Invoke((EventHandler)(delegate
+                                    {
+                                        pic1st.ImageLocation = filepath;
+                                    }));
                                 }
                                 else
                                     ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
@@ -1213,13 +1221,17 @@ namespace LCD_SVS
 
                             if (isCapture2ndPicture)
                             {
-                                string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_2nd.bmp";
+                                string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + "_2nd.bmp";
                                 string filepath = p.AppCapFolder + @"\" + filename;
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
                                 {
-                                    display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-                                    ShowMessageInternal(MeaageType.Begin, "Capture 2nd picture,File:" + filename);
+                                    display_img_rgb[currentIndex].Save(filepath , System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Success, "Capture 2nd picture,File:" + filename);
+                                    this.Invoke((EventHandler)(delegate
+                                    {
+                                        pic2nd.ImageLocation = filepath;
+                                    }));
                                 }
                                 else
                                     ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
@@ -1296,8 +1308,12 @@ namespace LCD_SVS
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
                                 {
-                                    display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-                                    ShowMessageInternal(MeaageType.Begin, "Capture 1st picture,File:" + filename);
+                                    display_img_rgb[currentIndex].Save(filepath , System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Success , "Capture 1st picture,File:" + filename);
+                                    this.Invoke((EventHandler)(delegate
+                                    {
+                                        pic1st.ImageLocation = filepath;
+                                    }));
                                 }
                                 else
                                     ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
@@ -1312,8 +1328,12 @@ namespace LCD_SVS
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
                                 {
-                                    display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-                                    ShowMessageInternal(MeaageType.Begin, "Capture 2nd picture,File:" + filename);
+                                    display_img_rgb[currentIndex].Save(filepath , System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Success , "Capture 2nd picture,File:" + filename);
+                                    this.Invoke((EventHandler)(delegate
+                                    {
+                                        pic2nd.ImageLocation = filepath;
+                                    }));
                                 }
                                 else
                                     ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
@@ -1352,21 +1372,50 @@ namespace LCD_SVS
                     serialPort1.Close();
             }
 
-            if (sv_cam != null)
+
+            if (p.UseCamera == "1")
             {
-                if (acqThreadIsRuning)
+                if (sv_cam == null)
                 {
-                    clearControl();
-                    sv_cam.threadIsRuning = false;
-                    acqThreadIsRuning = false;
-                    acqThread.Join();
-                    sv_cam.acquisitionStop();
-                    acqThread.Abort();
-                    Array.Clear(sv_cam.imagebufferMono, 0, 4);
-                    Array.Clear(sv_cam.imagebufferRGB, 0, 4);
-                    btnCapture.Visible = false;
+                    buttonStop.Cursor = Cursors.Default;
+                    return;
                 }
+
+                if (!acqThreadIsRuning)
+                {
+                    buttonStop.Cursor = Cursors.Default;
+                    return;
+                }
+                buttonStop.Cursor = Cursors.WaitCursor;
+                clearControl();
+                sv_cam.threadIsRuning = false;
+                acqThreadIsRuning = false;
+                acqThread.Join();
+                sv_cam.acquisitionStop();
+                //buttonStop.Visible = false;
+                //buttonStart.Visible = true;
+                acqThread.Abort();
+                Array.Clear(sv_cam.imagebufferMono, 0, 4);
+                Array.Clear(sv_cam.imagebufferRGB, 0, 4);
             }
+
+
+            //if (sv_cam != null)
+            //{
+            //    if (acqThreadIsRuning)
+            //    {
+            //        clearControl();
+            //        sv_cam.threadIsRuning = false;
+            //        acqThreadIsRuning = false;
+            //        acqThread.Join();
+            //        sv_cam.acquisitionStop();
+            //        acqThread.Abort();
+            //        Array.Clear(sv_cam.imagebufferMono, 0, 4);
+            //        Array.Clear(sv_cam.imagebufferRGB, 0, 4);
+            //        btnCapture.Visible = false;
+            //    }
+                
+            //}
             buttonStop.Cursor = Cursors.Default;
             buttonStop.Visible = false;
             buttonStart.Visible = true;
@@ -1844,6 +1893,68 @@ namespace LCD_SVS
             hv_Height.Dispose();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ho_image"></param>
+        /// <param name="IsClear"></param>
+        private void VisionResizeImage(HObject ho_image, HWindow _hwindow)
+        {
+            #region 縮放圖像
+            HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
+            hv_Width.Dispose(); hv_Height.Dispose();
+            bool needResizeImage = true;
+            HOperatorSet.GetImageSize(ho_image, out hv_Width, out hv_Height);
+            int im_width = int.Parse(hv_Width.ToString());
+            int im_height = int.Parse(hv_Height.ToString());
+
+            double im_AspectRatio = (double)(im_width) / (double)(im_height);
+
+            int w_width = hSmartWindowControl1.Size.Width;
+            int w_height = hSmartWindowControl1.Size.Height;
+
+            double w_AspectRatio = (double)(w_width) / (double)(w_height);
+            HOperatorSet.SetSystem("int_zooming", "false");
+            HTuple para = new HTuple("constant");
+            HObject ho_zoomImage;
+            HOperatorSet.GenEmptyObj(out ho_zoomImage);
+            ho_zoomImage.Dispose();
+
+            if (w_width < im_width && im_AspectRatio > w_AspectRatio)
+            {
+                //超寬圖像
+                HOperatorSet.ZoomImageSize(ho_image, out ho_zoomImage, w_width, w_width / im_AspectRatio, para);
+            }
+            else if (w_height < im_height && im_AspectRatio < w_AspectRatio)
+            {
+                //超高圖像
+                HOperatorSet.ZoomImageSize(ho_image, out ho_zoomImage, w_height * im_AspectRatio, w_height, para);
+            }
+            else
+                needResizeImage = false;
+            #endregion
+
+            #region display
+            hwindow.SetPart(0, 0, -2, -2);
+            if (needResizeImage)
+                _hwindow.DispObj(ho_zoomImage);
+
+            else
+                _hwindow.DispObj(ho_image);
+
+            #endregion
+
+
+            ho_image.Dispose();
+            ho_zoomImage.Dispose();
+            hv_Width.Dispose();
+            hv_Height.Dispose();
+        }
+
+
+
+
         private void hSmartWindowControl1_Resize(object sender, EventArgs e)
         {
            // DisplayHalconImage(txtVisionImgFile.Text.Trim());
@@ -1977,6 +2088,19 @@ namespace LCD_SVS
             maxthresh[1] = (int)hv_MaxThresh.TupleSelect(1);
 
         }
+
+
+        private void DispImgInHalcon(string file,HWindow _hWindow)
+        {
+            HObject ho_Image = new HObject(), ho_ImageMean = new HObject(), ho_ImageGray = new HObject(), ho_ImagePart = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, file);
+            VisionResizeImage(ho_Image, _hWindow);
+           // HOperatorSet.DispObj(ho_Image, hwindow);
+        }
+
+
 
         private void GetSuggestionMinValue(string file, out int[] minthresh)
         {
@@ -3654,7 +3778,7 @@ namespace LCD_SVS
                 }
                 
             }
-            return false;
+            return true;
         }
 
         private void chkAnalysisImg_CheckedChanged(object sender, EventArgs e)

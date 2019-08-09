@@ -136,6 +136,8 @@
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.chkAnalysisImg = new System.Windows.Forms.CheckBox();
+            this.pic1st = new System.Windows.Forms.PictureBox();
+            this.pic2nd = new System.Windows.Forms.PictureBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -155,6 +157,8 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic1st)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pic2nd)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonDiscover
@@ -1005,6 +1009,8 @@
             this.tlpInspection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpInspection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 328F));
             this.tlpInspection.Controls.Add(this.panelInspection, 2, 0);
+            this.tlpInspection.Controls.Add(this.pic1st, 0, 0);
+            this.tlpInspection.Controls.Add(this.pic2nd, 0, 1);
             this.tlpInspection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpInspection.Location = new System.Drawing.Point(0, 0);
             this.tlpInspection.Name = "tlpInspection";
@@ -1494,6 +1500,27 @@
             this.chkAnalysisImg.UseVisualStyleBackColor = true;
             this.chkAnalysisImg.CheckedChanged += new System.EventHandler(this.chkAnalysisImg_CheckedChanged);
             // 
+            // pic1st
+            // 
+            this.pic1st.BackColor = System.Drawing.Color.Gray;
+            this.pic1st.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pic1st.Location = new System.Drawing.Point(3, 3);
+            this.pic1st.Name = "pic1st";
+            this.pic1st.Size = new System.Drawing.Size(632, 304);
+            this.pic1st.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pic1st.TabIndex = 1;
+            this.pic1st.TabStop = false;
+            // 
+            // pic2nd
+            // 
+            this.pic2nd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pic2nd.Location = new System.Drawing.Point(3, 313);
+            this.pic2nd.Name = "pic2nd";
+            this.pic2nd.Size = new System.Drawing.Size(632, 305);
+            this.pic2nd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pic2nd.TabIndex = 2;
+            this.pic2nd.TabStop = false;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1531,6 +1558,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic1st)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pic2nd)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1644,6 +1673,8 @@
         private System.Windows.Forms.CheckBox chkUseNet;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.CheckBox chkAnalysisImg;
+        private System.Windows.Forms.PictureBox pic1st;
+        private System.Windows.Forms.PictureBox pic2nd;
     }
 }
 
