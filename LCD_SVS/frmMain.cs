@@ -844,8 +844,31 @@ namespace LCD_SVS
         private void buttonStart_Click(object sender, EventArgs e)
         {
             buttonStart.Cursor = Cursors.WaitCursor;
+            if (p.UseComPort == "1")
+            {
+                this.tabMain.SelectedTab = tabInspection;
+                ShowMessageInternal(MeaageType.Begin, "Start Open Serial Port:" + p.ComPort + "...");
+                try
+                {
+                    serialPort1.PortName = p.ComPort;
+                    serialPort1.Open();
+                    ShowMessageInternal(MeaageType.Success, "Open Serial Port:" + p.ComPort + " Sucessful...");
+                }
+                catch (Exception eCom)
+                {
+                    ShowMessageInternal(MeaageType.Error, "Failed to Open Serial Port:" + p.ComPort + " ...");
+                    ShowMessageInternal(MeaageType.Error, eCom.Message);
+                    buttonStart.Cursor = Cursors.Default;
+                    return;
+                }
+      
+            }
+
+
+
             if (p.UseCamera == "1")
             {
+                this.tabMain.SelectedTab = tabCamera;
                 if (sv_cam == null)
                 {
                     SetListText("Select Camera first please.");
@@ -900,7 +923,8 @@ namespace LCD_SVS
                 {
                     ShowMessageInternal(MeaageType.Error, "Listen IP:" + p.IP + ",Port:" + p.Port + " Failed.");
                     ShowMessageInternal(MeaageType.Error, eNet.Message);
-                    
+                    buttonStart.Cursor = Cursors.Default;
+                    return;
                 }
 
 
@@ -3480,5 +3504,6 @@ namespace LCD_SVS
         }
 
         #endregion
+
     }
 }

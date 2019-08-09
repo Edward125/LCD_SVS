@@ -99,7 +99,14 @@
             this.txtInspectionInfo = new System.Windows.Forms.TextBox();
             this.lstSN = new System.Windows.Forms.ListBox();
             this.tabSetting = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.chkUseNet = new System.Windows.Forms.CheckBox();
+            this.txtPort = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.txtIP = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnRefreshCom = new System.Windows.Forms.Button();
             this.txtComDeviceInfo = new System.Windows.Forms.TextBox();
             this.txtCapture2Signal = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
@@ -127,13 +134,7 @@
             this.txtNGImgFolder = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
-            this.btnRefreshCom = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label29 = new System.Windows.Forms.Label();
-            this.txtIP = new System.Windows.Forms.TextBox();
-            this.txtPort = new System.Windows.Forms.TextBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.chkUseNet = new System.Windows.Forms.CheckBox();
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -149,10 +150,10 @@
             this.tlpInspection.SuspendLayout();
             this.panelInspection.SuspendLayout();
             this.tabSetting.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonDiscover
@@ -252,7 +253,7 @@
             this.panelAcquisition.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelAcquisition.Location = new System.Drawing.Point(3, 6);
             this.panelAcquisition.Name = "panelAcquisition";
-            this.panelAcquisition.Size = new System.Drawing.Size(651, 609);
+            this.panelAcquisition.Size = new System.Drawing.Size(651, 797);
             this.panelAcquisition.TabIndex = 23;
             // 
             // display
@@ -355,9 +356,9 @@
             this.lstCapMsg.FormattingEnabled = true;
             this.lstCapMsg.HorizontalScrollbar = true;
             this.lstCapMsg.ItemHeight = 14;
-            this.lstCapMsg.Location = new System.Drawing.Point(3, 189);
+            this.lstCapMsg.Location = new System.Drawing.Point(6, 153);
             this.lstCapMsg.Name = "lstCapMsg";
-            this.lstCapMsg.Size = new System.Drawing.Size(293, 410);
+            this.lstCapMsg.Size = new System.Drawing.Size(293, 634);
             this.lstCapMsg.TabIndex = 23;
             // 
             // btnCapture
@@ -1105,6 +1106,69 @@
             this.tabSetting.TabIndex = 2;
             this.tabSetting.Text = "Setting";
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.chkUseNet);
+            this.groupBox4.Controls.Add(this.txtPort);
+            this.groupBox4.Controls.Add(this.label30);
+            this.groupBox4.Controls.Add(this.txtIP);
+            this.groupBox4.Controls.Add(this.label29);
+            this.groupBox4.Location = new System.Drawing.Point(3, 373);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(543, 73);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Net Listening Setting";
+            // 
+            // chkUseNet
+            // 
+            this.chkUseNet.AutoSize = true;
+            this.chkUseNet.Location = new System.Drawing.Point(11, 22);
+            this.chkUseNet.Name = "chkUseNet";
+            this.chkUseNet.Size = new System.Drawing.Size(131, 18);
+            this.chkUseNet.TabIndex = 18;
+            this.chkUseNet.Text = "Use Net Receive SN";
+            this.chkUseNet.UseVisualStyleBackColor = true;
+            this.chkUseNet.CheckedChanged += new System.EventHandler(this.chkUseNet_CheckedChanged);
+            // 
+            // txtPort
+            // 
+            this.txtPort.Location = new System.Drawing.Point(248, 44);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(66, 22);
+            this.txtPort.TabIndex = 20;
+            this.txtPort.Text = "10086";
+            this.txtPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPort.TextChanged += new System.EventHandler(this.txtPort_TextChanged);
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(213, 48);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(31, 14);
+            this.label30.TabIndex = 19;
+            this.label30.Text = "Port:";
+            // 
+            // txtIP
+            // 
+            this.txtIP.Location = new System.Drawing.Point(76, 44);
+            this.txtIP.Name = "txtIP";
+            this.txtIP.Size = new System.Drawing.Size(128, 22);
+            this.txtIP.TabIndex = 18;
+            this.txtIP.Text = "10.62.32.8";
+            this.txtIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtIP.TextChanged += new System.EventHandler(this.txtIP_TextChanged);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(6, 47);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(67, 14);
+            this.label29.TabIndex = 0;
+            this.label29.Text = "IP Address:";
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btnRefreshCom);
@@ -1124,6 +1188,18 @@
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Capture Signal Setting";
+            // 
+            // btnRefreshCom
+            // 
+            this.btnRefreshCom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnRefreshCom.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnRefreshCom.Location = new System.Drawing.Point(410, 40);
+            this.btnRefreshCom.Name = "btnRefreshCom";
+            this.btnRefreshCom.Size = new System.Drawing.Size(75, 23);
+            this.btnRefreshCom.TabIndex = 17;
+            this.btnRefreshCom.Text = "Refresh";
+            this.btnRefreshCom.UseVisualStyleBackColor = false;
+            this.btnRefreshCom.Click += new System.EventHandler(this.btnRefreshCom_Click);
             // 
             // txtComDeviceInfo
             // 
@@ -1401,81 +1477,6 @@
             this.txtOKImgFolder.TabIndex = 2;
             this.txtOKImgFolder.TextChanged += new System.EventHandler(this.txtOKImgFolder_TextChanged);
             // 
-            // btnRefreshCom
-            // 
-            this.btnRefreshCom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnRefreshCom.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnRefreshCom.Location = new System.Drawing.Point(410, 40);
-            this.btnRefreshCom.Name = "btnRefreshCom";
-            this.btnRefreshCom.Size = new System.Drawing.Size(75, 23);
-            this.btnRefreshCom.TabIndex = 17;
-            this.btnRefreshCom.Text = "Refresh";
-            this.btnRefreshCom.UseVisualStyleBackColor = false;
-            this.btnRefreshCom.Click += new System.EventHandler(this.btnRefreshCom_Click);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.chkUseNet);
-            this.groupBox4.Controls.Add(this.txtPort);
-            this.groupBox4.Controls.Add(this.label30);
-            this.groupBox4.Controls.Add(this.txtIP);
-            this.groupBox4.Controls.Add(this.label29);
-            this.groupBox4.Location = new System.Drawing.Point(3, 373);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(543, 73);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Net Listening Setting";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(6, 47);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(67, 14);
-            this.label29.TabIndex = 0;
-            this.label29.Text = "IP Address:";
-            // 
-            // txtIP
-            // 
-            this.txtIP.Location = new System.Drawing.Point(76, 44);
-            this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(128, 22);
-            this.txtIP.TabIndex = 18;
-            this.txtIP.Text = "10.62.32.8";
-            this.txtIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtIP.TextChanged += new System.EventHandler(this.txtIP_TextChanged);
-            // 
-            // txtPort
-            // 
-            this.txtPort.Location = new System.Drawing.Point(248, 44);
-            this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(66, 22);
-            this.txtPort.TabIndex = 20;
-            this.txtPort.Text = "10086";
-            this.txtPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtPort.TextChanged += new System.EventHandler(this.txtPort_TextChanged);
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(213, 48);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(31, 14);
-            this.label30.TabIndex = 19;
-            this.label30.Text = "Port:";
-            // 
-            // chkUseNet
-            // 
-            this.chkUseNet.AutoSize = true;
-            this.chkUseNet.Location = new System.Drawing.Point(11, 22);
-            this.chkUseNet.Name = "chkUseNet";
-            this.chkUseNet.Size = new System.Drawing.Size(131, 18);
-            this.chkUseNet.TabIndex = 18;
-            this.chkUseNet.Text = "Use Net Receive SN";
-            this.chkUseNet.UseVisualStyleBackColor = true;
-            this.chkUseNet.CheckedChanged += new System.EventHandler(this.chkUseNet_CheckedChanged);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1505,14 +1506,14 @@
             this.panelInspection.ResumeLayout(false);
             this.panelInspection.PerformLayout();
             this.tabSetting.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1624,6 +1625,7 @@
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.CheckBox chkUseNet;
+        private System.IO.Ports.SerialPort serialPort1;
     }
 }
 
