@@ -47,6 +47,8 @@ namespace LCD_SVS
         bool acqIsCapturePicture = false;
         bool anyThreadIsRuning = false;
         bool listenThreadIsRuning = false;
+        bool isCapture1stPicture = false;
+        bool isCapture2ndPicture = false;
 
 
         
@@ -926,8 +928,6 @@ namespace LCD_SVS
                     buttonStart.Cursor = Cursors.Default;
                     return;
                 }
-
-
             }
 
             if (p.UseWebService == "1")
@@ -1183,6 +1183,38 @@ namespace LCD_SVS
                                 txtImgFile.Text = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
                             });
                         }
+
+
+                        if (isCapture1stPicture)
+                        {
+                            string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_1st.bmp";
+                            string filepath = p.AppCapFolder + @"\" + filename;
+
+                          if(CheckFileExistDeleteFile (filepath ,filename))
+                          {
+                              display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+                              ShowMessageInternal(MeaageType.Begin, "Capture 1st picture,File:" + filename);
+                          }
+                          else
+                              ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
+                          isCapture1stPicture = false;
+                            
+                        }
+
+                        if (isCapture2ndPicture)
+                        {
+                            string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_2nd.bmp";
+                            string filepath = p.AppCapFolder + @"\" + filename;
+
+                            if (CheckFileExistDeleteFile(filepath, filename))
+                            {
+                                display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+                                ShowMessageInternal(MeaageType.Begin, "Capture 2nd picture,File:" + filename);
+                            }
+                            else
+                                ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
+                            isCapture2ndPicture = false;
+                        }
                     }
                 }
 
@@ -1241,10 +1273,40 @@ namespace LCD_SVS
                                 picCapturePicture.ImageLocation = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
                                 txtImgFile.Text = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp";
                             });
-
-
-                           
                         }
+
+
+                        if (isCapture1stPicture)
+                        {
+                            string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_1st.bmp";
+                            string filepath = p.AppCapFolder + @"\" + filename;
+
+                            if (CheckFileExistDeleteFile(filepath, filename))
+                            {
+                                display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+                                ShowMessageInternal(MeaageType.Begin, "Capture 1st picture,File:" + filename);
+                            }
+                            else
+                                ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
+                            isCapture1stPicture = false;
+
+                        }
+
+                        if (isCapture2ndPicture)
+                        {
+                            string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_2nd.bmp";
+                            string filepath = p.AppCapFolder + @"\" + filename;
+
+                            if (CheckFileExistDeleteFile(filepath, filename))
+                            {
+                                display_img_rgb[currentIndex].Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+                                ShowMessageInternal(MeaageType.Begin, "Capture 2nd picture,File:" + filename);
+                            }
+                            else
+                                ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
+                            isCapture2ndPicture = false;
+                        }
+
                     }
                 }
 
@@ -3504,6 +3566,68 @@ namespace LCD_SVS
         }
 
         #endregion
+
+        private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            if (serialPort1.BytesToRead == 0)
+                return;
+            try
+            {
+                string str = serialPort1.ReadExisting();
+                serialPort1.DiscardInBuffer();
+                str = str.Trim();
+                this.Invoke((EventHandler)(delegate {
+
+                    ShowMessageInternal(MeaageType.Begin, "MCU->PC:" + str);
+                    if (str == p.Capture1Signal)
+                    {
+                        ShowMessageInternal(MeaageType.Begin, "Capture 1st picture...");
+                        isCapture1stPicture = true;
+                    }
+                    if (str == p.Capture2Signal)
+                    {
+                        ShowMessageInternal(MeaageType.Begin, "Capture 1st picture...");
+                        isCapture2ndPicture = true;
+                    }
+
+                
+                }));
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 檢查文件是否存在,存在刪除文件
+        /// </summary>
+        /// <param name="filepath">文件所在的完整路徑</param>
+        /// <param name="filename">文件名稱</param>
+        /// <returns></returns>
+        private bool CheckFileExistDeleteFile(string filepath,string filename)
+        {
+            if (File.Exists(filepath))
+            {
+                ShowMessageInternal(MeaageType.Warning, filename  + " is exist,delete the file.");
+                try
+                {
+                    File.Delete(filepath);
+                    ShowMessageInternal(MeaageType.Success, "Delete " + filename + " sucess...");
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    ShowMessageInternal(MeaageType.Error , "Failed to delete "  + filename);
+                    ShowMessageInternal(MeaageType.Error, e.Message);
+                    return false;
+                }
+                
+            }
+            return false;
+        }
+
 
     }
 }
