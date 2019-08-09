@@ -846,27 +846,6 @@ namespace LCD_SVS
         private void buttonStart_Click(object sender, EventArgs e)
         {
             buttonStart.Cursor = Cursors.WaitCursor;
-            if (p.UseComPort == "1")
-            {
-                this.tabMain.SelectedTab = tabInspection;
-                ShowMessageInternal(MeaageType.Begin, "Start Open Serial Port:" + p.ComPort + "...");
-                try
-                {
-                    serialPort1.PortName = p.ComPort;
-                    serialPort1.Open();
-                    ShowMessageInternal(MeaageType.Success, "Open Serial Port:" + p.ComPort + " Sucessful...");
-                }
-                catch (Exception eCom)
-                {
-                    ShowMessageInternal(MeaageType.Error, "Failed to Open Serial Port:" + p.ComPort + " ...");
-                    ShowMessageInternal(MeaageType.Error, eCom.Message);
-                    buttonStart.Cursor = Cursors.Default;
-                    return;
-                }
-      
-            }
-
-
 
             if (p.UseCamera == "1")
             {
@@ -875,6 +854,7 @@ namespace LCD_SVS
                 {
                     SetListText("Select Camera first please.");
                     ShowMessageInternal(MeaageType.Warning, "Select Camera first please.");
+                    buttonStart.Cursor = Cursors.Default;
                     return;
                 }
                 sv_cam.openConnection();
@@ -930,6 +910,25 @@ namespace LCD_SVS
                 }
             }
 
+            if (p.UseComPort == "1")
+            {
+                this.tabMain.SelectedTab = tabInspection;
+                ShowMessageInternal(MeaageType.Begin, "Start Open Serial Port:" + p.ComPort + "...");
+                try
+                {
+                    serialPort1.PortName = p.ComPort;
+                    serialPort1.Open();
+                    ShowMessageInternal(MeaageType.Success, "Open Serial Port:" + p.ComPort + " Sucessful...");
+                }
+                catch (Exception eCom)
+                {
+                    ShowMessageInternal(MeaageType.Error, "Failed to Open Serial Port:" + p.ComPort + " ...");
+                    ShowMessageInternal(MeaageType.Error, eCom.Message);
+                    buttonStart.Cursor = Cursors.Default;
+                    return;
+                }
+            }
+
             if (p.UseWebService == "1")
             {
                 this.tabMain.SelectedTab = tabInspection;
@@ -969,6 +968,8 @@ namespace LCD_SVS
                 ShowMessageInternal(MeaageType.Error, e.Message);
                 this.Invoke((EventHandler)(delegate
                 {
+                    if (p.UseComPort == "1" && serialPort1.IsOpen)
+                        serialPort1.Close();
                     buttonStop.Visible = false;
                     buttonStart.Visible = true;
                     buttonStart.Cursor = Cursors.Default;
@@ -1290,7 +1291,7 @@ namespace LCD_SVS
 
                             if (isCapture1stPicture)
                             {
-                                string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_1st.bmp";
+                                string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + "_1st.bmp";
                                 string filepath = p.AppCapFolder + @"\" + filename;
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
@@ -1306,7 +1307,7 @@ namespace LCD_SVS
 
                             if (isCapture2ndPicture)
                             {
-                                string filename = DateTime.Now.ToString("yyyyMMdd") + "_" + currentIndex + "_2nd.bmp";
+                                string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + "_2nd.bmp";
                                 string filepath = p.AppCapFolder + @"\" + filename;
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
