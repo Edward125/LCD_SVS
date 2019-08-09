@@ -33,6 +33,8 @@ namespace LCD_SVS
             InitializeComponent();
             gpanel = display.CreateGraphics();
             hwindow = hSmartWindowControl1.HalconWindow;
+            hwindow1st = hSmartWindowControl1st.HalconWindow;
+            hwindow2nd = hSmartWindowControl2nd.HalconWindow;
             this.MouseWheel += new MouseEventHandler(this.my_MouseWheel);
 
         }
@@ -68,6 +70,8 @@ namespace LCD_SVS
         //
         WebReference.WebService ws = new WebReference.WebService();
         private static HWindow hwindow; //
+        private static HWindow hwindow1st;
+        private static HWindow hwindow2nd;
         public HTuple hv_ExpDefaultHwinHandle;
         Dictionary<string, string> ComList = new Dictionary<string, string>(); //comport list
 
@@ -1210,7 +1214,8 @@ namespace LCD_SVS
                                     ShowMessageInternal(MeaageType.Success , "Capture 1st picture,File:" + filename);
                                     this.Invoke((EventHandler)(delegate
                                     {
-                                        pic1st.ImageLocation = filepath;
+                                        //pic1st.ImageLocation = filepath;
+                                        DisplayHalconImage(filepath, hwindow1st, hSmartWindowControl1st);
                                     }));
                                 }
                                 else
@@ -1230,7 +1235,8 @@ namespace LCD_SVS
                                     ShowMessageInternal(MeaageType.Success, "Capture 2nd picture,File:" + filename);
                                     this.Invoke((EventHandler)(delegate
                                     {
-                                        pic2nd.ImageLocation = filepath;
+                                        //pic2nd.ImageLocation = filepath;
+                                        DisplayHalconImage(filepath , hwindow2nd, hSmartWindowControl2nd);
                                     }));
                                 }
                                 else
@@ -1312,7 +1318,8 @@ namespace LCD_SVS
                                     ShowMessageInternal(MeaageType.Success , "Capture 1st picture,File:" + filename);
                                     this.Invoke((EventHandler)(delegate
                                     {
-                                        pic1st.ImageLocation = filepath;
+                                        //pic1st.ImageLocation = filepath;
+                                        DisplayHalconImage(filepath, hwindow1st, hSmartWindowControl1st);
                                     }));
                                 }
                                 else
@@ -1332,7 +1339,8 @@ namespace LCD_SVS
                                     ShowMessageInternal(MeaageType.Success , "Capture 2nd picture,File:" + filename);
                                     this.Invoke((EventHandler)(delegate
                                     {
-                                        pic2nd.ImageLocation = filepath;
+                                        //pic2nd.ImageLocation = filepath;
+                                        DisplayHalconImage(filepath , hwindow2nd, hSmartWindowControl2nd);
                                     }));
                                 }
                                 else
@@ -1717,6 +1725,7 @@ namespace LCD_SVS
                 HOperatorSet.ClearWindow(hwindow);
                 DisplayHalconImage(txtVisionImgFile.Text.Trim());
                
+               
             }
         }
 
@@ -1768,6 +1777,63 @@ namespace LCD_SVS
                 hwindow.DispObj(ho_zoomImage);
             else
                 hwindow.DispObj(ho_Image);
+
+            #endregion
+
+            ho_Image.Dispose();
+            ho_zoomImage.Dispose();
+            hv_Width.Dispose();
+            hv_Height.Dispose();
+        }
+
+        private void DisplayHalconImage(HTuple imagefile,HWindow  _hwindow,HSmartWindowControl hswindow)
+        {
+            hwindow.ClearWindow();
+            HObject ho_Image = new HObject();
+            HOperatorSet.GenEmptyObj(out ho_Image);
+            ho_Image.Dispose();
+            HOperatorSet.ReadImage(out ho_Image, imagefile);
+
+            #region 縮放圖像
+            HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
+            hv_Width.Dispose(); hv_Height.Dispose();
+            bool needResizeImage = true;
+            HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
+            int im_width = int.Parse(hv_Width.ToString());
+            int im_height = int.Parse(hv_Height.ToString());
+
+            double im_AspectRatio = (double)(im_width) / (double)(im_height);
+
+            int w_width = hswindow.Size.Width;
+            int w_height = hswindow.Size.Height;
+
+            double w_AspectRatio = (double)(w_width) / (double)(w_height);
+            HOperatorSet.SetSystem("int_zooming", "false");
+            HTuple para = new HTuple("constant");
+            HObject ho_zoomImage;
+            HOperatorSet.GenEmptyObj(out ho_zoomImage);
+            ho_zoomImage.Dispose();
+
+            if (w_width < im_width && im_AspectRatio > w_AspectRatio)
+            {
+                //超寬圖像
+                HOperatorSet.ZoomImageSize(ho_Image, out ho_zoomImage, w_width, w_width / im_AspectRatio, para);
+            }
+            else if (w_height < im_height && im_AspectRatio < w_AspectRatio)
+            {
+                //超高圖像
+                HOperatorSet.ZoomImageSize(ho_Image, out ho_zoomImage, w_height * im_AspectRatio, w_height, para);
+            }
+            else
+                needResizeImage = false;
+            #endregion
+
+            #region display
+            hwindow.SetPart(0, 0, -2, -2);
+            if (needResizeImage)
+                _hwindow.DispObj(ho_zoomImage);
+            else
+                _hwindow.DispObj(ho_Image);
 
             #endregion
 
@@ -3789,6 +3855,8 @@ namespace LCD_SVS
                 p.AnalysisPicture = "0";
             IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "AnalysisPicture", p.AnalysisPicture, p.IniFilePath);
         }
+
+
 
 
     }

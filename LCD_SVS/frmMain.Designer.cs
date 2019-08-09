@@ -97,7 +97,8 @@
             this.label22 = new System.Windows.Forms.Label();
             this.txtSN = new System.Windows.Forms.TextBox();
             this.txtInspectionInfo = new System.Windows.Forms.TextBox();
-            this.lstSN = new System.Windows.Forms.ListBox();
+            this.hSmartWindowControl1st = new HalconDotNet.HSmartWindowControl();
+            this.hSmartWindowControl2nd = new HalconDotNet.HSmartWindowControl();
             this.tabSetting = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chkUseNet = new System.Windows.Forms.CheckBox();
@@ -127,6 +128,7 @@
             this.txtWebService = new System.Windows.Forms.TextBox();
             this.chkUseWebService = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkAnalysisImg = new System.Windows.Forms.CheckBox();
             this.chkUseCamera = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.chkTestNGSavePictures = new System.Windows.Forms.CheckBox();
@@ -135,9 +137,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.chkAnalysisImg = new System.Windows.Forms.CheckBox();
-            this.pic1st = new System.Windows.Forms.PictureBox();
-            this.pic2nd = new System.Windows.Forms.PictureBox();
+            this.lstSN = new System.Windows.Forms.ListBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -157,8 +157,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pic1st)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pic2nd)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonDiscover
@@ -1009,8 +1007,8 @@
             this.tlpInspection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpInspection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 328F));
             this.tlpInspection.Controls.Add(this.panelInspection, 2, 0);
-            this.tlpInspection.Controls.Add(this.pic1st, 0, 0);
-            this.tlpInspection.Controls.Add(this.pic2nd, 0, 1);
+            this.tlpInspection.Controls.Add(this.hSmartWindowControl1st, 0, 0);
+            this.tlpInspection.Controls.Add(this.hSmartWindowControl2nd, 0, 1);
             this.tlpInspection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpInspection.Location = new System.Drawing.Point(0, 0);
             this.tlpInspection.Name = "tlpInspection";
@@ -1023,11 +1021,11 @@
             // 
             // panelInspection
             // 
+            this.panelInspection.Controls.Add(this.lstSN);
             this.panelInspection.Controls.Add(this.richMessage);
             this.panelInspection.Controls.Add(this.label22);
             this.panelInspection.Controls.Add(this.txtSN);
             this.panelInspection.Controls.Add(this.txtInspectionInfo);
-            this.panelInspection.Controls.Add(this.lstSN);
             this.panelInspection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelInspection.Location = new System.Drawing.Point(641, 3);
             this.panelInspection.Name = "panelInspection";
@@ -1040,10 +1038,10 @@
             this.richMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richMessage.Location = new System.Drawing.Point(3, 3);
+            this.richMessage.Location = new System.Drawing.Point(3, 1);
             this.richMessage.Name = "richMessage";
             this.richMessage.ReadOnly = true;
-            this.richMessage.Size = new System.Drawing.Size(316, 388);
+            this.richMessage.Size = new System.Drawing.Size(316, 364);
             this.richMessage.TabIndex = 17;
             this.richMessage.Text = "";
             this.richMessage.WordWrap = false;
@@ -1054,7 +1052,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(9, 560);
+            this.label22.Location = new System.Drawing.Point(8, 561);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(60, 17);
             this.label22.TabIndex = 16;
@@ -1066,7 +1064,7 @@
             this.txtSN.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.txtSN.Font = new System.Drawing.Font("Calibri", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtSN.Location = new System.Drawing.Point(74, 555);
+            this.txtSN.Location = new System.Drawing.Point(72, 556);
             this.txtSN.Name = "txtSN";
             this.txtSN.Size = new System.Drawing.Size(245, 25);
             this.txtSN.TabIndex = 15;
@@ -1089,16 +1087,41 @@
             this.txtInspectionInfo.Text = " ";
             this.txtInspectionInfo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // lstSN
+            // hSmartWindowControl1st
             // 
-            this.lstSN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstSN.FormattingEnabled = true;
-            this.lstSN.ItemHeight = 14;
-            this.lstSN.Location = new System.Drawing.Point(3, 392);
-            this.lstSN.Name = "lstSN";
-            this.lstSN.Size = new System.Drawing.Size(317, 158);
-            this.lstSN.TabIndex = 1;
+            this.hSmartWindowControl1st.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.hSmartWindowControl1st.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.hSmartWindowControl1st.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hSmartWindowControl1st.HDoubleClickToFitContent = true;
+            this.hSmartWindowControl1st.HDrawingObjectsModifier = HalconDotNet.HSmartWindowControl.DrawingObjectsModifier.None;
+            this.hSmartWindowControl1st.HImagePart = new System.Drawing.Rectangle(0, 0, 640, 480);
+            this.hSmartWindowControl1st.HKeepAspectRatio = true;
+            this.hSmartWindowControl1st.HMoveContent = true;
+            this.hSmartWindowControl1st.HZoomContent = HalconDotNet.HSmartWindowControl.ZoomContent.WheelForwardZoomsIn;
+            this.hSmartWindowControl1st.Location = new System.Drawing.Point(0, 0);
+            this.hSmartWindowControl1st.Margin = new System.Windows.Forms.Padding(0);
+            this.hSmartWindowControl1st.Name = "hSmartWindowControl1st";
+            this.hSmartWindowControl1st.Size = new System.Drawing.Size(638, 310);
+            this.hSmartWindowControl1st.TabIndex = 1;
+            this.hSmartWindowControl1st.WindowSize = new System.Drawing.Size(638, 310);
+            // 
+            // hSmartWindowControl2nd
+            // 
+            this.hSmartWindowControl2nd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.hSmartWindowControl2nd.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.hSmartWindowControl2nd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hSmartWindowControl2nd.HDoubleClickToFitContent = true;
+            this.hSmartWindowControl2nd.HDrawingObjectsModifier = HalconDotNet.HSmartWindowControl.DrawingObjectsModifier.None;
+            this.hSmartWindowControl2nd.HImagePart = new System.Drawing.Rectangle(0, 0, 640, 480);
+            this.hSmartWindowControl2nd.HKeepAspectRatio = true;
+            this.hSmartWindowControl2nd.HMoveContent = true;
+            this.hSmartWindowControl2nd.HZoomContent = HalconDotNet.HSmartWindowControl.ZoomContent.WheelForwardZoomsIn;
+            this.hSmartWindowControl2nd.Location = new System.Drawing.Point(0, 310);
+            this.hSmartWindowControl2nd.Margin = new System.Windows.Forms.Padding(0);
+            this.hSmartWindowControl2nd.Name = "hSmartWindowControl2nd";
+            this.hSmartWindowControl2nd.Size = new System.Drawing.Size(638, 311);
+            this.hSmartWindowControl2nd.TabIndex = 2;
+            this.hSmartWindowControl2nd.WindowSize = new System.Drawing.Size(638, 311);
             // 
             // tabSetting
             // 
@@ -1418,6 +1441,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Capture Setting";
             // 
+            // chkAnalysisImg
+            // 
+            this.chkAnalysisImg.AutoSize = true;
+            this.chkAnalysisImg.Location = new System.Drawing.Point(392, 21);
+            this.chkAnalysisImg.Name = "chkAnalysisImg";
+            this.chkAnalysisImg.Size = new System.Drawing.Size(112, 18);
+            this.chkAnalysisImg.TabIndex = 7;
+            this.chkAnalysisImg.Text = "Analysis Picture";
+            this.chkAnalysisImg.UseVisualStyleBackColor = true;
+            this.chkAnalysisImg.CheckedChanged += new System.EventHandler(this.chkAnalysisImg_CheckedChanged);
+            // 
             // chkUseCamera
             // 
             this.chkUseCamera.AutoSize = true;
@@ -1489,37 +1523,16 @@
             // 
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
-            // chkAnalysisImg
+            // lstSN
             // 
-            this.chkAnalysisImg.AutoSize = true;
-            this.chkAnalysisImg.Location = new System.Drawing.Point(392, 21);
-            this.chkAnalysisImg.Name = "chkAnalysisImg";
-            this.chkAnalysisImg.Size = new System.Drawing.Size(112, 18);
-            this.chkAnalysisImg.TabIndex = 7;
-            this.chkAnalysisImg.Text = "Analysis Picture";
-            this.chkAnalysisImg.UseVisualStyleBackColor = true;
-            this.chkAnalysisImg.CheckedChanged += new System.EventHandler(this.chkAnalysisImg_CheckedChanged);
-            // 
-            // pic1st
-            // 
-            this.pic1st.BackColor = System.Drawing.Color.Gray;
-            this.pic1st.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pic1st.Location = new System.Drawing.Point(3, 3);
-            this.pic1st.Name = "pic1st";
-            this.pic1st.Size = new System.Drawing.Size(632, 304);
-            this.pic1st.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pic1st.TabIndex = 1;
-            this.pic1st.TabStop = false;
-            // 
-            // pic2nd
-            // 
-            this.pic2nd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pic2nd.Location = new System.Drawing.Point(3, 313);
-            this.pic2nd.Name = "pic2nd";
-            this.pic2nd.Size = new System.Drawing.Size(632, 305);
-            this.pic2nd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pic2nd.TabIndex = 2;
-            this.pic2nd.TabStop = false;
+            this.lstSN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstSN.FormattingEnabled = true;
+            this.lstSN.ItemHeight = 14;
+            this.lstSN.Location = new System.Drawing.Point(3, 368);
+            this.lstSN.Name = "lstSN";
+            this.lstSN.Size = new System.Drawing.Size(316, 186);
+            this.lstSN.TabIndex = 18;
             // 
             // frmMain
             // 
@@ -1558,8 +1571,6 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pic1st)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pic2nd)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1638,7 +1649,6 @@
         private System.Windows.Forms.TabPage tabInspection;
         private System.Windows.Forms.TableLayoutPanel tlpInspection;
         private System.Windows.Forms.Panel panelInspection;
-        private System.Windows.Forms.ListBox lstSN;
         private System.Windows.Forms.TextBox txtSN;
         private System.Windows.Forms.TextBox txtInspectionInfo;
         private System.Windows.Forms.Label label22;
@@ -1673,8 +1683,9 @@
         private System.Windows.Forms.CheckBox chkUseNet;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.CheckBox chkAnalysisImg;
-        private System.Windows.Forms.PictureBox pic1st;
-        private System.Windows.Forms.PictureBox pic2nd;
+        private HalconDotNet.HSmartWindowControl hSmartWindowControl1st;
+        private HalconDotNet.HSmartWindowControl hSmartWindowControl2nd;
+        private System.Windows.Forms.ListBox lstSN;
     }
 }
 
