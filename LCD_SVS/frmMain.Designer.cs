@@ -135,6 +135,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.chkAnalysisImg = new System.Windows.Forms.CheckBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -1396,6 +1397,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkAnalysisImg);
             this.groupBox1.Controls.Add(this.chkUseCamera);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.chkTestNGSavePictures);
@@ -1433,22 +1435,22 @@
             // chkTestNGSavePictures
             // 
             this.chkTestNGSavePictures.AutoSize = true;
-            this.chkTestNGSavePictures.Location = new System.Drawing.Point(280, 21);
+            this.chkTestNGSavePictures.Location = new System.Drawing.Point(247, 21);
             this.chkTestNGSavePictures.Name = "chkTestNGSavePictures";
-            this.chkTestNGSavePictures.Size = new System.Drawing.Size(141, 18);
+            this.chkTestNGSavePictures.Size = new System.Drawing.Size(135, 18);
             this.chkTestNGSavePictures.TabIndex = 1;
-            this.chkTestNGSavePictures.Text = "Test NG Save Pictures";
+            this.chkTestNGSavePictures.Text = "Test NG Save Picture";
             this.chkTestNGSavePictures.UseVisualStyleBackColor = true;
             this.chkTestNGSavePictures.CheckedChanged += new System.EventHandler(this.chkTestNGSavePictures_CheckedChanged);
             // 
             // chkTestOKSavePictures
             // 
             this.chkTestOKSavePictures.AutoSize = true;
-            this.chkTestOKSavePictures.Location = new System.Drawing.Point(119, 21);
+            this.chkTestOKSavePictures.Location = new System.Drawing.Point(105, 21);
             this.chkTestOKSavePictures.Name = "chkTestOKSavePictures";
-            this.chkTestOKSavePictures.Size = new System.Drawing.Size(139, 18);
+            this.chkTestOKSavePictures.Size = new System.Drawing.Size(133, 18);
             this.chkTestOKSavePictures.TabIndex = 0;
-            this.chkTestOKSavePictures.Text = "Test OK Save Pictures";
+            this.chkTestOKSavePictures.Text = "Test OK Save Picture";
             this.chkTestOKSavePictures.UseVisualStyleBackColor = true;
             this.chkTestOKSavePictures.CheckedChanged += new System.EventHandler(this.chkTestOKSavePictures_CheckedChanged);
             // 
@@ -1480,6 +1482,17 @@
             // serialPort1
             // 
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+            // 
+            // chkAnalysisImg
+            // 
+            this.chkAnalysisImg.AutoSize = true;
+            this.chkAnalysisImg.Location = new System.Drawing.Point(392, 21);
+            this.chkAnalysisImg.Name = "chkAnalysisImg";
+            this.chkAnalysisImg.Size = new System.Drawing.Size(112, 18);
+            this.chkAnalysisImg.TabIndex = 7;
+            this.chkAnalysisImg.Text = "Analysis Picture";
+            this.chkAnalysisImg.UseVisualStyleBackColor = true;
+            this.chkAnalysisImg.CheckedChanged += new System.EventHandler(this.chkAnalysisImg_CheckedChanged);
             // 
             // frmMain
             // 
@@ -1630,6 +1643,7 @@
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.CheckBox chkUseNet;
         private System.IO.Ports.SerialPort serialPort1;
+        private System.Windows.Forms.CheckBox chkAnalysisImg;
     }
 }
 

@@ -22,6 +22,8 @@ namespace LCD_SVS
         public static string OKImgFolder = AppFolder + @"\OK";
         public static string NGSaveImg = "1";
         public static string NGImgFolder = AppFolder + @"\NG";
+        public static string UseCamera = "1";
+        public static string AnalysisPicture = "1";
         // picture set
         public static int MinGray = 0;
         public static int MaxGray = 0;
@@ -40,7 +42,6 @@ namespace LCD_SVS
         public static Int64 MaxArea = 99999;
 
         //
-        public static string UseCamera = "1";
         public static string UseWebService = "1";
         public static string UseTestSN = "1"; //鏈接webservice時查詢數據，加快後續運行時的速度
         public static string Stage = "TU";
@@ -105,6 +106,7 @@ namespace LCD_SVS
             IniFile.IniWriteValue(IniSection.Capture.ToString(), "OKImgFolder", OKImgFolder, inifilepath);
             IniFile.IniWriteValue(IniSection.Capture.ToString(), "NGSaveImg", NGSaveImg, inifilepath);
             IniFile.IniWriteValue(IniSection.Capture.ToString(), "NGImgFolder", NGImgFolder, inifilepath);
+            IniFile.IniWriteValue(IniSection.Capture.ToString(), "AnalysisPicture", AnalysisPicture, inifilepath);
             //
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MinGray", MinGray, inifilepath);
             IniFile.IniWriteValue(IniSection.PictureSet.ToString(), "MaxGray", MaxGray, inifilepath);
@@ -156,7 +158,7 @@ namespace LCD_SVS
             OKImgFolder = IniFile.IniReadValue(IniSection.Capture.ToString(), "OKImgFolder", inifilepath);
             NGSaveImg = IniFile.IniReadValue(IniSection.Capture.ToString(), "NGSaveImg", inifilepath);
             NGImgFolder = IniFile.IniReadValue(IniSection.Capture.ToString(), "NGImgFolder", inifilepath);
-
+            AnalysisPicture = IniFile.IniReadValue(IniSection.Capture.ToString(), "AnalysisPicture", inifilepath);
             try
             {
                 MinGray = Convert.ToInt16(IniFile.IniReadValue(IniSection.PictureSet.ToString(), "MinGray", inifilepath));

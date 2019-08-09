@@ -967,6 +967,12 @@ namespace LCD_SVS
                 ts = sw.Elapsed;
                 ShowMessageInternal(MeaageType.Failure , "Fail to load assembly,Used time(ms):" + ts.Milliseconds);
                 ShowMessageInternal(MeaageType.Error, e.Message);
+                this.Invoke((EventHandler)(delegate
+                {
+                    buttonStop.Visible = false;
+                    buttonStart.Visible = true;
+                    buttonStart.Cursor = Cursors.Default;
+                }));
             }
  
             if (connectWebService)
@@ -1565,6 +1571,10 @@ namespace LCD_SVS
                 chkUseWebService.Checked = true;
             if (p.UseWebService == "0")
                 chkUseWebService.Checked = false;
+            if (p.AnalysisPicture == "1")
+                chkAnalysisImg.Checked  = true;
+            if (p.AnalysisPicture == "0")
+                chkAnalysisImg.Checked  = false;
             txtWebService.Text = p.WebSite;
             txtTestSN.Text = p.TestSN.ToUpper().Trim();
             txtStage.Text = p.Stage.ToUpper().Trim();
@@ -3352,14 +3362,13 @@ namespace LCD_SVS
             {
                 SetListText(lstSN, txtSN.Text.Trim ().ToUpper ());
                 ShowMessageInternal(MeaageType.Success, "SN:" + txtSN.Text.Trim().ToUpper());
-                txtSN.Text = "";
-
                 if (p.UseWebService == "1")
                 {
                     string sn = txtSN.Text.ToUpper().Trim();
                     if (!string.IsNullOrEmpty(sn) && !string.IsNullOrEmpty(p.Stage))
                         LoadInfoFromWebService(sn, p.Stage);
                 }
+                txtSN.Text = "";
             }
         }
 
@@ -3542,6 +3551,7 @@ namespace LCD_SVS
                 try
                 {
                    // listener.Start();
+                    ShowMessageInternal(MeaageType.Begin, "Waiting for Net Message... ");
                     byte[] buffer = new byte[1024];
                     //Socket 
                     //Socket ss = listenSocket.Accept();
@@ -3554,6 +3564,12 @@ namespace LCD_SVS
                     this.Invoke((EventHandler)(delegate
                     {
                         txtSN.Text = str;
+                        if (p.UseWebService == "1")
+                        {
+                            string sn = txtSN.Text.ToUpper().Trim();
+                            if (!string.IsNullOrEmpty(sn) && !string.IsNullOrEmpty(p.Stage))
+                                LoadInfoFromWebService(sn, p.Stage);
+                        }
                     }));
                 }
                 catch (Exception)
@@ -3626,6 +3642,15 @@ namespace LCD_SVS
                 
             }
             return false;
+        }
+
+        private void chkAnalysisImg_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAnalysisImg.Checked)
+                p.AnalysisPicture = "1";
+            else
+                p.AnalysisPicture = "0";
+            IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "AnalysisPicture", p.AnalysisPicture, p.IniFilePath);
         }
 
 
