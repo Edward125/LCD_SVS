@@ -52,6 +52,15 @@ namespace LCD_SVS
         bool isCapture1stPicture = false;
         bool isCapture2ndPicture = false;
 
+        //
+        private string CurrentPicture = string.Empty;
+        //private string SvTag = string.Empty;
+        //private string MO = string.Empty;
+        //private string Model = string.Empty;
+        //private string LCDPN = string.Empty;
+        //private stri
+        //
+
 
         
         public string CurrentID = "";
@@ -74,6 +83,19 @@ namespace LCD_SVS
         private static HWindow hwindow2nd;
         public HTuple hv_ExpDefaultHwinHandle;
         Dictionary<string, string> ComList = new Dictionary<string, string>(); //comport list
+        ModelInfo MI;
+
+
+
+        class ModelInfo
+        {
+            public string ServiceTag { set; get; }
+            public string MO { set; get; }
+            public string Model { set; get; }
+            public string LCD { set; get; }
+            public string MB { set; get; }
+
+        }
 
 
         class Cameracontainer
@@ -128,6 +150,7 @@ namespace LCD_SVS
                 if (SVGenicamRoot == null)
                 {
                     Console.WriteLine("GetEnvironmentVariableA SVS_GENICAM_ROOT failed! ");
+                    p.SaveLog(p.LogType.SysLog, "GetEnvironmentVariableA SVS_GENICAM_ROOT failed! ");
                     return false;
                 }
                 if (is64Env)
@@ -136,6 +159,7 @@ namespace LCD_SVS
                     if (SVGenicamGentl == null)
                     {
                         Console.WriteLine("GetEnvironmentVariableA GENICAM_GENTL64_PATH failed! ");
+                        p.SaveLog(p.LogType.SysLog, "GetEnvironmentVariableA GENICAM_GENTL64_PATH failed! ");
                         return false;
                     }
                 }
@@ -145,6 +169,7 @@ namespace LCD_SVS
                     if (SVGenicamGentl == null)
                     {
                         Console.WriteLine("GetEnvironmentVariableA GENICAM_GENTL32_PATH failed! ");
+                        p.SaveLog(p.LogType.SysLog, "GetEnvironmentVariableA GENICAM_GENTL32_PATH failed! ");
                         return false;
                     }
                 }
@@ -153,6 +178,7 @@ namespace LCD_SVS
                 if (SVCLProtocol == null)
                 {
                     Console.WriteLine("GetEnvironmentVariableA SVS_GENICAM_CLPROTOCOL failed! ");
+                    p.SaveLog(p.LogType.SysLog, "GetEnvironmentVariableA SVS_GENICAM_CLPROTOCOL failed! ");
                     return false;
                 }
 
@@ -160,6 +186,7 @@ namespace LCD_SVS
                 if (SVGenicamCache == null)
                 {
                     Console.WriteLine("GetEnvironmentVariableA SVS_GENICAM_CACHE failed! ");
+                    p.SaveLog(p.LogType.SysLog, "GetEnvironmentVariableA SVS_GENICAM_CACHE failed! ");
                     return false;
                 }
 
@@ -168,6 +195,7 @@ namespace LCD_SVS
                 if (ret != SVcamApi.SVSCamApiReturn.SV_ERROR_SUCCESS)
                 {
                     Console.WriteLine("SVS_LibInit  failed! ");
+                    p.SaveLog(p.LogType.SysLog, "SVS_LibInit  failed! ");
                     return false;
                 }
 
@@ -186,6 +214,7 @@ namespace LCD_SVS
                 if (ret != SVcamApi.SVSCamApiReturn.SV_ERROR_SUCCESS)
                 {
                     Console.WriteLine("GetEnvironmentVariableA SVS_GENICAM_CACHE failed! ");
+                    p.SaveLog(p.LogType.SysLog, "GetEnvironmentVariableA SVS_GENICAM_CACHE failed! ");
                     return;
                 }
 
@@ -769,6 +798,7 @@ namespace LCD_SVS
         {
             this.buttonDiscover.Cursor = Cursors.WaitCursor;
             this.textBox_Result.Text = "Searching for cameras...";
+            p.SaveLog (p.LogType.SysLog,"Searching for cameras...");
             this.textBox_Result.Refresh();
 
             if (SVSCam.sv_cam_sys_hdl_list.Count() == 0)
@@ -798,6 +828,7 @@ namespace LCD_SVS
                 StringBuilder text = new StringBuilder();
                 SetListText("Find " + number + " camera(s),select camera.");
                 ShowMessageInternal ( MeaageType.Begin,"Find " + number + " camera(s),select camera.");
+                p.SaveLog (p.LogType.SysLog,"Find " + number + " camera(s),select camera.");
                 text.AppendFormat(" Select camera!");
                 this.textBox_Result.Text = text.ToString();
                 this.textBox_Result.ForeColor = Color.Green;
@@ -808,6 +839,7 @@ namespace LCD_SVS
                 this.textBox_Result.Text = "No cameras found!";
                 SetListText("No cameras found!");
                 ShowMessageInternal(MeaageType.Error, "No cameras found!");
+                p.SaveLog (p.LogType.SysLog,"No cameras found!");
                 this.textBox_Result.ForeColor = Color.Red;
 
             }
@@ -841,6 +873,7 @@ namespace LCD_SVS
             sv_cam = cam;
             SetListText("Select camera:" + cam.devInfo.displayName + ",SN:" + cam.devInfo.serialNumber + ".");
             ShowMessageInternal(MeaageType.Begin, "Select camera:" + cam.devInfo.displayName + ",SN:" + cam.devInfo.serialNumber + ".");
+            p.SaveLog(p.LogType.SysLog, "Select camera:" + cam.devInfo.displayName + ",SN:" + cam.devInfo.serialNumber + ".");
 
             cam.openConnection();
            //SVCamControl camcontrol = new SVCamControl(cam);
@@ -862,6 +895,7 @@ namespace LCD_SVS
                 {
                     SetListText("Select Camera first please.");
                     ShowMessageInternal(MeaageType.Warning, "Select Camera first please.");
+                    p.SaveLog(p.LogType.SysLog, "Select Camera first please.");
                     buttonStart.Cursor = Cursors.Default;
                     return;
                 }
@@ -908,11 +942,14 @@ namespace LCD_SVS
                     listenThread.IsBackground = true;
                     listenThread.Start();
                     ShowMessageInternal(MeaageType.Begin, "Start Listen IP:" + p.IP + ",Port:" + p.Port);
+                    p.SaveLog(p.LogType.SysLog, "Start Listen IP:" + p.IP + ",Port:" + p.Port);
                 }
                 catch (Exception eNet)
                 {
                     ShowMessageInternal(MeaageType.Error, "Listen IP:" + p.IP + ",Port:" + p.Port + " Failed.");
+                    p.SaveLog(p.LogType.SysLog, "Listen IP:" + p.IP + ",Port:" + p.Port + " Failed.");
                     ShowMessageInternal(MeaageType.Error, eNet.Message);
+                    p.SaveLog(p.LogType.SysLog, eNet.Message);
                     buttonStart.Cursor = Cursors.Default;
                     return;
                 }
@@ -922,16 +959,20 @@ namespace LCD_SVS
             {
                 this.tabMain.SelectedTab = tabInspection;
                 ShowMessageInternal(MeaageType.Begin, "Start Open Serial Port:" + p.ComPort + "...");
+                p.SaveLog(p.LogType.SysLog, "Start Open Serial Port:" + p.ComPort + "...");
                 try
                 {
                     serialPort1.PortName = p.ComPort;
                     serialPort1.Open();
                     ShowMessageInternal(MeaageType.Success, "Open Serial Port:" + p.ComPort + " Sucessful...");
+                    p.SaveLog(p.LogType.SysLog, "Open Serial Port:" + p.ComPort + " Sucessful...");
                 }
                 catch (Exception eCom)
                 {
                     ShowMessageInternal(MeaageType.Error, "Failed to Open Serial Port:" + p.ComPort + " ...");
+                    p.SaveLog(p.LogType.SysLog, "Failed to Open Serial Port:" + p.ComPort + " ...");
                     ShowMessageInternal(MeaageType.Error, eCom.Message);
+                    p.SaveLog(p.LogType.SysLog, eCom.Message);
                     buttonStart.Cursor = Cursors.Default;
                     return;
                 }
@@ -958,14 +999,17 @@ namespace LCD_SVS
             sw.Start();
 
             ShowMessageInternal(MeaageType.Begin, "Initializing...");
+            p.SaveLog(p.LogType.SysLog, "Initializing...");
             ws.Url = p.WebSite;
             ShowMessageInternal(MeaageType.Begin, "Loading Assembly...");
+            p.SaveLog(p.LogType.SysLog, "Loading Assembly...");
             try
             {
                 ws.Discover();
                 sw.Stop();
                 ts = sw.Elapsed;
                 ShowMessageInternal(MeaageType.Success, "Load assembly sucessful,Used time(ms):" + ts.Milliseconds);
+                p.SaveLog(p.LogType.SysLog, "Load assembly sucessful,Used time(ms):" + ts.Milliseconds);
                 connectWebService = true;
             }
             catch (Exception e)
@@ -973,7 +1017,9 @@ namespace LCD_SVS
                 sw.Stop();
                 ts = sw.Elapsed;
                 ShowMessageInternal(MeaageType.Failure , "Fail to load assembly,Used time(ms):" + ts.Milliseconds);
+                p.SaveLog(p.LogType.SysLog, "Fail to load assembly,Used time(ms):" + ts.Milliseconds);
                 ShowMessageInternal(MeaageType.Error, e.Message);
+                p.SaveLog(p.LogType.SysLog, e.Message);
                 this.Invoke((EventHandler)(delegate
                 {
                     if (p.UseComPort == "1" && serialPort1.IsOpen)
@@ -996,28 +1042,50 @@ namespace LCD_SVS
 
         private void LoadInfoFromWebService(string sn, string stage)
         {
+            MI = new ModelInfo();
+            MI.ServiceTag = sn;
             ShowMessageInternal(MeaageType.Begin, "Load info from WebService,SN:" + sn + ",Stage:" + stage);
+            p.SaveLog(p.LogType.SysLog, "Load info from WebService,SN:" + sn + ",Stage:" + stage);
             WebReference.clsRequestData rd = new WebReference.clsRequestData();
             rd = ws.GetUUTData(sn, stage , rd, 0);
             if (rd.Result == "OK")
             {
-                if (!string.IsNullOrEmpty (rd.Model))
+                if (!string.IsNullOrEmpty(rd.Model))
+                {
+                    MI.Model = rd.Model;
+                    MI.MO = rd.MO;
                     ShowMessageInternal(MeaageType.Success, "Load info sucessful,SN:" + sn + ",Model:" + rd.Model + ",MO:" + rd.MO);
+                    p.SaveLog(p.LogType.SysLog, "Load info sucessful,SN:" + sn + ",Model:" + rd.Model + ",MO:" + rd.MO);
+                }
                 else
-                    ShowMessageInternal(MeaageType.Failure , "Load info fail,there is no record.SN:" + sn + ",Stage:" + stage);
+                {
+                    ShowMessageInternal(MeaageType.Failure, "Load info fail,there is no record.SN:" + sn + ",Stage:" + stage);
+                    p.SaveLog(p.LogType.SysLog, "Load info fail,there is no record.SN:" + sn + ",Stage:" + stage);
+                }
                 if (rd.RequestItem != null)
                 {
                     foreach (WebReference.clsRequestItem item in rd.RequestItem)
                     {
                         if (item.Item == "LCD")
+                        {
+                            MI.LCD = item.Value;
                             ShowMessageInternal(MeaageType.Success, "SN:" + sn + ",LCD:" + item.Value);
+                            p.SaveLog(p.LogType.SysLog, "SN:" + sn + ",LCD:" + item.Value);
+                        }
                         if (item.Item == "MAINBOARD")
+                        {
+                            MI.MB = item.Value;
                             ShowMessageInternal(MeaageType.Success, "SN:" + sn + ",MAINBOARD:" + item.Value);
+                            p.SaveLog(p.LogType.SysLog, "SN:" + sn + ",MAINBOARD:" + item.Value);
+                        }
                     }
                 }
             }
             else
-                ShowMessageInternal(MeaageType.Failure, "Can't load info from WebService,SN:" + sn + ",Stage:" + stage );
+            {
+                ShowMessageInternal(MeaageType.Failure, "Can't load info from WebService,SN:" + sn + ",Stage:" + stage);
+                p.SaveLog(p.LogType.SysLog, "Can't load info from WebService,SN:" + sn + ",Stage:" + stage);
+            }
         }
 
         private void clearControl()
@@ -1187,6 +1255,8 @@ namespace LCD_SVS
                             {
                                 display_img_rgb[currentIndex].Save(DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
                                 SetListText("Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
+                                p.SaveLog(p.LogType.SysLog, "Manual Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
+
                                 acqIsCapturePicture = false;
                                 if (btnCapture.InvokeRequired)
                                 {
@@ -1210,16 +1280,27 @@ namespace LCD_SVS
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
                                 {
-                                    display_img_rgb[currentIndex].Save(filepath , System.Drawing.Imaging.ImageFormat.Bmp);
-                                    ShowMessageInternal(MeaageType.Success , "Capture 1st picture,File:" + filename);
+                                    display_img_rgb[currentIndex].Save(filepath, System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Success, "Capture 1st picture,File:" + filename);
+                                    p.SaveLog(p.LogType.SysLog, "Capture 1st picture,File:" + filename);
                                     this.Invoke((EventHandler)(delegate
                                     {
                                         //pic1st.ImageLocation = filepath;
                                         DisplayHalconImage(filepath, hwindow1st, hSmartWindowControl1st);
+                                        if (p.AnalysisPicture == "1")
+                                        {
+                                            CurrentPicture = filepath;
+                                            if (!anyThreadIsRuning)
+                                                startAnalyzePictureThread();
+                                            CurrentPicture = string.Empty;
+                                        }
                                     }));
                                 }
                                 else
+                                {
                                     ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
+                                    p.SaveLog(p.LogType.SysLog, "Failed to Capture 1st picture,File:" + filename);
+                                }
                                 isCapture1stPicture = false;
 
                             }
@@ -1231,16 +1312,27 @@ namespace LCD_SVS
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
                                 {
-                                    display_img_rgb[currentIndex].Save(filepath , System.Drawing.Imaging.ImageFormat.Bmp);
+                                    display_img_rgb[currentIndex].Save(filepath, System.Drawing.Imaging.ImageFormat.Bmp);
                                     ShowMessageInternal(MeaageType.Success, "Capture 2nd picture,File:" + filename);
+                                    p.SaveLog(p.LogType.SysLog, "Capture 2nd picture,File:" + filename);
                                     this.Invoke((EventHandler)(delegate
                                     {
                                         //pic2nd.ImageLocation = filepath;
-                                        DisplayHalconImage(filepath , hwindow2nd, hSmartWindowControl2nd);
+                                        DisplayHalconImage(filepath, hwindow2nd, hSmartWindowControl2nd);
+                                        if (p.AnalysisPicture == "1")
+                                        {
+                                            CurrentPicture = filepath;
+                                            if (!anyThreadIsRuning)
+                                                startAnalyzePictureThread();
+                                            CurrentPicture = string.Empty;
+                                        }
                                     }));
                                 }
                                 else
+                                {
                                     ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
+                                    p.SaveLog(p.LogType.SysLog, "Failed to Capture 2nd picture,File:" + filename);
+                                }
                                 isCapture2ndPicture = false;
                             }
                         }
@@ -1289,6 +1381,7 @@ namespace LCD_SVS
                             {
                                 display_img_rgb[currentIndex].Save(DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
                                 SetListText("Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
+                                p.SaveLog(p.LogType.SysLog, "Mauanl Capture OK," + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + currentIndex + ".bmp");
                                 acqIsCapturePicture = false;
 
                                 if (btnCapture.InvokeRequired)
@@ -1314,16 +1407,27 @@ namespace LCD_SVS
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
                                 {
-                                    display_img_rgb[currentIndex].Save(filepath , System.Drawing.Imaging.ImageFormat.Bmp);
-                                    ShowMessageInternal(MeaageType.Success , "Capture 1st picture,File:" + filename);
+                                    display_img_rgb[currentIndex].Save(filepath, System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Success, "Capture 1st picture,File:" + filename);
+                                    p.SaveLog(p.LogType.SysLog, "Capture 1st picture,File:" + filename);
                                     this.Invoke((EventHandler)(delegate
                                     {
                                         //pic1st.ImageLocation = filepath;
                                         DisplayHalconImage(filepath, hwindow1st, hSmartWindowControl1st);
+                                        if (p.AnalysisPicture == "1")
+                                        {
+                                            CurrentPicture = filepath;
+                                            if (!anyThreadIsRuning)
+                                                startAnalyzePictureThread();
+                                            CurrentPicture = string.Empty;
+                                        }
                                     }));
                                 }
                                 else
+                                {
                                     ShowMessageInternal(MeaageType.Warning, "Failed to Capture 1st picture,File:" + filename);
+                                    p.SaveLog(p.LogType.SysLog, "Failed to Capture 1st picture,File:" + filename);
+                                }
                                 isCapture1stPicture = false;
 
                             }
@@ -1335,16 +1439,27 @@ namespace LCD_SVS
 
                                 if (CheckFileExistDeleteFile(filepath, filename))
                                 {
-                                    display_img_rgb[currentIndex].Save(filepath , System.Drawing.Imaging.ImageFormat.Bmp);
-                                    ShowMessageInternal(MeaageType.Success , "Capture 2nd picture,File:" + filename);
+                                    display_img_rgb[currentIndex].Save(filepath, System.Drawing.Imaging.ImageFormat.Bmp);
+                                    ShowMessageInternal(MeaageType.Success, "Capture 2nd picture,File:" + filename);
+                                    p.SaveLog(p.LogType.SysLog, "Capture 2nd picture,File:" + filename);
                                     this.Invoke((EventHandler)(delegate
                                     {
                                         //pic2nd.ImageLocation = filepath;
-                                        DisplayHalconImage(filepath , hwindow2nd, hSmartWindowControl2nd);
+                                        DisplayHalconImage(filepath, hwindow2nd, hSmartWindowControl2nd);
+                                        if (p.AnalysisPicture == "1")
+                                        {
+                                            CurrentPicture = filepath;
+                                            if (!anyThreadIsRuning)
+                                                startAnalyzePictureThread();
+                                            CurrentPicture = string.Empty;
+                                        }
                                     }));
                                 }
                                 else
+                                {
                                     ShowMessageInternal(MeaageType.Warning, "Failed to Capture 2nd picture,File:" + filename);
+                                    p.SaveLog(p.LogType.SysLog, "Failed to Capture 2nd picture,File:" + filename);
+                                }
                                 isCapture2ndPicture = false;
                             }
                         }
@@ -1377,7 +1492,10 @@ namespace LCD_SVS
             if (p.UseComPort == "1")
             {
                 if (serialPort1.IsOpen)
+                {
+                    p.SaveLog(p.LogType.SysLog, "Close Port:" + serialPort1.PortName);
                     serialPort1.Close();
+                }
             }
 
 
@@ -1661,6 +1779,11 @@ namespace LCD_SVS
                 chkCapture2.Checked = true;
             if (p.UseCapture2 == "0")
                 chkCapture2.Checked = false;
+            if (p.TestOkUploadResult == "1")
+                chkTestOKUploadResult.Checked = true;
+            if (p.TestOkUploadResult == "0")
+                chkTestOKUploadResult.Checked =  false;
+
             comboPort.Text = p.ComPort;
             txtCapture1Signal.Text = p.Capture1Signal;
             txtCapture2Signal.Text = p.Capture2Signal;
@@ -2097,14 +2220,13 @@ namespace LCD_SVS
 
 
 
-            return;
-            ShowMessageInternal(MeaageType.Begin, "test");
+            //return;
+            //ShowMessageInternal(MeaageType.Begin, "test");
 
-            if (!anyThreadIsRuning)
-                startAnalyzePictureThread();
+            //if (!anyThreadIsRuning)
+            //    startAnalyzePictureThread();
+            //return;
 
-
-            return;
             if (!CheckImgFile(txtVisionImgFile))
                 return;
             btnReadImage.Cursor = Cursors.WaitCursor;
@@ -2152,6 +2274,8 @@ namespace LCD_SVS
             ho_ImageEmphasize.Dispose();
             maxthresh[0] = (int)hv_MaxThresh.TupleSelect(0);
             maxthresh[1] = (int)hv_MaxThresh.TupleSelect(1);
+            p.SaveLog(p.LogType.SysLog, "MaxThresh[" + (int)hv_MaxThresh.TupleSelect(0) + "," + (int)hv_MaxThresh.TupleSelect(1) + "],MinThresh[" +
+                (int)hv_MinThresh.TupleSelect(0) + "," + (int)hv_MinThresh.TupleSelect(1) + "]");
 
         }
 
@@ -2577,6 +2701,21 @@ namespace LCD_SVS
             {
                 anyThreadIsRuning = false;
 
+                HWindow _hwindow;
+
+                if (string.IsNullOrEmpty(CurrentPicture))
+                    return;
+                FileInfo fi = new FileInfo(CurrentPicture);
+                if (!fi.Exists)
+                    return;
+
+                if (fi.Name.EndsWith("1st"))
+                    _hwindow = hwindow1st;
+                else  if (fi.Name .EndsWith ("2nd"))
+                    _hwindow = hwindow2nd;
+                else _hwindow = hwindow;
+
+
                 // Local iconic variables 
 
                 HObject ho_Image, ho_ImageEmphasize, ho_GrayImage;
@@ -2619,23 +2758,24 @@ namespace LCD_SVS
                 HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
                 HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
                 HOperatorSet.GenEmptyObj(out ho_Contours);
-                HOperatorSet.ClearWindow(hwindow );
+                HOperatorSet.ClearWindow(_hwindow );
                 ho_Image.Dispose();
-                HOperatorSet.ReadImage(out ho_Image, p.AppCapFolder + @"\lineNG_white.jpg");
+                //HOperatorSet.ReadImage(out ho_Image, p.AppCapFolder + @"\lineNG_white.jpg");
+                HOperatorSet.ReadImage(out ho_Image, CurrentPicture);
                 hv_WindowHandle.Dispose();
                 HOperatorSet.DispObj(ho_Image, hwindow);
-                HOperatorSet.SetDraw(hwindow, "margin");
-                HOperatorSet.SetColor(hwindow, "green");
+                HOperatorSet.SetDraw(_hwindow, "margin");
+                HOperatorSet.SetColor(_hwindow, "green");
                 ho_ImageEmphasize.Dispose();
                 HOperatorSet.Emphasize(ho_Image, out ho_ImageEmphasize, 7, 7, 1);
                 ho_GrayImage.Dispose();
                 HOperatorSet.Rgb1ToGray(ho_ImageEmphasize, out ho_GrayImage);
-                HOperatorSet.DispObj(ho_GrayImage, hwindow);
+                HOperatorSet.DispObj(ho_GrayImage, _hwindow);
                 //DisplayHalconImage(ho_GrayImage);
                 ho_Region.Dispose();
                 HOperatorSet.Threshold(ho_GrayImage, out ho_Region, p.MinGray , p.MaxGray );
-                HOperatorSet.ClearWindow(hwindow);
-                HOperatorSet.DispObj(ho_Region, hwindow);
+                HOperatorSet.ClearWindow(_hwindow);
+                HOperatorSet.DispObj(ho_Region, _hwindow);
                 hv_Phi.Dispose();
                 HOperatorSet.OrientationRegion(ho_Region, out hv_Phi);
                 using (HDevDisposeHelper dh = new HDevDisposeHelper())
@@ -2644,13 +2784,13 @@ namespace LCD_SVS
                     HOperatorSet.RotateImage(ho_GrayImage, out ho_ImageRotate, -(hv_Phi.TupleDeg()
                         ), "constant");
                 }
-                HOperatorSet.SetColor(hwindow, "red");
+                HOperatorSet.SetColor(_hwindow, "red");
                 ho_Region1.Dispose();
                 HOperatorSet.Threshold(ho_ImageRotate, out ho_Region1, p.MinGray , p.MaxGray );
                 hv_Row12.Dispose(); hv_Column12.Dispose(); hv_Row22.Dispose(); hv_Column22.Dispose();
                 HOperatorSet.InnerRectangle1(ho_Region1, out hv_Row12, out hv_Column12, out hv_Row22,
                     out hv_Column22);
-                HOperatorSet.SetColor(hwindow , "blue");
+                HOperatorSet.SetColor(_hwindow , "blue");
                 ho_Rectangle1.Dispose();
                 HOperatorSet.GenRectangle1(out ho_Rectangle1, hv_Row12, hv_Column12, hv_Row22,
                     hv_Column22);
@@ -2670,9 +2810,9 @@ namespace LCD_SVS
                 HOperatorSet.ReadImage(out ho_Image, roifile );
                 //hv_WindowHandle.Dispose();
                 //dev_open_window_fit_image(ho_Image, 0, 0, -1, -1, out hv_WindowHandle);
-                HOperatorSet.DispObj(ho_Image, hwindow);
+                HOperatorSet.DispObj(ho_Image, _hwindow);
 
-                HOperatorSet.SetColored(hwindow, 12);
+                HOperatorSet.SetColored(_hwindow, 12);
                 hv_Width.Dispose(); hv_Height.Dispose();
                 HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
 
@@ -2739,21 +2879,48 @@ namespace LCD_SVS
                 hv_Number.Dispose();
                 HOperatorSet.CountObj(ho_Contours, out hv_Number);
 
-                HOperatorSet.DispObj(ho_Image, hwindow);
-                HOperatorSet.DispObj(ho_Contours, hwindow);
+                HOperatorSet.DispObj(ho_Image, _hwindow);
+                HOperatorSet.DispObj(ho_Contours, _hwindow);
            
                 if (hv_Number > 0)
                 {
                     string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "->" + "FAIL,Find " + hv_Number + " error(s).";
+                    p.SaveLog(p.LogType.SysLog, msg);
+                    p.SaveLog(p.LogType.TestLog, DateTime.Now.ToString("yyyyMMddHHmmss") + "," + MI.ServiceTag + "," + "FAIL" + "," +
+                        MI.MO + "," + MI.Model + "," + MI.LCD + "," + MI.MB + "," + CurrentPicture);
                     hwindow.WriteString(msg);
-                    disp_message(hwindow, msg, "window",20 , 20, "red", "false");
+                    disp_message(_hwindow, msg, "window",20 , 20, "red", "false");
+                    if (p.NGSaveImg == "1")
+                        File.Move(CurrentPicture, p.NGImgFolder + @"\" + fi.Name);
 
                 }
                 else
                 {
                     string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "->" + "PASS.";
+                    p.SaveLog(p.LogType.SysLog, msg);
+                    p.SaveLog(p.LogType.TestLog, DateTime.Now.ToString("yyyyMMddHHmmss") + "," + MI.ServiceTag + "," + "PASS" + "," +
+                        MI.MO + "," + MI.Model + "," + MI.LCD + "," + MI.MB + "," + CurrentPicture);
                     hwindow.WriteString(msg);
-                    disp_message(hwindow, msg, "window", 20, 20, "green", "false");
+                    disp_message(_hwindow, msg, "window", 20, 20, "green", "false");
+                    if (p.OKSaveImg == "1")
+                        File.Move(CurrentPicture, p.OKImgFolder + @"\" + fi.Name);
+                    if (p.TestOkUploadResult == "1")
+                    {
+                        ShowMessageInternal(MeaageType.Begin, "Upload test result to SFCS.");
+                        p.SaveLog(p.LogType.SysLog, "Upload test result to SFCS.");
+                        string result = ws.UploadUSNInfo(MI.ServiceTag, p.Stage, "LCD", "PASS");
+                        if (result == "OK")
+                        {
+                            ShowMessageInternal(MeaageType.Success, "Upload test result to SFCS sucessful...");
+                            p.SaveLog(p.LogType.SysLog, "Upload test result to SFCS sucessful...");
+                        }
+                        else
+                        {
+                            ShowMessageInternal(MeaageType.Failure, "Failed to upload result to SFCS." + result);
+                            p.SaveLog(p.LogType.SysLog, "Failed to upload result to SFCS." + result);
+                        }
+                           
+                    }
                 }
 
 
@@ -3854,6 +4021,15 @@ namespace LCD_SVS
             else
                 p.AnalysisPicture = "0";
             IniFile.IniWriteValue(p.IniSection.Capture.ToString(), "AnalysisPicture", p.AnalysisPicture, p.IniFilePath);
+        }
+
+        private void chkTestOKUploadResult_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkTestOKUploadResult.Checked)
+                p.TestOkUploadResult = "1";
+            else
+                p.TestOkUploadResult = "0";
+            IniFile.IniWriteValue(p.IniSection.WebSet.ToString(), "TestOkUploadResult", p.TestOkUploadResult, p.IniFilePath);
         }
 
 

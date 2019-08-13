@@ -15,6 +15,7 @@ namespace LCD_SVS
         public static string IniFilePath = @".\SysConfig.ini";
         public static string AppFolder = Application.StartupPath +@"\LCD_SVS";
         public static string AppCapFolder = AppFolder + @"\Capture";
+        public static string LogFolder = AppFolder + @"\Log";
         public static string SystemVersion = Application.ProductVersion;
         public static string SystemName = Application.ProductName;
         // default value 
@@ -47,6 +48,7 @@ namespace LCD_SVS
         public static string Stage = "TU";
         public static string TestSN = "F3NZLT2";
         public static string WebSite = "http://10.62.201.215/Tester.WebService/WebService.asmx";
+        public static string TestOkUploadResult = "1";
         //
         public static string UseComPort = "1";
         public static string UseCapture1 = "1";
@@ -73,6 +75,14 @@ namespace LCD_SVS
 
         }
 
+
+        public enum LogType
+        {
+            SysLog,
+            TestLog
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -87,6 +97,8 @@ namespace LCD_SVS
                 Directory.CreateDirectory(NGImgFolder);
             if (!Directory.Exists(AppCapFolder))
                 Directory.CreateDirectory(AppCapFolder);
+            if (!Directory.Exists(LogFolder))
+                Directory.CreateDirectory(LogFolder);
 
         }
 
@@ -129,6 +141,7 @@ namespace LCD_SVS
             IniFile.IniWriteValue(IniSection.WebSet.ToString(), "WebSite", WebSite, inifilepath);
             IniFile.IniWriteValue(IniSection.WebSet.ToString(), "Stage", Stage, inifilepath);
             IniFile.IniWriteValue(IniSection.WebSet.ToString(), "TestSN", TestSN, inifilepath);//
+            IniFile.IniWriteValue(IniSection.WebSet.ToString(), "TestOkUploadResult", TestOkUploadResult, inifilepath);
             //
             IniFile.IniWriteValue(IniSection.ComSet.ToString(), "UseComPort", UseComPort, inifilepath);
             IniFile.IniWriteValue(IniSection.ComSet.ToString(), "UseCapture1", UseCapture1, inifilepath);
@@ -188,6 +201,7 @@ namespace LCD_SVS
             WebSite = IniFile.IniReadValue(IniSection.WebSet.ToString(), "WebSite", inifilepath);
             Stage = IniFile.IniReadValue(IniSection.WebSet.ToString(), "Stage", inifilepath);
             TestSN = IniFile.IniReadValue(IniSection.WebSet.ToString(), "TestSN", inifilepath);
+            TestOkUploadResult = IniFile.IniReadValue(IniSection.WebSet.ToString(), "TestOkUploadResult", inifilepath);
             //
             UseComPort = IniFile.IniReadValue(IniSection.ComSet.ToString(), "UseComPort", inifilepath);
             UseCapture1 = IniFile.IniReadValue(IniSection.ComSet.ToString(), "UseCapture1", inifilepath);
@@ -202,7 +216,34 @@ namespace LCD_SVS
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logtype"></param>
+        /// <param name="logcontents"></param>
+        public static void SaveLog(LogType logtype, string logcontents)
+        {
+            string logfile = String.Empty;
+            switch (logtype)
+            {
+                case LogType.SysLog:
+                    logfile = LogFolder + @"\" + DateTime.Now.ToString("yyyyMMdd") + "_Sys.log";
+                    break;
+                case LogType.TestLog:
+                    logfile = LogFolder + @"\" + DateTime.Now.ToString("yyyyMMdd") + "_Test.log";
+                    break;
+                default:
+                    break;
+            }
 
+            StreamWriter sw = new StreamWriter(logfile);
+            if (logtype == LogType.SysLog)
+                sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "->" + logcontents);
+            else
+                sw.WriteLine(logcontents);
+            sw.Close();
+
+        }
 
 
     }

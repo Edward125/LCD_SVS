@@ -93,6 +93,7 @@
             this.tabInspection = new System.Windows.Forms.TabPage();
             this.tlpInspection = new System.Windows.Forms.TableLayoutPanel();
             this.panelInspection = new System.Windows.Forms.Panel();
+            this.lstSN = new System.Windows.Forms.ListBox();
             this.richMessage = new System.Windows.Forms.RichTextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.txtSN = new System.Windows.Forms.TextBox();
@@ -137,7 +138,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtOKImgFolder = new System.Windows.Forms.TextBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.lstSN = new System.Windows.Forms.ListBox();
+            this.chkTestOKUploadResult = new System.Windows.Forms.CheckBox();
             this.panelAcquisition.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabCamera.SuspendLayout();
@@ -1033,6 +1034,17 @@
             this.panelInspection.Size = new System.Drawing.Size(322, 615);
             this.panelInspection.TabIndex = 0;
             // 
+            // lstSN
+            // 
+            this.lstSN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstSN.FormattingEnabled = true;
+            this.lstSN.ItemHeight = 14;
+            this.lstSN.Location = new System.Drawing.Point(3, 368);
+            this.lstSN.Name = "lstSN";
+            this.lstSN.Size = new System.Drawing.Size(316, 186);
+            this.lstSN.TabIndex = 18;
+            // 
             // richMessage
             // 
             this.richMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1331,6 +1343,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.chkTestOKUploadResult);
             this.groupBox2.Controls.Add(this.txtStage);
             this.groupBox2.Controls.Add(this.label25);
             this.groupBox2.Controls.Add(this.txtTestSN);
@@ -1523,16 +1536,16 @@
             // 
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
-            // lstSN
+            // chkTestOKUploadResult
             // 
-            this.lstSN.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstSN.FormattingEnabled = true;
-            this.lstSN.ItemHeight = 14;
-            this.lstSN.Location = new System.Drawing.Point(3, 368);
-            this.lstSN.Name = "lstSN";
-            this.lstSN.Size = new System.Drawing.Size(316, 186);
-            this.lstSN.TabIndex = 18;
+            this.chkTestOKUploadResult.AutoSize = true;
+            this.chkTestOKUploadResult.Location = new System.Drawing.Point(167, 20);
+            this.chkTestOKUploadResult.Name = "chkTestOKUploadResult";
+            this.chkTestOKUploadResult.Size = new System.Drawing.Size(146, 18);
+            this.chkTestOKUploadResult.TabIndex = 12;
+            this.chkTestOKUploadResult.Text = "Test OK Upload Result";
+            this.chkTestOKUploadResult.UseVisualStyleBackColor = true;
+            this.chkTestOKUploadResult.CheckedChanged += new System.EventHandler(this.chkTestOKUploadResult_CheckedChanged);
             // 
             // frmMain
             // 
@@ -1686,6 +1699,7 @@
         private HalconDotNet.HSmartWindowControl hSmartWindowControl1st;
         private HalconDotNet.HSmartWindowControl hSmartWindowControl2nd;
         private System.Windows.Forms.ListBox lstSN;
+        private System.Windows.Forms.CheckBox chkTestOKUploadResult;
     }
 }
 
